@@ -13,8 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        {children}
+        <div className="min-h-screen bg-cyan-100 bg-gradient-to-br from-cyan-500 to-blue-200">
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   );
