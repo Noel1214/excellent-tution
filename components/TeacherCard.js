@@ -27,7 +27,8 @@ const TeacherCard = () => {
             width={300}
             height={365}
             alt="Teacher Image"
-            className="h-full w-full object-none object-top rounded-xl border-2 "
+            className="h-[12rem] w-full object-none object-top rounded-xl border-2 "
+            priority
           />
         </div>
         <ul className="BioData list-disc flex flex-col gap-1 font-bold text-sm w-[14rem]">
