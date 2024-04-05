@@ -35,13 +35,15 @@ const Poster = () => {
           />
         </div>
 
+        <Link href="/home">
         <button
           className="bg-blue-300 hover:bg-blue-400 rounded-full w-[10rem] h-[3rem] border-2 border-blue-400 shadow-xl"
           ref={button}
         >
           {/* Intentionally anchor tag for updation of states which is assigned pathname */}
-          <Link href="/home">EXPLORE MORE !</Link>
+          EXPLORE MORE !
         </button>
+        </Link>
       </div>
     </div>
   );

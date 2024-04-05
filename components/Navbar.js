@@ -4,6 +4,7 @@ import { IoMenu } from "react-icons/io5";
 import gsap from "gsap";
 import { MdClose } from "react-icons/md";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState();
@@ -17,6 +18,11 @@ const Navbar = () => {
   const title = useRef([]);
   const btn = useRef(null);
   const popNav = useRef(null);
+
+  const path = usePathname();
+  const hiddenPaths = ["/", "/login", "/register", "/addreview"];
+  const isInHiddenPath = hiddenPaths.includes(path);
+  console.log(path);
 
   useEffect(() => {
     // Dynamically import window.innerWidth when component mounts in the browser
@@ -76,7 +82,7 @@ const Navbar = () => {
   const renderNavbar = () => {
     if (windowWidth < 768) {
       return (
-        <div className="NavbarPhone">
+        <div className={`NavbarPhone ${isInHiddenPath ? "hidden" : ""}`}>
           <div className="flex justify-between items-center bg-cyan-400 h-[5rem] ">
             <h1
               className="titleFont Title ml-4 text-[1.4rem] font-bold text-white"
