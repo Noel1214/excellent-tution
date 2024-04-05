@@ -30,7 +30,7 @@ const Poster = () => {
             src={PosterImage}
             width={300}
             height={300}
-            className="h-[28rem] max-w-[19rem] m-2  xl:h-[32rem] xl:w-[31rem] rounded-xl border-2 border-sky-700 shadow-2xl"
+            className="h-[28rem] w-[19rem] m-2  xl:h-[32rem] xl:w-[31rem] rounded-xl border-2 border-sky-700 shadow-2xl"
             alt="Error"
           />
         </div>
