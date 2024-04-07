@@ -4,10 +4,13 @@ import gsap from "gsap";
 import Link from "next/link";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
+import {useRouter} from "next/navigation";
+import Axios from "axios";
 
-const SignIn = () => {
+const Register = () => {
+  const router = useRouter();
+
   const mainDiv = useRef(null);
-
   const signIn = useRef(null);
   const signInButton = useRef(null);
   const usernameInput = useRef(null);
@@ -15,15 +18,30 @@ const SignIn = () => {
   const emailInput = useRef(null);
   const redirectionRef = useRef(null);
 
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
-  const [email, setemail] = useState("");
+  const [signUpData, setsignUpData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [showPassword, setshowPassword] = useState(false);
+
+  const onSignUp = async () => {
+    try {
+      console.log("singup in front entering");
+      const dataResponse = await Axios.post("/api/register", signUpData);
+      console.log("signup success");
+      console.log(dataResponse.data);
+      router.push("/login");
+    } catch (error) {
+      console.log("SignUp failed ", error.message);
+    }
+  };
 
   const toggleShowPassword = () => {
     setshowPassword(!showPassword);
   };
 
+  //Animations
   useEffect(() => {
     gsap.fromTo(
       mainDiv.current,
@@ -57,8 +75,8 @@ const SignIn = () => {
     <div>
       <div className="flex flex-col justify-center gap-1 items-center h-screen">
         {/* SIGN UP */}
-        <form
-          action=""
+        <div
+         
           className="flex flex-col gap-3 w-[19.5rem] min-h-[25rem] h-auto mt-10 bg-cyan-300 rounded-xl relative -top-14"
           ref={mainDiv}
         >
@@ -79,8 +97,10 @@ const SignIn = () => {
             <input
               type="text"
               placeholder="username"
-              value={username}
-              onChange={(e) => setusername(e.target.value)}
+              value={signUpData.username}
+              onChange={(e) =>
+                setsignUpData({ ...signUpData, username: e.target.value })
+              }
               className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
@@ -96,8 +116,10 @@ const SignIn = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="password"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
+                value={signUpData.password}
+                onChange={(e) =>
+                  setsignUpData({ ...signUpData, password: e.target.value })
+                }
                 className="h-[2.2rem] w-[17rem] p-3 outline-none translate-x-1"
               />
               {showPassword ? (
@@ -126,8 +148,10 @@ const SignIn = () => {
             <input
               type="text"
               placeholder="example@gmail.com"
-              value={email}
-              onChange={(e) => setemail(e.target.value)}
+              value={signUpData.email}
+              onChange={(e) =>
+                setsignUpData({ ...signUpData, email: e.target.value })
+              }
               className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
@@ -135,11 +159,12 @@ const SignIn = () => {
           <button
             type=""
             className="mx-auto m-6 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
+            onClick={onSignUp}
             ref={signInButton}
           >
             Sign in
           </button>
-        </form>
+        </div>
         <div className="flex flex-col gap-2 items-center" ref={redirectionRef}>
           <p>Aldready have an account?</p>
           <Link href="/login">Login</Link>
@@ -149,4 +174,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Register;
