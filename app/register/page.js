@@ -4,7 +4,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import Axios from "axios";
 
 const Register = () => {
@@ -27,11 +27,11 @@ const Register = () => {
 
   const onSignUp = async () => {
     try {
-      console.log("singup in front entering");
       const dataResponse = await Axios.post("/api/register", signUpData);
-      console.log("signup success");
-      console.log(dataResponse.data);
+      console.log(dataResponse.message);
+
       router.push("/login");
+
     } catch (error) {
       console.log("SignUp failed ", error.message);
     }
@@ -76,7 +76,6 @@ const Register = () => {
       <div className="flex flex-col justify-center gap-1 items-center h-screen">
         {/* SIGN UP */}
         <div
-         
           className="flex flex-col gap-3 w-[19.5rem] min-h-[25rem] h-auto mt-10 bg-cyan-300 rounded-xl relative -top-14"
           ref={mainDiv}
         >

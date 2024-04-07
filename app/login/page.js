@@ -4,6 +4,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
+import Axios from "axios";
 
 const Login = () => {
   const mainDiv = useRef(null);
@@ -13,11 +14,20 @@ const Login = () => {
   const passwordInput = useRef(null);
   const redirectionRef = useRef(null);
 
-  // const [username, setusername] = useState("");
-  // const [password, setpassword] = useState("");
-  const [userData, setuserData] = useState({email: "", password: ""});
+  const [userData, setuserData] = useState({ email: "", password: "" });
   console.log(userData);
   const [showPassword, setshowPassword] = useState(false);
+
+  const onLogin = async () => {
+    console.log("handleing login");
+    try {
+      const res = await Axios.post("/api/login", userData);
+      console.log(res.data.loggedIn);
+    } catch (error) {
+      console.log("error whle handling");
+      console.log(error);
+    }
+  };
 
   const toggleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -62,8 +72,7 @@ const Login = () => {
   return (
     <div>
       <div className="flex flex-col justify-center gap-1 items-center h-screen">
-        <form
-          action=""
+        <div
           className="flex flex-col gap-3 w-[19.3rem] h-[25rem] mt-10 bg-cyan-300 rounded-xl relative -top-14"
           ref={mainDiv}
         >
@@ -85,7 +94,9 @@ const Login = () => {
               type="text"
               placeholder="email"
               value={userData.email}
-              onChange={(e) => setuserData({...userData, email: e.target.value})}
+              onChange={(e) =>
+                setuserData({ ...userData, email: e.target.value })
+              }
               className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
@@ -102,7 +113,9 @@ const Login = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="password"
                 value={userData.password}
-                onChange={(e) => setuserData({...userData, password: e.target.value})}
+                onChange={(e) =>
+                  setuserData({ ...userData, password: e.target.value })
+                }
                 className="h-[2.2rem] w-[18rem] p-3 outline-none translate-x-1"
               />
               {showPassword ? (
@@ -122,13 +135,13 @@ const Login = () => {
           </div>
           {/* LOGIN BUTTON */}
           <button
-            type=""
+            onClick={onLogin}
             className="mx-auto mt-8 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
             ref={loginButton}
           >
             Login
           </button>
-        </form>
+        </div>
         <div className="flex flex-col gap-2 items-center" ref={redirectionRef}>
           <p>Don't have an account?</p>
           <Link href="/register">Sign Up</Link>

@@ -1,14 +1,14 @@
 import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/userModel";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 
 connect();
 
-export async function POST(NextRequest) {
+export async function POST(req) {
   try {
     console.log("enterin try");
-    const reqBody = await NextRequest.json();
+    const reqBody = await req.json();
     const { username, email, password } = reqBody;
     console.log(reqBody);
 
@@ -34,6 +34,7 @@ export async function POST(NextRequest) {
     });
 
     const savedUser = await newUser.save();
+    console.log("thsi is user severd");
     console.log(savedUser);
 
     return NextResponse.json({
