@@ -40,7 +40,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (windowWidth < 768) {
       gsap.fromTo(
         title.current,
         { opacity: 0, y: -100 },
@@ -51,7 +51,7 @@ const Navbar = () => {
   }, []);
 
   const buttonAnimation = () => {
-    if (typeof window !== "undefined") {
+    if (windowWidth < 768) {
       gsap.fromTo(
         btn.current,
         { opacity: 0, x: 100 },

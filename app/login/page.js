@@ -13,8 +13,10 @@ const Login = () => {
   const passwordInput = useRef(null);
   const redirectionRef = useRef(null);
 
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
+  // const [username, setusername] = useState("");
+  // const [password, setpassword] = useState("");
+  const [userData, setuserData] = useState({email: "", password: ""});
+  console.log(userData);
   const [showPassword, setshowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -58,65 +60,6 @@ const Login = () => {
   }, []);
 
   return (
-    // <div className="flex justify-center items-center h-screen" ref={mainDiv}>
-    //   <div className="flex justify-center items-center bg-cyan-400 flex-col gap-4 h-[20rem] w-[20rem] rounded-2xl  -translate-y-[5rem]">
-    //     <h1 className="text-2xl font-bold" ref={title}>USER LOGIN</h1>
-    //     <div className="flex items-center relative right-2" ref={userNameInput}  >
-    //       <div className="bg-white rounded-full h-[4rem] w-[4rem] flex items-center justify-center relative left-3" >
-    //         <FaRegUser size={22}  />
-    //       </div>
-    //       <input
-    //         type="text"
-    //         placeholder="Username"
-    //         className="h-[3rem] w-[14rem] rounded-r-3xl p-5 bg bg-gray-600"
-    //       />
-    //     </div>
-    //     <div className="flex items-center relative left-2" ref={passwordInput}>
-    //       <input
-    //         type={visible ? "text" : "password"}
-    //         placeholder="Password"
-    //         className="h-[3rem] w-[14rem] rounded-l-3xl p-5 bg bg-gray-600"
-    //       />
-    //       <button className="bg-white rounded-full h-[4rem] w-[4rem] flex items-center justify-center relative right-3" onClick={() => setvisible(!visible)}>
-    //         {
-    //           (visible ? <MdOutlineLockOpen size={25} /> : <MdOutlineLock size={25} /> )
-    //         }
-    //       </button>
-    //     </div>
-    //     <div className="flex justify-center items-center">
-    //     <button className="bg-cyan-300 p-2 w-[5rem] rounded-xl font-bold text-sm" ref={login}>LOGIN</button>
-    //     </div>
-    //   </div>
-    // </div>
-    // MODerN
-    // <div className="flex justify-center">
-    //   <div className="bg-cyan-300 flex flex-col items-center h-[27rem] w-[20rem] rounded-xl translate-y-[7rem]">
-    //     <div className=" flex justify-betwee itme h-[4rem] mt-2  w-[18rem] text-xl text-white font-bold">
-    //       <button className="px-12 w-[9rem] border-zinc-400 border-b-2 focus:border-black">
-    //         Login
-    //       </button>
-    //       <button className="px-10 w-[9rem] border-zinc-400 border-b-2 focus:border-black">
-    //         Sign in
-    //       </button>
-    //     </div>
-    //     <form className="flex flex-col mt-[3rem] w-[15rem] gap-[3rem]">
-    //       <input
-    //         type="text"
-    //         name="username"
-    //         placeholder="Name"
-    //         className="mt-5 outline-none border-black pb-4 border-b-2 bg-cyan-300"
-    //       />
-
-    //       <input
-    //         type="text"
-    //         name="password"
-    //         placeholder="Password"
-    //         className="mt-5 outline-none border-black pb-4 border-b-2 bg-cyan-300"
-    //       />
-    //     </form>
-    //     <button className="mt-[2rem] w-[3rem] bg-green-400">Login</button>
-    //   </div>
-    // </div>
     <div>
       <div className="flex flex-col justify-center gap-1 items-center h-screen">
         <form
@@ -136,13 +79,13 @@ const Login = () => {
             ref={usernameInput}
           >
             <label htmlFor="userName" className="text-sm">
-              Username
+              E-Mail
             </label>
             <input
               type="text"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setusername(e.target.value)}
+              placeholder="email"
+              value={userData.email}
+              onChange={(e) => setuserData({...userData, email: e.target.value})}
               className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
@@ -158,8 +101,8 @@ const Login = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="password"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
+                value={userData.password}
+                onChange={(e) => setuserData({...userData, password: e.target.value})}
                 className="h-[2.2rem] w-[18rem] p-3 outline-none translate-x-1"
               />
               {showPassword ? (
