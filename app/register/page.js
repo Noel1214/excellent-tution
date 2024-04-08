@@ -28,7 +28,7 @@ const Register = () => {
   const onSignUp = async () => {
     try {
       const dataResponse = await Axios.post("/api/register", signUpData);
-      console.log(dataResponse.message);
+      //console.log(dataResponse.message);
 
       router.push("/login");
 
@@ -73,14 +73,14 @@ const Register = () => {
 
   return (
     <div>
-      <div className="flex flex-col justify-center gap-1 items-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen gap-1">
         {/* SIGN UP */}
         <div
           className="flex flex-col gap-3 w-[19.5rem] min-h-[25rem] h-auto mt-10 bg-cyan-300 rounded-xl relative -top-14"
           ref={mainDiv}
         >
           <h1
-            className="mx-auto mt-12 p-2 font-semibold text-3xl border-black border-b-2"
+            className="p-2 mx-auto mt-12 text-3xl font-semibold border-b-2 border-black"
             ref={signIn}
           >
             Sign up
@@ -164,7 +164,7 @@ const Register = () => {
             Sign in
           </button>
         </div>
-        <div className="flex flex-col gap-2 items-center" ref={redirectionRef}>
+        <div className="flex flex-col items-center gap-2" ref={redirectionRef}>
           <p>Aldready have an account?</p>
           <Link href="/login">Login</Link>
         </div>

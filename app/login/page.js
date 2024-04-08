@@ -5,6 +5,7 @@ import Link from "next/link";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import Axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const mainDiv = useRef(null);
@@ -15,14 +16,18 @@ const Login = () => {
   const redirectionRef = useRef(null);
 
   const [userData, setuserData] = useState({ email: "", password: "" });
-  console.log(userData);
+  //console.log(userData);
   const [showPassword, setshowPassword] = useState(false);
-
+  const router = useRouter();
+  
   const onLogin = async () => {
     console.log("handleing login");
     try {
       const res = await Axios.post("/api/login", userData);
       console.log(res.data.loggedIn);
+      if(res.data.loggedIn){
+        router.push("/home");
+      }
     } catch (error) {
       console.log("error whle handling");
       console.log(error);
@@ -71,13 +76,13 @@ const Login = () => {
 
   return (
     <div>
-      <div className="flex flex-col justify-center gap-1 items-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen gap-1">
         <div
           className="flex flex-col gap-3 w-[19.3rem] h-[25rem] mt-10 bg-cyan-300 rounded-xl relative -top-14"
           ref={mainDiv}
         >
           <h1
-            className="mx-auto mt-12 p-2 font-semibold text-3xl border-black border-b-2"
+            className="p-2 mx-auto mt-12 text-3xl font-semibold border-b-2 border-black"
             ref={login}
           >
             Login
@@ -142,7 +147,7 @@ const Login = () => {
             Login
           </button>
         </div>
-        <div className="flex flex-col gap-2 items-center" ref={redirectionRef}>
+        <div className="flex flex-col items-center gap-2" ref={redirectionRef}>
           <p>Don't have an account?</p>
           <Link href="/register">Sign Up</Link>
         </div>
