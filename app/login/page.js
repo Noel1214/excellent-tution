@@ -24,9 +24,11 @@ const Login = () => {
     console.log("handleing login");
     try {
       const res = await Axios.post("/api/login", userData);
-      console.log(res.data.loggedIn);
-      if(res.data.loggedIn){
+      //console.log(res.data);
+      if(res.data.isLoggedIn){
         router.push("/home");
+      } else {
+        router.push("/register");
       }
     } catch (error) {
       console.log("error whle handling");

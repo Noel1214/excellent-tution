@@ -5,6 +5,9 @@ import gsap from "gsap";
 import { MdClose } from "react-icons/md";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logout } from "@/lib";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState();
@@ -14,6 +17,7 @@ const Navbar = () => {
     ContactUs: false,
   });
   const [popNavVisibility, setPopNavVisibility] = useState("hidden");
+  const router = useRouter();
 
   const title = useRef([]);
   const btn = useRef(null);
@@ -29,7 +33,7 @@ const Navbar = () => {
     if (typeof window !== "undefined") {
       setWindowWidth(window.innerWidth);
     }
-    
+
     const handleResize = () => {
       if (typeof window !== "undefined") {
         setWindowWidth(window.innerWidth);
@@ -62,6 +66,15 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setVisible(!visible);
+    console.log("calling logout");
+    console.log("logout should have ran");
+  };
+
+  const logoutHandler = async () => {
+    toggleMenu()
+    let res = await axios.get("/api/logout");
+    console.log(res.data.message);
+    router.push("/")
   };
 
   useEffect(() => {
@@ -139,6 +152,12 @@ const Navbar = () => {
                 >
                   <button>Login</button>
                 </Link>
+                <div
+                  className="hover:bg-cyan-600"
+                  onClick={logoutHandler}
+                >
+                  <button>Logout</button>
+                </div>
               </ul>
 
               <MdClose
@@ -236,7 +255,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
 
 // "use client";
 // import React, { useState, useEffect, useRef } from "react";
@@ -397,7 +415,7 @@ export default Navbar;
 //             </h1>
 //           </Link>
 //           <ul
-//             className="flex items-center justify-center text-lg gap-10 mr-7 h-full 
+//             className="flex items-center justify-center text-lg gap-10 mr-7 h-full
 //           w-[15rem]"
 //           >
 //             <Link href="/about">

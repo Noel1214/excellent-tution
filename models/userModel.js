@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
   forgotPasswordTokenExpiry: Date,
   verifyToken: String,
   verifyTokenExpiry: Date,
+  reviewsAdded: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Reviews"
+  }],
 
 });
 

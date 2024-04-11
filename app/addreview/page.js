@@ -3,16 +3,20 @@ import React, { useEffect, useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import { IoIosStar } from "react-icons/io";
 import Link from "next/link";
+import Axios from "axios";
 
 const ReviewPage = () => {
+
+  const [review, setreview] = useState("");
   const [stars, setstars] = useState([false, false, false, false, false]);
   const [rating, setrating] = useState(0);
+  const [data, setdata] = useState({rating, review});
+  console.log(data);
 
   useEffect(() => {
     setrating(stars.filter((item) => item === true).length);
-  }, [stars]);
-
-  console.log(rating);
+    setdata({...data, rating: rating, review: review});
+  }, [stars, review]);
 
   const handleStarClick = (item, index) => {
     setstars((prev) => {
@@ -21,6 +25,21 @@ const ReviewPage = () => {
       return newStarArray;
     });
   };
+
+  const submitClick = async () => {
+    console.log("entreingtry in sumbit");
+    try {
+
+      let dataResponse = await Axios.post("/api/addreview", data);
+      console.log("review added sucess fully");
+      console.log(dataResponse.data.message);
+      
+    } catch (error) {
+      console.log("error in subimt click in add review page");
+      console.log(error);
+    }
+  };  
+  
 
   return (
     <div className="flex flex-col gap-[6rem]">
@@ -55,8 +74,10 @@ const ReviewPage = () => {
             name="reviewinput"
             className="w-[19rem] min-h-[9rem] p-4 outline-none rounded-lg"
             placeholder="Please tell us any improvement that we can make.."
+            value={review}
+            onChange={(e) => setreview(e.target.value)}
           />
-          <button className="w-[19rem] p-2 rounded-lg font-semibold text-x  m bg-cyan-600">
+          <button className="w-[19rem] p-2 rounded-lg font-semibold text-x  m bg-cyan-600" onClick={submitClick}>
             Submit My Feedback
           </button>
         </div>

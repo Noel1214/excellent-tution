@@ -2,6 +2,7 @@ import User from "@/models/userModel";
 import { connect } from "@/dbconfig/dbconfig";
 import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 connect();
 
@@ -13,11 +14,12 @@ export async function POST(req) {
 
     const user = await User.findOne({ email });
     if (!user) {
-        // console.log("could not find user");
-      return NextResponse.json(
-        { error: "user dose not exist" },
-        { status: 400 }
-      );
+      // console.log("could not find user");
+      return NextResponse.json({
+        message: "user dose not exist",
+        isLoggedIn: false,
+        success: true,
+      });
     }
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
@@ -25,10 +27,37 @@ export async function POST(req) {
       return NextResponse.json({ message: "wrong password" }, { status: 400 });
     }
 
-    return NextResponse.json({ loggedIn: true });
+    const tokenData = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+
+    const expiry = "10m";
+    //const expiry = 15 * 24 * 60 * 60;
+    const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
+      expiresIn: expiry,
+    });
+
+    console.log("going to set cookies");
+    const response = NextResponse.json({
+      messge: "Login succesfull",
+      isLoggedIn: true,
+    });
+    response.cookies.set("token", token, { httpOnly: true });
+    console.log("cookise should be set now");
+
+    // NextResponse.cookies.delete('token');
+
+    //return NextResponse.json({ loggedIn: true });
+    return response;
   } catch (error) {
-    // console.log("Error while trying to login");
-    // console.log(error);
-    return NextResponse.json({error : error}, {status: 400});
+    console.log("error from login rotue");
+    console.log("Error while trying to login");
+    console.log(error);
+    return NextResponse.json(
+      { error: error, message: "error in login route" },
+      { status: 400 }
+    );
   }
 }

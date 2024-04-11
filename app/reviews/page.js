@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import React, { useEffect, useRef } from "react";
 import ReviewCard from "@/components/ReviewCard";
 import gsap from "gsap";
@@ -24,8 +24,9 @@ const Reviews = () => {
         <hr className="w-[8rem] text-violet-600 border-black" />
       </div>
 
-      <ReviewCard />
-      {/* */}
+      <div>
+        <ReviewCard />
+      </div>
     </div>
   );
 };
