@@ -33,7 +33,7 @@ export async function POST(req) {
       email: user.email,
     };
 
-    const expiry = "10m";
+    const expiry = "30m";
     //const expiry = 15 * 24 * 60 * 60;
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: expiry,

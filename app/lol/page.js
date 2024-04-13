@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const page = () => {
   const [stars, setstars] = useState([]);
-  console.log(stars);
   const [reviewsData, setreviewsData] = useState([]);
   console.log(reviewsData);
 
@@ -16,10 +16,15 @@ const page = () => {
     setstars(tempStars);
   }, []);
 
+
   const getReviews = async () => {
     try {
+      toast('Good Job!', {
+        icon: 'dasdas',
+      });
       const response = await axios.get("/api/reviews");
-      const { message, success, reviews } = response.data;
+      const { message, success, reviews, userInfo } = response.data;
+      console.log(userInfo);
       console.log(message);
       console.log(success);
 
@@ -37,7 +42,8 @@ const page = () => {
       lol
       {stars}
       <button onClick={getReviews} >Click to get Review</button>
-      <h1>THIS IS DATA</h1>
+      <h1 className="">THIS IS DATA</h1>
+    
       {
         reviewsData.map((item) => (
           <div key={item._id} className="bg-green-500 m-5" >

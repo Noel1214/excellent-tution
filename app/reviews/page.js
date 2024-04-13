@@ -1,10 +1,13 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReviewCard from "@/components/ReviewCard";
 import gsap from "gsap";
+import axios from "axios";
 
 const Reviews = () => {
   const titlehead = useRef(null);
+  const [reviewsData, setreviewsData] = useState([]);
+  console.log();
 
   useEffect(() => {
     gsap.fromTo(
@@ -12,6 +15,22 @@ const Reviews = () => {
       { opacity: 0, y: -50 },
       { opacity: 1, y: 0, duration: 1, delay: 1 }
     );
+  }, []);
+
+  const getReviews = async () => {
+    try {
+      const response = await axios.get("/api/reviews");
+      const { reviews } = response.data;
+
+      setreviewsData(reviews);
+    } catch (error) {
+      console.log("error in reviews response");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getReviews();
   }, []);
 
   return (
@@ -25,7 +44,9 @@ const Reviews = () => {
       </div>
 
       <div>
-        <ReviewCard />
+        {reviewsData.map((item) => (
+          <ReviewCard key={item._id} data={item} />
+        ))}
       </div>
     </div>
   );
