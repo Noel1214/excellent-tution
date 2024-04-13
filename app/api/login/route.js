@@ -41,7 +41,7 @@ export async function POST(req) {
 
     console.log("going to set cookies");
     const response = NextResponse.json({
-      messge: "Login succesfull",
+      messge: "Login successful",
       isLoggedIn: true,
     });
     response.cookies.set("token", token, { httpOnly: true });
@@ -53,10 +53,9 @@ export async function POST(req) {
     return response;
   } catch (error) {
     console.log("error from login rotue");
-    console.log("Error while trying to login");
     console.log(error);
     return NextResponse.json(
-      { error: error, message: "error in login route" },
+      { error: error, message: "login failed !" },
       { status: 400 }
     );
   }

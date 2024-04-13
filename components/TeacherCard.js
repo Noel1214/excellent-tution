@@ -31,7 +31,7 @@ const TeacherCard = () => {
             width={265}
             height={190}
             alt="Teacher Image"
-            className="min-h-[12rem] min-w-full rounded-xl border-2 "
+            className="min-h-[12rem] min-w-full rounded-xl border-2"
             
           />
         </div>

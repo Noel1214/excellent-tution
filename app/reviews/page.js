@@ -7,7 +7,10 @@ import axios from "axios";
 const Reviews = () => {
   const titlehead = useRef(null);
   const [reviewsData, setreviewsData] = useState([]);
-  console.log(reviewsData);
+  const [userInfo, setuserInfo] = useState(null);
+  //console.log("this is reviewdata and useinfo");
+  //console.log(reviewsData);
+  //console.log(userInfo);
 
   useEffect(() => {
     gsap.fromTo(
@@ -21,10 +24,11 @@ const Reviews = () => {
     try {
       const response = await axios.get("/api/reviews");
       const { reviews, userInfo } = response.data;
-      console.log(userInfo);
+      ////console.log(userInfo);
 
 
       setreviewsData(reviews);
+      setuserInfo(userInfo);
     } catch (error) {
       console.log("error in reviews response");
       console.log(error);
