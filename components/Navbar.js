@@ -5,7 +5,6 @@ import gsap from "gsap";
 import { MdClose } from "react-icons/md";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { logout } from "@/lib";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
