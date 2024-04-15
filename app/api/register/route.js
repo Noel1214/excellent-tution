@@ -16,10 +16,10 @@ export async function POST(req) {
     const userChecker = await User.findOne({ email });
 
     if (userChecker) {
-      return NextResponse.json(
-        { error: "user aldready exists" },
-        { status: 400 }
-      );
+      return NextResponse.json({
+        message: "user already exists!",
+        success: false
+      });
     }
 
     //hashing password
@@ -43,6 +43,6 @@ export async function POST(req) {
       savedUser,
     });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message, success: false, message:"error occurred" }, { status: 500 });
   }
 }

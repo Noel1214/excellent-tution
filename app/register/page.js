@@ -6,6 +6,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import Axios from "axios";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const router = useRouter();
@@ -26,9 +27,29 @@ const Register = () => {
   const [showPassword, setshowPassword] = useState(false);
 
   const onSignUp = async () => {
+
+    if (signUpData.username === "") {
+      toast.error("Please enter username!");
+    }
+    
+    if (signUpData.email === "") {
+      toast.error("Please enter email!");
+    }
+    
+    if (signUpData.password === "") {
+      toast.error("Please enter password!");
+    }
+    
+
     try {
       const dataResponse = await Axios.post("/api/register", signUpData);
-      //console.log(dataResponse.message);
+      console.log(dataResponse.message);
+
+      if (dataResponse.data.success){
+        toast.success(dataResponse.data.message);
+      } else {
+        toast.error(dataResponse.data.message);
+      }
 
       router.push("/login");
 

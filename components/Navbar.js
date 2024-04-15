@@ -66,8 +66,6 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setVisible(!visible);
-    console.log("calling logout");
-    console.log("logout should have ran");
   };
 
   const logoutHandler = async () => {

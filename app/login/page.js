@@ -6,6 +6,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import Axios from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const mainDiv = useRef(null);
@@ -24,12 +25,15 @@ const Login = () => {
     console.log("handleing login");
     try {
       const res = await Axios.post("/api/login", userData);
-      //console.log(res.data);
+      console.log(res.data.message);
+      if(res.data.success){
+        toast.success(res.data.message)
+      }else{
+        toast.error(res.data.message)
+      }
       if(res.data.isLoggedIn){
         router.push("/home");
-      } else {
-        router.push("/register");
-      }
+      } 
     } catch (error) {
       console.log("error whle handling");
       console.log(error);

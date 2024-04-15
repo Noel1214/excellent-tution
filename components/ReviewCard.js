@@ -37,6 +37,7 @@ const ReviewCard = (props) => {
       toast.success(deleted.data.message);
     } catch (error) {
       console.log("error in delete review page");
+      toast.error("failed to delete review!")
       console.log(error);
     }
   };
@@ -53,14 +54,14 @@ const ReviewCard = (props) => {
             className="h-[3rem] w-[3rem] m-1 rounded-full object-none object-top"
             alt="IMG"
           />
-          <div className="p-3 pt-4">
+          <div className="p-3 pt-4 bg-green-700">
             <h1 className="font-semibold text-base">Joel Sebastian</h1>
             <p className="flex text-yellow-400 mt-1">{stars}</p>
           </div>
         </div>
-        <div className="flex flex-col items-center mb-4">
+        <div className="flex flex-col items-center mb-4 bg-green-900 ">
           <div className="flex">
-            <h2 className="text-base relative font-semibold mb-1">
+            <h2 className="text-base relative font-semibold mb-2">
               by {data.username}
             </h2>
             {enableDelete ? (

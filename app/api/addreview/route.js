@@ -27,9 +27,6 @@ export async function POST(req) {
 
         const savedReview = await newReview.save();
 
-        //user.reviewsAdded.push(savedReview._id);
-        //await user.save();
-
         return NextResponse.json({
             message: "review added successfully",
             success: true,

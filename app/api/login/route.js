@@ -16,15 +16,15 @@ export async function POST(req) {
     if (!user) {
       // console.log("could not find user");
       return NextResponse.json({
-        message: "user dose not exist",
+        message: "user dose not exist!",
         isLoggedIn: false,
-        success: true,
+        success: false,
       });
     }
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return NextResponse.json({ message: "wrong password" }, { status: 400 });
+      return NextResponse.json({ message: "wrong password!", success: false });
     }
 
     const tokenData = {
@@ -41,7 +41,8 @@ export async function POST(req) {
 
     console.log("going to set cookies");
     const response = NextResponse.json({
-      messge: "Login successful",
+      message: "Login successful",
+      success: true,
       isLoggedIn: true,
     });
     response.cookies.set("token", token, { httpOnly: true });
