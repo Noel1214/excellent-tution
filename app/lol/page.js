@@ -23,23 +23,14 @@ const MyUploadComponent = () => {
   };
 
   const handleFileUpload = async (file) => {
-
     if (!file) {
       console.error('Please select a file to upload.');
       return;
     }
-
     const formData = new FormData();
     formData.append("image", selectedFile);
-
     const res = await axios.post("/api/upload", formData);
     console.log(res.data);
-
-    
-
-    //console.log('Selected file:', selectedFile);
-
-    // Perform further actions like sending the file to the server
   };
 
   return (

@@ -25,7 +25,7 @@ export async function GET() {
     }
 
     reviews = await Reviews.find({}).sort({ _id: -1 });
-    //console.log("this is all review i could find");
+    //console.log("this is all review");
     //console.log(reviews);
 
     return NextResponse.json({

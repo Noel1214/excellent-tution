@@ -7,6 +7,7 @@ import axios from "axios";
 const Reviews = () => {
   const titlehead = useRef(null);
   const [reviewsData, setreviewsData] = useState([]);
+  console.log(reviewsData);
   const [userInfo, setuserInfo] = useState(null);
   //console.log("this is reviewdata and useinfo");
   //console.log(reviewsData);

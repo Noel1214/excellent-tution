@@ -23,7 +23,7 @@ const Navbar = () => {
   const popNav = useRef(null);
 
   const path = usePathname();
-  const hiddenPaths = ["/", "/login", "/register", "/addreview"];
+  const hiddenPaths = ["/", "/login", "/register", "/addreview", "/admin"];
   const isInHiddenPath = hiddenPaths.includes(path);
   console.log(path);
 

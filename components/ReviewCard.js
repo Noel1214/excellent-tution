@@ -49,17 +49,18 @@ const ReviewCard = (props) => {
         <div className="flex p-3 h-[6rem] ">
           <Image
             src={TeacherImage}
-            width={300}
-            height={300}
-            className="h-[3rem] w-[3rem] m-1 rounded-full object-none object-top"
+            width={500}
+            height={500}
+           // className="h-[3rem] w-[3rem] m-1 rounded-full object-none object-top"
+            className="h-[3rem] w-[3rem] m-1 rounded-full object-cover"
             alt="IMG"
           />
-          <div className="p-3 pt-4 bg-green-700">
+          <div className="p-3 pt-4">
             <h1 className="font-semibold text-base">Joel Sebastian</h1>
             <p className="flex text-yellow-400 mt-1">{stars}</p>
           </div>
         </div>
-        <div className="flex flex-col items-center mb-4 bg-green-900 ">
+        <div className="flex flex-col items-center mb-4">
           <div className="flex">
             <h2 className="text-base relative font-semibold mb-2">
               by {data.username}
@@ -72,7 +73,7 @@ const ReviewCard = (props) => {
               />
             ) : null}
           </div>
-          <p className="min-h-[5rem] h-auto w-[15rem] break-words text-sm p-2 bg-cyan-200 rounded-lg">
+          <p className="min-h-[5rem] h-auto w-[15rem] break-words text-sm p-2 bg-cyan-300 rounded-lg">
             "{data.reviewString}"
           </p>
         </div>

@@ -16,10 +16,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "please provide a password"],
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
   isAdmin: {
     type: Boolean,
     default: false,
@@ -28,10 +24,6 @@ const userSchema = new mongoose.Schema({
   forgotPasswordTokenExpiry: Date,
   verifyToken: String,
   verifyTokenExpiry: Date,
-  reviewsAdded: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Reviews"
-  }],
 
 });
 

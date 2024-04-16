@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +8,11 @@ import Link from "next/link";
 import TeacherImage from "@/public/Teacher.jpeg";
 import person from "@/public/person.jpg";
 
-const TeacherCard = () => {
+const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
+  const [data, setdata] = useState(props.data);
+  console.log(data);
+  console.log(data);
 
   useEffect(() => {
     gsap.fromTo(
@@ -27,7 +30,7 @@ const TeacherCard = () => {
       <div className="DetailsCard bg-cyan-200 min-h-[20rem] h-auto min-w-[18rem] flex flex-col gap-2 items-center rounded-xl shadow-2xl">
         <div className="TeacherImage flex justify-center mt-4 mb-0 p-2 min-h-[12rem] rounded-xl overflow-hidden">
           <Image
-            src={TeacherImage}
+            src={data.image}
             width={265}
             height={190}
             alt="Teacher Image"
@@ -36,9 +39,9 @@ const TeacherCard = () => {
           />
         </div>
         <ul className="BioData list-disc flex flex-col gap-1 font-bold text-sm w-[14rem]">
-          <li>Joel Sebastian</li>
-          <li> Mathematics</li>
-          <li>B-tech, M.Sc., PhD. M-tech, mphill</li>
+          <li>{data.teacherName}</li>
+          <li>{data.subject}</li>
+          <li>{data.education}</li>
         </ul>
 
         <Link href="/addreview">
