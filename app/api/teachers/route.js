@@ -11,7 +11,7 @@ export async function GET(req) {
     //teachers = await Teacher.find({}).sort({ _id: -1 });
     teachers = await Teacher.find({}).sort({ _id: -1 });
 
-    console.log(teachers);
+    //console.log(teachers);
 
     return NextResponse.json({
       message: "teachers request success",

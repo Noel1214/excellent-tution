@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-
+import { IoCloseCircle } from "react-icons/io5";
 
 const AddTeacherUi = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -11,7 +11,6 @@ const AddTeacherUi = () => {
   const [subject, setsubject] = useState("");
   const [education, seteducation] = useState("");
   //console.log(education);
-
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -43,29 +42,56 @@ const AddTeacherUi = () => {
   };
 
   return (
-    <div >
-      <div className="h-screen w-screen p-2">
-        <div className="TeacherImage flex justify-center mt-10 mb-0 p-2 max-h-[12rem] rounded-xl overflow-hidden">
+    <div>
+      <div className="mx-2" >
+        <IoCloseCircle className="absolute right-[92vw] mt-2 ml-1" size={24} />
+      </div>
+      <div className="flex flex-col h-screen w-screen  p-2">
+        <div className="TeacherImage mx-auto mt-8 mb-0 rounded-xl w-auto max-w-full overflow-hidden">
           <Image
             src={imagePreview}
             width={265}
             height={190}
             alt="Teacher Image"
-            className="max-h-[12rem] min-w-full rounded-xl border-2 object-cover"
+            className="min-h-[8rem] max-h-auto max-w-auto  min-w-full rounded-xl border-2 object-cover"
           />
         </div>
-        <div className="flex flex-col gap-3 w-auto p-2">
+        <div className="flex flex-col items-center gap-3 w-auto p-2 ">
           <input
             type="file"
             onChange={handleFileChange}
-            className="w-[15rem]"
+            className=" w-[15rem]"
           />
-          <input type="text" className="outline-none rounded-lg p-1 text-black" placeholder="name" value={name} onChange={(e) => {
-            setname(e.target.value)
-          }} />
-          <input type="text" className="outline-none rounded-lg p-1 text-black" value={subject} onChange={(e) => setsubject(e.target.value)} placeholder="subject" />
-          <input type="text" className="outline-none rounded-lg p-1 text-black" value={education} onChange={(e) => seteducation(e.target.value)} placeholder="education" />
-          <button className="mx-auto h-[2rem] w-full rounded-xl bg-cyan-600" onClick={handleFileUpload}>Submit</button>
+          <input
+            type="text"
+            className="outline-none rounded-lg p-1 text-black w-full max-w-[26rem]"
+            placeholder="name"
+            value={name}
+            onChange={(e) => {
+              setname(e.target.value);
+            }}
+          />
+          <input
+            type="text"
+            className="outline-none rounded-lg p-1 text-black w-full max-w-[26rem]"
+            value={subject}
+            onChange={(e) => setsubject(e.target.value)}
+            placeholder="subject"
+          />
+
+          <input
+            type="text"
+            className="outline-none rounded-lg p-1 text-black w-full max-w-[26rem]"
+            value={education}
+            onChange={(e) => seteducation(e.target.value)}
+            placeholder="education"
+          />
+          <button
+            className="mx-auto h-[2rem] w-full rounded-xl bg-cyan-600 max-w-[26rem]"
+            onClick={handleFileUpload}
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>

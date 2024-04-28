@@ -9,7 +9,7 @@ import axios from "axios";
 const App = () => {
   const titlehead = useRef(null);
   const [teachers, setteachers] = useState([]);
-  console.log(teachers);
+  //console.log(teachers);
 
   const getTeachers = async () => {
     const response = await axios.get("/api/teachers");

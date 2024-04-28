@@ -11,8 +11,7 @@ import person from "@/public/person.jpg";
 const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
   const [data, setdata] = useState(props.data);
-  console.log(data);
-  console.log(data);
+  //console.log(data);
 
   useEffect(() => {
     gsap.fromTo(
