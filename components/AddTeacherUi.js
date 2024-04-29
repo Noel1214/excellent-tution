@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import { IoCloseCircle } from "react-icons/io5";
+
 
 const AddTeacherUi = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -43,9 +43,6 @@ const AddTeacherUi = () => {
 
   return (
     <div>
-      <div className="mx-2" >
-        <IoCloseCircle className="absolute right-[92vw] mt-2 ml-1" size={24} />
-      </div>
       <div className="flex flex-col h-screen w-screen  p-2">
         <div className="TeacherImage mx-auto mt-8 mb-0 rounded-xl w-auto max-w-full overflow-hidden">
           <Image

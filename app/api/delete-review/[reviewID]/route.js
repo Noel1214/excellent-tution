@@ -11,6 +11,7 @@ export async function DELETE(req, { params }) {
 
     const deletedReview = await Reviews.findByIdAndDelete(reviewID);
 
+    console.log("going to revalidate");
     if (deletedReview) {
       console.log(deletedReview);
       return NextResponse.json({
