@@ -4,9 +4,6 @@ import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 
-// Images
-import TeacherImage from "@/public/Teacher.jpeg";
-import person from "@/public/person.jpg";
 
 const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);

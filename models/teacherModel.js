@@ -5,6 +5,7 @@ const teacherSchema = new mongoose.Schema({
     subject: String,
     education: String,
     image: String,
+    public_id: String,
 });
 
 

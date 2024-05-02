@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import TeacherImage from "@/public/Teacher.jpeg";
 import { FaStar } from "react-icons/fa";
 import gsap from "gsap";
 import Image from "next/image";

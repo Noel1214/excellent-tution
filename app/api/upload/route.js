@@ -49,13 +49,15 @@ export async function POST(req) {
 
     // Delete the temporary file after uploading
     await fs.unlink(tempFilePath);
-    console.log(response.secure_url);
+    //console.log(response.secure_url);
+    console.log(response.public_id);
 
     const newTeacher = new Teacher({
       teacherName: name,
       subject: subject,
       education: education,
       image: response.secure_url,
+      public_id: response.public_id,
     });
 
     const savedTeacher = await newTeacher.save();
@@ -78,48 +80,3 @@ export async function POST(req) {
   }
 }
 
-// import axios from 'axios';
-
-// const handleFileUpload = async (event) => {
-//   event.preventDefault();
-
-//   const formData = new FormData();
-//   formData.append('file', event.target.files[0]);
-
-//   try {
-//     const response = await axios.post('/api/upload', formData, {
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//       },
-//     });
-
-//     console.log('File upload successful:', response.data);
-//     // Handle success feedback or redirect
-//   } catch (error) {
-//     console.error('File upload error:', error);
-//     // Handle error feedback
-//   }
-// };
-
-// return (
-//   <form onSubmit={handleFileUpload}>
-
-// import { v2 as cloudinary } from 'cloudinary';
-
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
-
-// const filePath = '/path/to/your/file.jpg'; // Replace with actual file path
-
-// try {
-//   const result = await cloudinary.uploader.upload(filePath, {
-//     // Optional transformations, folder, etc.
-//   });
-
-//   console.log('File uploaded successfully:', result);
-// } catch (error) {
-//   console.error('Error uploading file:', error);
-// }
