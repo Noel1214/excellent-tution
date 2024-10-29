@@ -6,19 +6,41 @@ import axios from "axios";
 const AddTeacherUi = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 2f2a5b9 (Initial commit)
   const [name, setname] = useState("");
   const [subject, setsubject] = useState("");
   const [education, seteducation] = useState("");
   //console.log(education);
 
   const handleFileChange = (event) => {
+<<<<<<< HEAD
     const file = event.target.files[0];
     setSelectedFile(file);
     // Display image preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
+=======
+    // console.log(event.target.files[0]);
+    const file = event.target.files[0];
+    console.log(file);
+    
+    setSelectedFile(file);
+    
+    // Display image preview
+    const reader = new FileReader();
+    // console.log(reader);
+    
+    reader.onloadend = () => {
+      // console.log(reader.result);
+      
+      setImagePreview(reader.result);
+
+>>>>>>> 2f2a5b9 (Initial commit)
     };
     if (file) {
       reader.readAsDataURL(file);

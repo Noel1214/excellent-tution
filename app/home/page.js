@@ -27,7 +27,11 @@ const App = () => {
 
   useEffect(() => {
 
+<<<<<<< HEAD
     getTeachers();
+=======
+    // getTeachers();
+>>>>>>> 2f2a5b9 (Initial commit)
 
   }, [])
   
