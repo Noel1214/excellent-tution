@@ -7,16 +7,21 @@ const AddTeacherUi = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
   
 >>>>>>> 2f2a5b9 (Initial commit)
+=======
+  
+>>>>>>> master
   const [name, setname] = useState("");
   const [subject, setsubject] = useState("");
   const [education, seteducation] = useState("");
   //console.log(education);
 
   const handleFileChange = (event) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -25,6 +30,8 @@ const AddTeacherUi = () => {
     reader.onloadend = () => {
       setImagePreview(reader.result);
 =======
+=======
+>>>>>>> master
     // console.log(event.target.files[0]);
     const file = event.target.files[0];
     console.log(file);
@@ -40,7 +47,10 @@ const AddTeacherUi = () => {
       
       setImagePreview(reader.result);
 
+<<<<<<< HEAD
 >>>>>>> 2f2a5b9 (Initial commit)
+=======
+>>>>>>> master
     };
     if (file) {
       reader.readAsDataURL(file);

@@ -28,10 +28,14 @@ const App = () => {
   useEffect(() => {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     getTeachers();
 =======
     // getTeachers();
 >>>>>>> 2f2a5b9 (Initial commit)
+=======
+    // getTeachers();
+>>>>>>> master
 
   }, [])
   

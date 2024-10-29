@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import { v2 as cloudinary } from "cloudinary";
@@ -82,6 +83,8 @@ export async function POST(req) {
 }
 
 =======
+=======
+>>>>>>> master
 import fs from "fs";
 import path from "path";
 // Import your Teacher model if needed, or remove if not using
@@ -130,4 +133,7 @@ export async function POST(req) {
     });
   });
 }
+<<<<<<< HEAD
 >>>>>>> 2f2a5b9 (Initial commit)
+=======
+>>>>>>> master

@@ -38,10 +38,14 @@ const Reviews = () => {
 
   useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     getReviews();
 =======
     // getReviews();
 >>>>>>> 2f2a5b9 (Initial commit)
+=======
+    // getReviews();
+>>>>>>> master
   }, []);
 
   return (
