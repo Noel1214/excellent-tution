@@ -25,7 +25,6 @@ const Navbar = () => {
   const path = usePathname();
   const hiddenPaths = ["/", "/login", "/register", "/addreview", "/admin"];
   const isInHiddenPath = hiddenPaths.includes(path);
-  console.log(path);
 
   useEffect(() => {
     // Dynamically import window.innerWidth when component mounts in the browser
