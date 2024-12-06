@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import PosterImage from "@/public/poster.jpg";
+import PosterImage from "@/public/poster.avif";
 import gsap from "gsap";
 import Link from "next/link";
 import Image from "next/image";
