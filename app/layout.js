@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
             position="top-center"
             toastOptions={{
               className: "bg-yellow-500",
-              duration: 600,
+              duration: 1200,
               style: {
                 background: '#FFFFFF',
                 color: '#000000',
