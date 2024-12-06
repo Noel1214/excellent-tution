@@ -11,11 +11,9 @@ export async function connect() {
 
         connection.on("error", (err) => {
             console.log("Database connection error:", err);
-            process.exit(1); // Exiting the process if there's a connection error
         });
         
     } catch (error) {
         console.log("Error in database connection:", error);
-        process.exit(1); // Exiting the process if there's an error during connection
     }
 }
