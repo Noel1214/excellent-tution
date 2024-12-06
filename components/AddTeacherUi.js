@@ -1,57 +1,27 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import axios from "axios";
-
+import Image from "next/image"; // Import Image
 
 const AddTeacherUi = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 2f2a5b9 (Initial commit)
-=======
-  
->>>>>>> master
   const [name, setname] = useState("");
   const [subject, setsubject] = useState("");
   const [education, seteducation] = useState("");
-  //console.log(education);
+
+  console.log(education);
 
   const handleFileChange = (event) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
     const file = event.target.files[0];
     setSelectedFile(file);
-    // Display image preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-=======
-=======
->>>>>>> master
-    // console.log(event.target.files[0]);
-    const file = event.target.files[0];
-    console.log(file);
-    
-    setSelectedFile(file);
-    
-    // Display image preview
-    const reader = new FileReader();
-    // console.log(reader);
-    
-    reader.onloadend = () => {
-      // console.log(reader.result);
-      
-      setImagePreview(reader.result);
 
-<<<<<<< HEAD
->>>>>>> 2f2a5b9 (Initial commit)
-=======
->>>>>>> master
+    // Display image preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
     };
+
     if (file) {
       reader.readAsDataURL(file);
     } else {
@@ -59,46 +29,52 @@ const AddTeacherUi = () => {
     }
   };
 
-  const handleFileUpload = async (file) => {
-    if (!file) {
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
       console.error("Please select a file to upload.");
       return;
     }
+
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("name", name);
     formData.append("subject", subject);
     formData.append("education", education);
-    const res = await axios.post("/api/upload", formData);
-    console.log(res.data);
+
+    try {
+      const res = await axios.post("/api/upload", formData);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error uploading file", error);
+    }
   };
 
   return (
     <div>
-      <div className="flex flex-col h-screen w-screen  p-2">
+      <div className="flex flex-col h-screen w-screen p-2">
         <div className="TeacherImage mx-auto mt-8 mb-0 rounded-xl w-auto max-w-full overflow-hidden">
-          <Image
-            src={imagePreview}
-            width={265}
-            height={190}
-            alt="Teacher Image"
-            className="min-h-[8rem] max-h-auto max-w-auto  min-w-full rounded-xl border-2 object-cover"
-          />
+          {imagePreview && (
+            <Image
+              src={imagePreview}
+              width={265}
+              height={190}
+              alt="Teacher Image"
+              className="min-h-[8rem] max-h-auto max-w-auto min-w-full rounded-xl border-2 object-cover"
+            />
+          )}
         </div>
         <div className="flex flex-col items-center gap-3 w-auto p-2 ">
           <input
             type="file"
             onChange={handleFileChange}
-            className=" w-[15rem]"
+            className="w-[15rem]"
           />
           <input
             type="text"
             className="outline-none rounded-lg p-1 text-black w-full max-w-[26rem]"
             placeholder="name"
             value={name}
-            onChange={(e) => {
-              setname(e.target.value);
-            }}
+            onChange={(e) => setname(e.target.value)}
           />
           <input
             type="text"
@@ -107,7 +83,6 @@ const AddTeacherUi = () => {
             onChange={(e) => setsubject(e.target.value)}
             placeholder="subject"
           />
-
           <input
             type="text"
             className="outline-none rounded-lg p-1 text-black w-full max-w-[26rem]"
