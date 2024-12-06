@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import StoreProvider from "./StoreProvide";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,30 +15,31 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen bg-cyan-100 bg-gradient-to-br from-cyan-500 to-blue-200">
-          <Navbar />
-          {children}
-          <Toaster
-          
-            position="top-center"
-            toastOptions={{
-              className: "bg-yellow-500",
-              duration: 1200,
-              style: {
-                background: '#FFFFFF',
-                color: '#000000',
-                fontWeight: '600', 
-              },
-              success: {
-                duration: 3000,
-                theme: {
-                  primary: "green",
-                  secondary: "black",
-                }
-              },
-            }}
-          />
-        </div>
+        <StoreProvider>
+          <div className="min-h-screen bg-cyan-100 bg-gradient-to-br from-cyan-500 to-blue-200">
+            <Navbar />
+            {children}
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                className: "bg-yellow-500",
+                duration: 1200,
+                style: {
+                  background: "#FFFFFF",
+                  color: "#000000",
+                  fontWeight: "600",
+                },
+                success: {
+                  duration: 3000,
+                  theme: {
+                    primary: "green",
+                    secondary: "black",
+                  },
+                },
+              }}
+            />
+          </div>
+        </StoreProvider>
       </body>
     </html>
   );
