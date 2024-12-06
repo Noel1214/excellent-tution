@@ -7,7 +7,9 @@ connect();
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    const image = formData.get("image");
+    const type = formData.get("type");
+    console.log(type);
+    
 
     const name = formData.get("name");
     const subject = formData.get("subject");
@@ -17,17 +19,17 @@ export async function POST(req) {
     console.log(subject);
     console.log(education);
 
-    const newTeacher = new Teacher({
-      teacherName: name,
-      subject: subject,
-      education: education,
-      image: "for now nothing",
-      public_id: "for now nothing",
-    });
+    // const newTeacher = new Teacher({
+    //   teacherName: name,
+    //   subject: subject,
+    //   education: education,
+    //   image: "for now nothing",
+    //   public_id: "for now nothing",
+    // });
 
-    const savedTeacher = await newTeacher.save();
+    // const savedTeacher = await newTeacher.save();
     console.log("this is teacher that is saved in db");
-    console.log(savedTeacher);
+    // console.log(savedTeacher);
 
     return NextResponse.json({
       message: "Image uploaded successfully",
