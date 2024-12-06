@@ -16,19 +16,18 @@ export async function POST(req) {
     if (!user) {
       // console.log("could not find user");
       return NextResponse.json({
-        message: "user dose not exist!",
+        message: "invalid username or password!",
         isLoggedIn: false,
         success: false,
-      });
+      }, {status: 400});
     }
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return NextResponse.json({ message: "wrong password!", success: false });
+      return NextResponse.json({ message: "invalid username or password!", success: false }, {status: 400});
     }
 
     const tokenData = {
-      id: user._id,
       username: user.username,
       email: user.email,
     };
@@ -44,20 +43,17 @@ export async function POST(req) {
       message: "Login successful",
       success: true,
       isLoggedIn: true,
-    });
+    }, {status: 200});
+
     response.cookies.set("token", token, { httpOnly: true });
     console.log("cookise should be set now");
-
-    // NextResponse.cookies.delete('token');
-
-    //return NextResponse.json({ loggedIn: true });
     return response;
+
   } catch (error) {
     console.log("error from login rotue");
     console.log(error);
     return NextResponse.json(
-      { error: error, message: "login failed !" },
-      { status: 400 }
+      { error: error, message: "login failed !" }, {status: 500}
     );
   }
 }
