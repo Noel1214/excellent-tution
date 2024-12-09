@@ -7,6 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { setAdmin } from "@/lib/features/user/userSlice";
 
 const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState();
@@ -18,9 +20,13 @@ const Navbar = () => {
   const [popNavVisibility, setPopNavVisibility] = useState("hidden");
   const router = useRouter();
 
+  const isAdmin = useSelector((state) => state.user.isAdmin);
+
   const title = useRef([]);
   const btn = useRef(null);
   const popNav = useRef(null);
+
+  const dispatch = useDispatch();
 
   const path = usePathname();
   const hiddenPaths = ["/", "/login", "/register", "/addreview", "/admin"];
@@ -67,10 +73,11 @@ const Navbar = () => {
   };
 
   const logoutHandler = async () => {
-    toggleMenu()
+    toggleMenu();
+    dispatch(setAdmin(false));
     let res = await axios.get("/api/logout");
     console.log(res.data.message);
-    router.push("/")
+    router.push("/");
   };
 
   useEffect(() => {
@@ -148,12 +155,14 @@ const Navbar = () => {
                 >
                   <button>Login</button>
                 </Link>
-                <div
-                  className="hover:bg-cyan-600"
-                  onClick={logoutHandler}
-                >
+                <div className="hover:bg-cyan-600" onClick={logoutHandler}>
                   <button>Logout</button>
                 </div>
+                {isAdmin && (
+                  <Link href="/admin" className="hover:bg-cyan-600">
+                    <button>Dashboard</button>
+                  </Link>
+                )}
               </ul>
 
               <MdClose
