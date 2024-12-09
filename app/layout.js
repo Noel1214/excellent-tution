@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 import StoreProvider from "./StoreProvide";
+import GlobalStateSetter from "@/components/GlobalStateSetter";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,29 +17,31 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider>
-          <div className="min-h-screen bg-cyan-100 bg-gradient-to-br from-cyan-500 to-blue-200">
-            <Navbar />
-            {children}
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                className: "bg-yellow-500",
-                duration: 1200,
-                style: {
-                  background: "#FFFFFF",
-                  color: "#000000",
-                  fontWeight: "600",
-                },
-                success: {
-                  duration: 3000,
-                  theme: {
-                    primary: "green",
-                    secondary: "black",
+          <GlobalStateSetter>
+            <div className="min-h-screen bg-cyan-100 bg-gradient-to-br from-cyan-500 to-blue-200">
+              <Navbar />
+              {children}
+              <Toaster
+                position="top-center"
+                toastOptions={{
+                  className: "bg-yellow-500",
+                  duration: 1200,
+                  style: {
+                    background: "#FFFFFF",
+                    color: "#000000",
+                    fontWeight: "600",
                   },
-                },
-              }}
-            />
-          </div>
+                  success: {
+                    duration: 3000,
+                    theme: {
+                      primary: "green",
+                      secondary: "black",
+                    },
+                  },
+                }}
+              />
+            </div>
+          </GlobalStateSetter>
         </StoreProvider>
       </body>
     </html>
