@@ -17,7 +17,6 @@ const GlobalStateSetter = ({children}) => {
         const setUserStatus = async () => {
             try {
                 const res = await axios.get('/api/authentication');
-                // console.log(res);
                 dispatch(setAdmin(res.data.isAdmin || false));                
                 dispatch(setLoginState(res.data.isLoggedIn || false));                
                 
