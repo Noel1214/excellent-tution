@@ -2,26 +2,41 @@
 import React, { useState } from "react";
 import AddTeacherUi from "@/components/AddTeacherUi";
 import { IoCloseCircle } from "react-icons/io5";
+import { setAdmin } from "@/lib/features/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const page = () => {
-  const [isAddTeacherVisible, setisAddTeacherVisible] = useState(true);
+  const [isAddTeacherVisible, setisAddTeacherVisible] = useState(false);
+
+  const admin = useSelector((state) => state.user.isAdmin);
+  console.log(admin);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const toggleAddTeacher = () => {
     setisAddTeacherVisible(!isAddTeacherVisible);
   };
 
   return (
-    <div>
-      {/*     <button className="h-[3rem] w-[7rem] p-2 rounded-2xl bg-green-700">Add Teacher</button> */}
+    <div className="h-screen flex flex-col items-center justify-center overflow-y-hidden">
+      <div className="overflow-y-hidden">
+        {isAddTeacherVisible ? (
+          <div>
+            <div className="" onClick={toggleAddTeacher}>
+              <IoCloseCircle
+                className="absolute right-[89vw] mt-2 ml-1"
+                size={24}
+              />
+            </div>
+            <AddTeacherUi />
+          </div>
+        ) : (
+          <button className="bg-cyan-600 text-white text-center h-10 px-4 rounded-2xl hover:bg-cyan-800 transition ease-in-out duration-100" onClick={toggleAddTeacher}>Add Teacher</button>
+        )}
 
-      <div className={`${isAddTeacherVisible ? "" : "hidden"}`}>
-        <div className="mx-2" onClick={toggleAddTeacher}>
-          <IoCloseCircle
-            className="absolute right-[92vw] mt-2 ml-1"
-            size={24}
-          />
-        </div>
-        <AddTeacherUi />
+        {/* add teacher ui component */}
       </div>
     </div>
   );
