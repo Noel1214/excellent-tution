@@ -1,48 +1,49 @@
 import { NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import Teacher from "@/models/teacherModel";
-
-connect();
+import { putObjectUrl } from "@/utils/awsClient";
 
 export async function POST(req) {
   try {
+    await connect();
     const formData = await req.formData();
-    const type = formData.get("type");
-    console.log(type);
-    
 
+    const type = formData.get("type");
     const name = formData.get("name");
     const subject = formData.get("subject");
     const education = formData.get("education");
 
-    console.log(name);
-    console.log(subject);
-    console.log(education);
-
-    // const newTeacher = new Teacher({
-    //   teacherName: name,
-    //   subject: subject,
-    //   education: education,
-    //   image: "for now nothing",
-    //   public_id: "for now nothing",
-    // });
-
-    // const savedTeacher = await newTeacher.save();
-    console.log("this is teacher that is saved in db");
-    // console.log(savedTeacher);
-
-    return NextResponse.json({
-      message: "Image uploaded successfully",
-      image: "nothing for now", // Assuming you want to return the secure URL of the uploaded image
-      success: true,
+    const newTeacher = new Teacher({
+      teacherName: name,
+      subject: subject,
+      education: education,
+      key: `/teachers/${name}.avif`,
     });
+
+    const savedTeacher = await newTeacher.save();
+
+    const url = await putObjectUrl(savedTeacher.teacherName, type);
+    console.log(url);
+
+    return NextResponse.json(
+      {
+        message: "Image uploaded successfully",
+        url: url,
+        success: true,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.log("Error in upload route:");
+    console.log(error.message);
     console.log(error);
 
-    return NextResponse.json({
-      message: "Failed to upload image",
-      success: false,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to upload image",
+        success: false,
+      },
+      { status: 500 }
+    );
   }
 }
