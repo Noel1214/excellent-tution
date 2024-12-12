@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdmin } from "@/lib/features/user/userSlice";
+import { setAdmin, setLoginState } from "@/lib/features/user/userSlice";
 
 const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState();
@@ -21,6 +21,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const isAdmin = useSelector((state) => state.user.isAdmin);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const title = useRef([]);
   const btn = useRef(null);
@@ -75,6 +76,7 @@ const Navbar = () => {
   const logoutHandler = async () => {
     toggleMenu();
     dispatch(setAdmin(false));
+    dispatch(setLoginState(false));
     let res = await axios.get("/api/logout");
     console.log(res.data.message);
     router.push("/");
@@ -148,16 +150,19 @@ const Navbar = () => {
                 >
                   <button>Contact us</button>
                 </Link>
-                <Link
-                  href="/login"
-                  className="hover:bg-cyan-600"
-                  onClick={toggleMenu}
-                >
-                  <button>Login</button>
-                </Link>
-                <div className="hover:bg-cyan-600" onClick={logoutHandler}>
-                  <button>Logout</button>
-                </div>
+                {isLoggedIn ? (
+                  <div className="hover:bg-cyan-600" onClick={logoutHandler}>
+                    <button>Logout</button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="hover:bg-cyan-600"
+                    onClick={toggleMenu}
+                  >
+                    <button>Login</button>
+                  </Link>
+                )}
                 {isAdmin && (
                   <Link href="/admin" className="hover:bg-cyan-600">
                     <button>Dashboard</button>
