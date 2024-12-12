@@ -10,7 +10,7 @@ const page = () => {
   const [isAddTeacherVisible, setisAddTeacherVisible] = useState(false);
 
   const admin = useSelector((state) => state.user.isAdmin);
-  console.log(admin);
+  // console.log(admin);
 
   const dispatch = useDispatch();
   const router = useRouter();
