@@ -3,33 +3,39 @@ import { connect } from "@/dbconfig/dbconfig";
 import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-
-connect();
+import { cookies } from "next/headers";
 
 export async function POST(req) {
+  await connect();
   try {
     const reqbody = await req.json();
-    const { email, password } = reqbody;
-    // console.log(reqbody);
+    const cookieStore = await cookies();
 
+    const { email, password } = reqbody;
     const user = await User.findOne({ email });
     if (!user) {
-      // console.log("could not find user");
-      return NextResponse.json({
-        message: "invalid username or password!",
-        isLoggedIn: false,
-        success: false,
-      }, {status: 400});
+      return NextResponse.json(
+        {
+          message: "invalid username or password!",
+          isLoggedIn: false,
+          success: false,
+        },
+        { status: 400 }
+      );
     }
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return NextResponse.json({ message: "invalid username or password!", success: false }, {status: 400});
+      return NextResponse.json(
+        { message: "invalid username or password!", isLoggedIn: false, success: false },
+        { status: 400 }
+      );
     }
 
     const tokenData = {
       username: user.username,
       email: user.email,
+      isAdmin: user.isAdmin,
     };
 
     const expiry = "30m";
@@ -38,22 +44,27 @@ export async function POST(req) {
       expiresIn: expiry,
     });
 
-    console.log("going to set cookies");
-    const response = NextResponse.json({
-      message: "Login successful",
-      success: true,
-      isLoggedIn: true,
-    }, {status: 200});
+    // setting cookie
+    cookieStore.set("token", token, { httpOnly: true });
 
-    response.cookies.set("token", token, { httpOnly: true });
-    console.log("cookise should be set now");
+    const response = NextResponse.json(
+      {
+        message: "Login successful",
+        success: true,  
+        isLoggedIn: true,
+        isAdmin: user.isAdmin,
+      },
+      { status: 200 }
+    );
+
     return response;
 
   } catch (error) {
-    console.log("error from login rotue");
+    console.log("error from login route");
     console.log(error);
     return NextResponse.json(
-      { error: error, message: "login failed !" }, {status: 500}
+      { message: "login failed !", success: false },
+      { status: 500 }
     );
   }
 }
