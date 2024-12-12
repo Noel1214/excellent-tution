@@ -4,8 +4,7 @@ const teacherSchema = new mongoose.Schema({
     teacherName: String,
     subject: String,
     education: String,
-    image: String,
-    public_id: String,
+    key: String,
 });
 
 
