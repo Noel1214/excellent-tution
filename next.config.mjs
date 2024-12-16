@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'my-projects-noeldev.s3.ap-south-1.amazonaws.com',
+      },
+    ],
   },
 };
 
