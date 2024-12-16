@@ -17,7 +17,7 @@ export async function POST(req) {
       teacherName: name,
       subject: subject,
       education: education,
-      key: `/teachers/${name}.avif`,
+      key: `teachers/${name}.avif`,
     });
 
     const savedTeacher = await newTeacher.save();
