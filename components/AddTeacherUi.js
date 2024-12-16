@@ -5,6 +5,8 @@
   const AddTeacherUi = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState("");  
+    const [putImageUrl, setputImageUrl] = useState(null);
+    console.log(selectedFile ? selectedFile.type : "none");
 
     const [name, setname] = useState("");
     const [subject, setsubject] = useState("");
@@ -16,10 +18,31 @@
       const file = event.target.files[0];
       
       if (file) {
+        if(imagePreview){
+          URL.revokeObjectURL(imagePreview);
+        }
         setSelectedFile(file);
-        setImagePreview(URL.createObjectURL(file))
+        setImagePreview(URL.createObjectURL(file)) 
       }
     };
+
+    const imageUploadAWS = async () => {
+      try{
+        const awsResponse = await axios.put(putImageUrl, selectedFile);
+        console.log(awsResponse);
+      } catch (err) {
+        console.log(err.message);
+        console.log(err);
+      }
+    };
+
+    useEffect(() => {
+      console.log("Came in");
+      if(!putImageUrl) return;
+      imageUploadAWS();
+      console.log("ran");
+    }, [putImageUrl])
+    
 
     const handleFileUpload = async () => {
       if (!selectedFile) {
@@ -36,12 +59,17 @@
       formData.append("subject", subject);
       formData.append("education", education);
 
-      // try {
-      //   // const res = await axios.post("/api/upload", formData);
-      //   // console.log(res.data);
-      // } catch (error) {
-      //   console.error("Error uploading file", error);
-      // }
+      try {
+        const res = await axios.post("/api/upload", formData);
+        console.log(res.data);
+        if(res.data.url){
+          const awsRes = await axios.put(res.data.url, selectedFile);
+          console.log(awsRes);
+        }
+        console.log("completed funtion image should be in aws");
+      } catch (error) {
+        console.error("Error uploading file", error);
+      }
     };
 
     return (
