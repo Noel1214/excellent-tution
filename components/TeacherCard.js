@@ -8,7 +8,9 @@ import Link from "next/link";
 const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
   const [data, setdata] = useState(props.data);
-  //console.log(data);
+  console.log("this is data");
+  
+  console.log(data);
 
   useEffect(() => {
     gsap.fromTo(
@@ -20,13 +22,13 @@ const TeacherCard = (props) => {
 
   return (
     <div
-      className="TeacherProfile flex justify-center h-auto mt-[2rem]"
+      className="TeacherProfile flex justify-center h-auto mt-[2rem] mb-[2rem]"
       ref={teacherCardRef}
     >
       <div className="DetailsCard bg-cyan-200 min-h-[20rem] h-auto min-w-[18rem] flex flex-col gap-2 items-center rounded-xl shadow-2xl">
         <div className="TeacherImage flex justify-center mt-4 mb-0 p-2 min-h-[12rem] rounded-xl overflow-hidden">
           <Image
-            src={data.image}
+            src={data.imageUrl}
             width={265}
             height={190}
             alt="Teacher Image"
