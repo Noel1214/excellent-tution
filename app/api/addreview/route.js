@@ -12,11 +12,11 @@ export async function POST(req) {
     try {
         const reqBody = await req.json();
         const { rating, review } = reqBody;
-        
-        const cookieStore = cookies();   
-        const { id } = jwt.verify(cookieStore.get("token").value, process.env.JWT_SECRET);
 
-        const user = await User.findOne({_id: id});
+        const cookieStore = cookies();   
+        const { email } = jwt.verify(cookieStore.get("token").value, process.env.JWT_SECRET);
+
+        const user = await User.findOne({email});
         
         const newReview = new Reviews({
             userID: user._id,
@@ -31,11 +31,10 @@ export async function POST(req) {
             message: "review added successfully",
             success: true,
             savedReview,
-          });
-
-        
+          },{status: 200});
+               
     } catch (error) {
         console.log("Error in add reviews Route \n", error);
-        return NextResponse.json({message: "error in review add route"}, {status: 400});
+        return NextResponse.json({message: "error in review add route"}, {status: 500});
     }
 }
