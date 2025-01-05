@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     if(teachersRendered.current) return;
-    checker.current = true;
+    teachersRendered.current = true;
     (async function(){
       try {
         const response = await axios.get("/api/teachers");
