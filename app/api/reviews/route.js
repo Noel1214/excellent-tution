@@ -3,44 +3,45 @@ import Reviews from "@/models/reviewModel";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-
-connect();
+import CustomError from "@/utils/errors";
 
 export async function GET() {
+  await connect();
 
   let reviews = [];
-  let userInfo = null;
 
-  
   try {
     const cookieStore = cookies();
+    const token = cookieStore.get("token")?.value;
 
-    try {
-      const { id } = jwt.verify(cookieStore.get("token").value, process.env.JWT_SECRET);
-      userInfo = id;
-      //console.log(id);
-    } catch (error) {
-      console.log("jwt error");
-      console.log(error);
+    if(!token){
+      throw new CustomError("not logged in", 400);
+    }
+
+    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    if(!email){
+      throw new CustomError("invalid credentials", 401);
     }
 
     reviews = await Reviews.find({}).sort({ _id: -1 });
-    //console.log("this is all review");
-    //console.log(reviews);
 
     return NextResponse.json({
-      message: "loged succes full",
+      message: "successfully retrieved reviews",
       success: true,
       reviews: reviews,
-      userInfo: userInfo,
     });
   } catch (error) {
     console.log("error in reviwes route");
+
+    const statusCode = error.statusCode || 500;
+    const errorMessage = error.message || "internal server error";
+
+    console.log(error.message);
     console.log(error);
+
     return NextResponse.json({
-      message: "failed in review route",
+      message: errorMessage,
       success: false,
-      error: error,
-    });
+    }, { status: statusCode});
   }
 }
