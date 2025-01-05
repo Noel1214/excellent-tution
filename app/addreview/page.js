@@ -26,11 +26,10 @@ const ReviewPage = () => {
     });
   };
 
-  const submitClick = async () => {
+  const submitHandler = async () => {
     console.log("entreingtry in sumbit");
     try {
-
-      let dataResponse = await Axios.post("/api/addreview", data);
+      const dataResponse = await Axios.post("/api/addreview", data);
       console.log("review added sucess fully");
       console.log(dataResponse.data.message);
       
@@ -77,7 +76,7 @@ const ReviewPage = () => {
             value={review}
             onChange={(e) => setreview(e.target.value)}
           />
-          <button className="w-[19rem] p-2 rounded-lg font-semibold text-x  m bg-cyan-600" onClick={submitClick}>
+          <button className="w-[19rem] p-2 rounded-lg font-semibold text-x  m bg-cyan-600" onClick={submitHandler}>
             Submit My Feedback
           </button>
         </div>
