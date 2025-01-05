@@ -33,12 +33,11 @@ export async function POST(req) {
     }
 
     const tokenData = {
-      username: user.username,
       email: user.email,
       isAdmin: user.isAdmin,
     };
 
-    const expiry = "30m";
+    const expiry = "30h";
     //const expiry = 15 * 24 * 60 * 60;
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: expiry,
@@ -53,6 +52,7 @@ export async function POST(req) {
         success: true,  
         isLoggedIn: true,
         isAdmin: user.isAdmin,
+        id: user._id.toString()
       },
       { status: 200 }
     );
