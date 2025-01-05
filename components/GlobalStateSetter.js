@@ -1,7 +1,7 @@
 'use client'
-import { setAdmin, setLoginState } from '@/lib/features/user/userSlice'
+import { setAdmin, setLoginState, setId } from '@/lib/features/user/userSlice'
 import axios from 'axios'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 
 const GlobalStateSetter = ({children}) => {
@@ -19,10 +19,12 @@ const GlobalStateSetter = ({children}) => {
                 const res = await axios.get('/api/authentication');
                 dispatch(setAdmin(res.data.isAdmin || false));                
                 dispatch(setLoginState(res.data.isLoggedIn || false));                
+                dispatch(setId(res.data.id) || null);
                 
             } catch (error) {
                 dispatch(setAdmin(false));
                 dispatch(setLoginState(false));
+                dispatch(setId(null));
                 console.log("error in globalstatesetter");
                 console.log(error);                
             }
