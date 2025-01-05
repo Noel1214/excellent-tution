@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/userModel";
-import CustomErrors from "@/utils/errors";
+import CustomError from "@/utils/errors";
 
 export async function GET(req) {
   await connect();
@@ -11,25 +11,25 @@ export async function GET(req) {
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
     if (!token) {
-      throw new CustomErrors("not logged in", 401);
+      throw new CustomError("not logged in", 401);
     }
 
     const tokenData = jwt.verify(token.value, process.env.JWT_SECRET);
 
-    const user = await User.findOne({ email: tokenData.email });
+    const user = await User.findOne({ email: tokenData.email });    
     if (!user) {
-      throw new CustomErrors("no user found", 404);
+      throw new CustomError("no user found", 404);
     }
 
     const response = NextResponse.json(
-      { message: "success", isAdmin: user.isAdmin, isLoggedIn: true },
+      { message: "success", isAdmin: user.isAdmin, isLoggedIn: true, id: user._id.toString() },
       { status: 200 }
     );
     return response;
   } catch (error) {
     console.log("error in admin-status");
     const statusCode = error.statusCode || 500;
-    console.log(error);
+    // console.log(error);
     console.log(error.message);
     return NextResponse.json({ message: "internal server error" }, { status: statusCode });
   }
