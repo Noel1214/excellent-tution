@@ -1,27 +1,35 @@
 import { NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import Teacher from "@/models/teacherModel";
-
-connect();
+import { getObjectUrl } from "@/utils/awsClient";
 
 export async function GET(req) {
-  let teachers = [];
-
   try {
-    teachers = await Teacher.find({}).sort({ _id: -1 });
+    await connect();
+    const teachers = await Teacher.find({}).sort({ _id: -1 });
+    
+    const dataWithImages = await Promise.all(teachers.map(async (item) => {
+      
+      const imageUrl = await getObjectUrl(item.key);
+      return {
+        ...item.toObject(),
+        imageUrl: imageUrl
+      }
+    }))
 
-    console.log(teachers);
+    console.log(dataWithImages);
+    
 
     return NextResponse.json({
       message: "teachers request success",
       success: true,
-      teachers: teachers,
+      teachers: dataWithImages,
     }, {status: 200});
   } catch (error) {
     console.log("error in teachers route");
     console.log(error);
 
-    return NextResponsejson({
+    return NextResponse.json({
       message: "teachers request failed",
       success: false,
       error: error,
