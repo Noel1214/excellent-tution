@@ -8,7 +8,7 @@
   import { useRouter } from "next/navigation";
   import toast from "react-hot-toast";
   import { useDispatch } from "react-redux";
-  import { setAdmin, setLoginState } from "@/lib/features/user/userSlice";
+  import { setAdmin, setId, setLoginState } from "@/lib/features/user/userSlice";
 
   const Login = () => {
     const mainDiv = useRef(null);
@@ -33,6 +33,7 @@
         const isAdmin = res.data.isAdmin;
 
         dispatch(setLoginState(res.data.isLoggedIn || false));
+        dispatch(setId(res.data.id || null))
         if(isAdmin){
           dispatch(setAdmin(res.data.isAdmin || false));
         };
