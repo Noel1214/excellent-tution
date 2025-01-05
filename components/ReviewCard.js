@@ -5,14 +5,18 @@ import Image from "next/image";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 
 const ReviewCard = (props) => {
   const [data, setdata] = useState(props.data);
-  const [userInfo, setuserInfo] = useState(props.userInfo);
-  //const { _id, userID, username, rating, reviewString } = data;
-  const [enableDelete, setenableDelete] = useState(false);
+  console.log(data);
+  
+  const userId = useSelector((state) => state.user.id);
+  console.log(userId);
+  
   const [reviewID, setreviewID] = useState(data._id);
+  const [enableDelete, setenableDelete] = useState(false);
 
   const [stars, setstars] = useState([]);
 
@@ -25,21 +29,21 @@ const ReviewCard = (props) => {
     }
     setstars(tempStars);
 
-    if (data.userID === userInfo) {
-      setenableDelete(true);
-    }
+    // if (data.userID === userInfo) {
+    //   setenableDelete(true);
+    // }
   }, []);
 
   const handleDelete = async () => {
-    try {
-      let deleted = await axios.delete(`/api/delete-review/${reviewID}`);
-      console.log(deleted.data.message);
-      toast.success(deleted.data.message);
-    } catch (error) {
-      console.log("error in delete review page");
-      toast.error("failed to delete review!")
-      console.log(error);
-    }
+    // try {
+    //   let deleted = await axios.delete(`/api/delete-review/${reviewID}`);
+    //   console.log(deleted.data.message);
+    //   toast.success(deleted.data.message);
+    // } catch (error) {
+    //   console.log("error in delete review page");
+    //   toast.error("failed to delete review!")
+    //   console.log(error);
+    // }
   };
 
   return (
@@ -48,7 +52,7 @@ const ReviewCard = (props) => {
       <div className="bg-white h-auto mx-auto mt-9 w-[17rem] rounded-2xl">
         <div className="flex p-3 h-[6rem] ">
           <Image
-            src={TeacherImage}
+            // src={TeacherImage}
             width={500}
             height={500}
            // className="h-[3rem] w-[3rem] m-1 rounded-full object-none object-top"
@@ -65,13 +69,13 @@ const ReviewCard = (props) => {
             <h2 className="text-base relative font-semibold mb-2">
               by {data.username}
             </h2>
-            {enableDelete ? (
+            {data.userID === userId && (
               <MdDelete
                 className="relative -top-[4.4rem] left-[4.5rem] text-red-700"
                 size={27}
                 onClick={handleDelete}
               />
-            ) : null}
+            )}
           </div>
           <p className="min-h-[5rem] h-auto w-[15rem] break-words text-sm p-2 bg-cyan-300 rounded-lg">
             "{data.reviewString}"
