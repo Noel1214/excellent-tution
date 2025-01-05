@@ -6,8 +6,6 @@
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState("");  
     const [putImageUrl, setputImageUrl] = useState(null);
-    console.log(selectedFile ? selectedFile.type : "none");
-
     const [name, setname] = useState("");
     const [subject, setsubject] = useState("");
     const [education, seteducation] = useState("");
@@ -26,31 +24,11 @@
       }
     };
 
-    const imageUploadAWS = async () => {
-      try{
-        const awsResponse = await axios.put(putImageUrl, selectedFile);
-        console.log(awsResponse);
-      } catch (err) {
-        console.log(err.message);
-        console.log(err);
-      }
-    };
-
-    useEffect(() => {
-      console.log("Came in");
-      if(!putImageUrl) return;
-      imageUploadAWS();
-      console.log("ran");
-    }, [putImageUrl])
-    
-
     const handleFileUpload = async () => {
       if (!selectedFile) {
         console.error("Please select a file to upload.");
         return;
       }
-
-      console.log("revoking url");
       URL.revokeObjectURL(imagePreview);
 
       const formData = new FormData();
