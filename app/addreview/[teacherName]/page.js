@@ -17,7 +17,7 @@ const ReviewPage = () => {
   
   useEffect(() => {
     setrating(stars.filter((item) => item === true).length);
-    setdata({...data, rating: rating, review: review});
+    setdata({...data, rating: rating, review: review, teacher: params.teacherName});
   }, [stars, review]);
 
   const handleStarClick = (item, index) => {
