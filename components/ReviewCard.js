@@ -12,8 +12,7 @@ const ReviewCard = (props) => {
   const [data, setdata] = useState(props.data);
   console.log(data);
   
-  const userId = useSelector((state) => state.user.id);
-  console.log(userId);
+  const LoggedInUsersId = useSelector((state) => state.user.id);
   
   const [reviewID, setreviewID] = useState(data._id);
   const [enableDelete, setenableDelete] = useState(false);
@@ -60,8 +59,11 @@ const ReviewCard = (props) => {
             alt="IMG"
           />
           <div className="p-3 pt-4">
-            <h1 className="font-semibold text-base">Joel Sebastian</h1>
-            <p className="flex text-yellow-400 mt-1">{stars}</p>
+            <h1 className="font-semibold text-base">{data.teacher}</h1>
+            {
+              data.rating ? (<p className="flex text-yellow-400 mt-1">{stars}</p>) : (<p className="flex text-black text-sm mt-1">no rating given</p>)
+            }
+            
           </div>
         </div>
         <div className="flex flex-col items-center mb-4">
@@ -69,7 +71,7 @@ const ReviewCard = (props) => {
             <h2 className="text-base relative font-semibold mb-2">
               by {data.username}
             </h2>
-            {data.userID === userId && (
+            {data.userID === LoggedInUsersId && (
               <MdDelete
                 className="relative -top-[4.4rem] left-[4.5rem] text-red-700"
                 size={27}
