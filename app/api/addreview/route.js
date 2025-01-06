@@ -11,8 +11,8 @@ connect();
 export async function POST(req) {
     try {
         const reqBody = await req.json();
-        const { rating, review } = reqBody;
-
+        const { rating, review, teacher } = reqBody;
+        
         const cookieStore = cookies();   
         const { email } = jwt.verify(cookieStore.get("token").value, process.env.JWT_SECRET);
 
@@ -21,6 +21,7 @@ export async function POST(req) {
         const newReview = new Reviews({
             userID: user._id,
             username: user.username,
+            teacher: teacher,
             rating: rating,
             reviewString: review
         });
