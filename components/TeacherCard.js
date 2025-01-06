@@ -42,7 +42,7 @@ const TeacherCard = (props) => {
           <li>{data.education}</li>
         </ul>
 
-        <Link href="/addreview">
+        <Link href={`/addreview/${data.teacherName}`}>
           <button className="bg-green-400 w-[14rem] h-[2rem] rounded-xl flex justify-center items-center p-2 mb-5 mt-2">
             Review
           </button>
