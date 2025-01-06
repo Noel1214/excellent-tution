@@ -4,15 +4,17 @@ import { IoCloseCircle } from "react-icons/io5";
 import { IoIosStar } from "react-icons/io";
 import Link from "next/link";
 import Axios from "axios";
+import { useParams } from "next/navigation";
 
 const ReviewPage = () => {
 
+  const params = useParams();
   const [review, setreview] = useState("");
   const [stars, setstars] = useState([false, false, false, false, false]);
   const [rating, setrating] = useState(0);
   const [data, setdata] = useState({rating, review});
   console.log(data);
-
+  
   useEffect(() => {
     setrating(stars.filter((item) => item === true).length);
     setdata({...data, rating: rating, review: review});
@@ -27,10 +29,10 @@ const ReviewPage = () => {
   };
 
   const submitHandler = async () => {
-    console.log("entreingtry in sumbit");
     try {
+      console.log("this is data log" +data);
       const dataResponse = await Axios.post("/api/addreview", data);
-      console.log("review added sucess fully");
+      console.log("review added sucessfully");
       console.log(dataResponse.data.message);
       
     } catch (error) {
@@ -55,7 +57,7 @@ const ReviewPage = () => {
           <div className="w-[14rem] font-semibold text-center text-xm text-zinc-600">
             we are always looking for ways to improve your experience. Please
             take a moment to evaluate and share what you think about
-            <p>nameofteacherhere</p>
+            <p>{params.teacherName}</p>
           </div>
         </div>
         <p className="flex gap-2">
