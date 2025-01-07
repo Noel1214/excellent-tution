@@ -43,10 +43,10 @@ const ReviewPage = () => {
   
 
   return (
-    <div className="flex flex-col gap-[6rem]">
+    <div className="flex flex-col gap-[3rem]">
       <Link href="/home">
         <div className="relative h-3">
-          <IoCloseCircle className="absolute left-[90vw] mt-2 ml-1" size={30} />
+          <IoCloseCircle className="absolute left-[90vw] mt-2 -ml-1" size={24} />
         </div>
       </Link>
       <div className="flex flex-col items-center gap-9">
@@ -70,7 +70,7 @@ const ReviewPage = () => {
             />
           ))}
         </p>
-        <div className="flex flex-col gap-5 items-center">
+        <div className="flex flex-col gap-5 items-center mb-14">
           <textarea
             name="reviewinput"
             className="w-[19rem] min-h-[9rem] p-4 outline-none rounded-lg"
