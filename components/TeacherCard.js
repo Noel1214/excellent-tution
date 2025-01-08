@@ -8,6 +8,9 @@ import Link from "next/link";
 const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
   const [data, setdata] = useState(props.data);
+  const [index, setindex] = useState(props.index);
+  console.log(index);
+  
   console.log("this is data");
   
   console.log(data);
@@ -16,7 +19,7 @@ const TeacherCard = (props) => {
     gsap.fromTo(
       teacherCardRef.current,
       { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.9 }
+      { opacity: 1, y: 0, duration: 1, delay: `0.${index}` }
     );
   }, []);
 
