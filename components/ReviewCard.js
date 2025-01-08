@@ -51,7 +51,7 @@ const ReviewCard = (props) => {
       <div className="bg-white h-auto mx-auto mt-9 w-[17rem] rounded-2xl">
         <div className="flex p-3 h-[6rem] ">
           <Image
-            // src={TeacherImage}
+            src={data.imageUrl}
             width={500}
             height={500}
            // className="h-[3rem] w-[3rem] m-1 rounded-full object-none object-top"
@@ -59,7 +59,7 @@ const ReviewCard = (props) => {
             alt="IMG"
           />
           <div className="p-3 pt-4">
-            <h1 className="font-semibold text-base">{data.teacher}</h1>
+            <h1 className="font-semibold text-base">{data.teacherId.teacherName}</h1>
             {
               data.rating ? (<p className="flex text-yellow-400 mt-1">{stars}</p>) : (<p className="flex text-black text-sm mt-1">no rating given</p>)
             }
