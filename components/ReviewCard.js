@@ -45,6 +45,14 @@ const ReviewCard = (props) => {
     // }
   };
 
+  useEffect(() => {
+    gsap.fromTo(
+      reviewCardRef.current,
+      { opacity: 0, y: 80 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.9 }
+    );
+  }, []);
+
   return (
     <div className="flex" ref={reviewCardRef}>
       <div className="relative"></div>
