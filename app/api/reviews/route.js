@@ -1,9 +1,11 @@
 import { connect } from "@/dbconfig/dbconfig";
+import Teacher from "@/models/teacherModel";
 import Reviews from "@/models/reviewModel";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import CustomError from "@/utils/errors";
+import { getObjectUrl } from "@/utils/awsClient";
 
 export async function GET() {
   await connect();
@@ -23,12 +25,28 @@ export async function GET() {
       throw new CustomError("invalid credentials", 401);
     }
 
-    reviews = await Reviews.find({}).sort({ _id: -1 });
+    const reviews = await Reviews.find({})
+      .sort({ _id: -1 }) // Sort reviews by ID in descending order
+      .populate({
+        path: "teacherId", // The field in the Reviews schema to populate
+        model: Teacher,   // The model to populate from
+        select: "teacherName key", // Fields to include from the Teacher model
+      });
+
+    const reviewsWithImageData = await Promise.all(reviews.map(async (item) => {
+      const imageUrl = await getObjectUrl(item.teacherId.key);
+      return {
+        ...item.toObject(),
+        imageUrl: imageUrl
+      }
+    }))
+    // console.log(reviewsWithImageData);
+    
 
     return NextResponse.json({
       message: "successfully retrieved reviews",
       success: true,
-      reviews: reviews,
+      reviews: reviewsWithImageData,
     });
   } catch (error) {
     console.log("error in reviwes route");
