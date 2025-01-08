@@ -42,8 +42,8 @@ const App = () => {
       </div>
       <div className="-translate-x-1">
         {
-          teachers.map((item) => (
-            <TeacherCard key={item._id} data={item} />
+          teachers.map((item, index) => (
+            <TeacherCard key={item._id} index={index} data={item} />
           ))
         }
       </div>
