@@ -9,8 +9,9 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      teacher: {
-        type: String,
+      teacherId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "teacher"
       },
       rating: {
         type: Number,
