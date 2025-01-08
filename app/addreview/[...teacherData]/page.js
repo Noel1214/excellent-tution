@@ -9,6 +9,8 @@ import { useParams } from "next/navigation";
 const ReviewPage = () => {
 
   const params = useParams();
+  console.log(params.teacherData);
+  
   const [review, setreview] = useState("");
   const [stars, setstars] = useState([false, false, false, false, false]);
   const [rating, setrating] = useState(0);
@@ -17,7 +19,7 @@ const ReviewPage = () => {
   
   useEffect(() => {
     setrating(stars.filter((item) => item === true).length);
-    setdata({...data, rating: rating, review: review, teacher: params.teacherName});
+    setdata({...data, rating: rating, review: review, teacherId: params.teacherData[1]});
   }, [stars, review]);
 
   const handleStarClick = (item, index) => {
@@ -57,7 +59,7 @@ const ReviewPage = () => {
           <div className="w-[14rem] font-semibold text-center text-xm text-zinc-600">
             we are always looking for ways to improve your experience. Please
             take a moment to evaluate and share what you think about
-            <p>{params.teacherName}</p>
+            <p>{params.teacherData[0]}</p>
           </div>
         </div>
         <p className="flex gap-2">
