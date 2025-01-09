@@ -9,11 +9,6 @@ const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
   const [data, setdata] = useState(props.data);
   const [index, setindex] = useState(props.index);
-  console.log(index);
-  
-  console.log("this is data");
-  
-  console.log(data);
 
   useEffect(() => {
     gsap.fromTo(
