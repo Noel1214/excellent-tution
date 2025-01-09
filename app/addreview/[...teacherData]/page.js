@@ -9,13 +9,11 @@ import { useParams } from "next/navigation";
 const ReviewPage = () => {
 
   const params = useParams();
-  console.log(params.teacherData);
   
   const [review, setreview] = useState("");
   const [stars, setstars] = useState([false, false, false, false, false]);
   const [rating, setrating] = useState(0);
   const [data, setdata] = useState({rating, review});
-  console.log(data);
   
   useEffect(() => {
     setrating(stars.filter((item) => item === true).length);
