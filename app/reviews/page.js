@@ -23,19 +23,17 @@ const Reviews = () => {
     );
   }, []);
 
-  const getReviews = async () => {
-    try {
-      const response = await axios.get("/api/reviews");      
-      setreviewsData(response.data.reviews);
-      dispatch(setReviewsData(response.data.reviews));
-    } catch (error) {
-      console.log("error in reviews response");
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    getReviews();
+    (async function() {
+      try {
+        const response = await axios.get("/api/reviews");      
+        setreviewsData(response.data.reviews);
+        dispatch(setReviewsData(response.data.reviews));
+      } catch (error) {
+        console.log("error in reviews response");
+        console.log(error);
+      }
+    })();
   }, []);
 
   return (
