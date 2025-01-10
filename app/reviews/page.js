@@ -13,7 +13,6 @@ const Reviews = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.review.reviewsData);
   console.log(reviews);
-  
 
   useEffect(() => {
     gsap.fromTo(
@@ -24,6 +23,7 @@ const Reviews = () => {
   }, []);
 
   useEffect(() => {
+    if(reviews.length) return;    
     (async function() {
       try {
         const response = await axios.get("/api/reviews");      
