@@ -3,11 +3,17 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import TeacherCard from "@/components/TeacherCard";
 import axios from "axios";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setTeacherData } from "@/lib/features/teacher/teacherSlice";
 const App = () => {
   const titlehead = useRef(null);
   const [teachers, setteachers] = useState([]);
-  const [baseUrl, setbaseUrl] = useState("");
+
+  const madeApiCall = useRef(false);
+  const dataFromRedux = useSelector((state) => state.teacher.teacherData);
+  console.log(dataFromRedux.length);
+
+  const dispatch = useDispatch();
   
   // to check whether teachers are rendered
   const teachersRendered = useRef(false);
@@ -21,12 +27,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if(teachersRendered.current) return;
-    teachersRendered.current = true;
+    if(dataFromRedux.length) return;
     (async function(){
       try {
+        console.log("makeing appi call");
         const response = await axios.get("/api/teachers");
-        setteachers(response.data.teachers);
+        dispatch(setTeacherData(response.data.teachers));
       } catch (error) {
         console.log("error in iffe");
         console.log(error);
@@ -42,7 +48,7 @@ const App = () => {
       </div>
       <div className="-translate-x-1">
         {
-          teachers.map((item, index) => (
+          dataFromRedux.map((item, index) => (
             <TeacherCard key={item._id} index={index} data={item} />
           ))
         }
