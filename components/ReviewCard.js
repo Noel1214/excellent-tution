@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const ReviewCard = (props) => {
   const [data, setdata] = useState(props.data);
-  console.log(data);
+  // console.log(data);
   
   const LoggedInUsersId = useSelector((state) => state.user.id);
   
@@ -49,7 +49,7 @@ const ReviewCard = (props) => {
     gsap.fromTo(
       reviewCardRef.current,
       { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.9 }
+      { opacity: 1, y: 0, duration: 1, delay: 1 + props.index*0.3 }
     );
   }, []);
 
