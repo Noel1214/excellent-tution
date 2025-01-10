@@ -4,17 +4,15 @@ import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 
-
 const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
   const [data, setdata] = useState(props.data);
-  const [index, setindex] = useState(props.index);
 
   useEffect(() => {
     gsap.fromTo(
       teacherCardRef.current,
       { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, delay: 1 + index * 0.5 }
+      { opacity: 1, y: 0, duration: 1, delay: 1 + props.index * 0.3 }
     );
   }, []);
 
