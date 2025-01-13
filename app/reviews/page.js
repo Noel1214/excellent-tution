@@ -8,7 +8,6 @@ import { setReviewsData } from "@/lib/features/review/reviewSlice";
 
 const Reviews = () => {
   const titlehead = useRef(null);
-  const [reviewsData, setreviewsData] = useState([]);  
 
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.review.reviewsData);
@@ -27,7 +26,6 @@ const Reviews = () => {
     (async function() {
       try {
         const response = await axios.get("/api/reviews");      
-        setreviewsData(response.data.reviews);
         dispatch(setReviewsData(response.data.reviews));
       } catch (error) {
         console.log("error in reviews response");
