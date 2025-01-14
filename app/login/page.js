@@ -17,6 +17,7 @@
     const usernameInput = useRef(null);
     const passwordInput = useRef(null);
     const redirectionRef = useRef(null);
+    const toastedOrNot = useRef(false);
 
     const dispatch = useDispatch();
 
@@ -59,10 +60,18 @@
     };
 
     useEffect(() => {
+      if(toastedOrNot.current) return;
+      (function() {
+        toast.error("You are not logged in")
+      })()
+      toastedOrNot.current = true;
+    }, [])
+
+    useEffect(() => {
       gsap.fromTo(
         mainDiv.current,
         { y: -100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 }
+        { y: 0, opacity: 1, duration: 0.8 }
       );
 
       gsap.fromTo(
@@ -90,7 +99,7 @@
       gsap.fromTo(
         redirectionRef.current,
         { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 0.5 }
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.5 }
       );
     }, []);
 
