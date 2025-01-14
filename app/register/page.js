@@ -94,7 +94,7 @@ const Register = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center h-screen gap-1">
+      <div className="flex flex-col items-center justify-center h-screen gap-1 overflow-y-hidden">
         {/* SIGN UP */}
         <div
           className="flex flex-col gap-3 w-[19.5rem] min-h-[25rem] h-auto mt-10 bg-cyan-300 rounded-xl relative -top-14"
