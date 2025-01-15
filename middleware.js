@@ -9,5 +9,12 @@ export async function middleware(req) {
             return NextResponse.redirect(new URL("/login", req.url));
         }
     };
+
+    if(pathName.startsWith("/login") || pathName.startsWith("/register")){
+        let cookie = req.cookies.get("token");
+        if(cookie){
+            return NextResponse.redirect(new URL("/home", req.url));
+        }
+    }
     
 }
