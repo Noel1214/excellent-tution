@@ -27,7 +27,11 @@ export async function POST(req) {
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
       return NextResponse.json(
-        { message: "invalid username or password!", isLoggedIn: false, success: false },
+        {
+          message: "invalid username or password!",
+          isLoggedIn: false,
+          success: false,
+        },
         { status: 400 }
       );
     }
@@ -49,16 +53,15 @@ export async function POST(req) {
     const response = NextResponse.json(
       {
         message: "Login successful",
-        success: true,  
+        success: true,
         isLoggedIn: true,
         isAdmin: user.isAdmin,
-        id: user._id.toString()
+        id: user._id.toString(),
       },
       { status: 200 }
     );
 
     return response;
-
   } catch (error) {
     console.log("error from login route");
     console.log(error);
