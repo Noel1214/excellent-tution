@@ -60,7 +60,6 @@ const Login = () => {
       dispatch(setAdmin(false));
       dispatch(setLoginState(false));
       console.log("error while handling login");
-      console.log(error.response.data.message);
       toast.error(error.response.data.message);
       console.log(error);
     }
