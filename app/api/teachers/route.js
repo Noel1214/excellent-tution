@@ -17,7 +17,7 @@ export async function GET(req) {
       }
     }))
 
-    console.log(dataWithImages);
+    // console.log(dataWithImages);
     
 
     return NextResponse.json({
