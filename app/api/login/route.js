@@ -41,14 +41,13 @@ export async function POST(req) {
       isAdmin: user.isAdmin,
     };
 
-    const expiry = "30h";
-    //const expiry = 15 * 24 * 60 * 60;
+    const expiry = (3 * 60 * 60) * 1000;
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: expiry,
     });
 
     // setting cookie
-    cookieStore.set("token", token, { httpOnly: true });
+    cookieStore.set("token", token, { maxAge: expiry, httpOnly: true });
 
     const response = NextResponse.json(
       {
