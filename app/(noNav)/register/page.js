@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import Axios from "axios";
 import gsap from "gsap";
+import toast from "react-hot-toast";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
-import { useRouter } from "next/navigation";
-import Axios from "axios";
-import toast from "react-hot-toast";
+import { signUpSchema } from "@/zod/signUpSchema";
 
 const Register = () => {
   const router = useRouter();
@@ -25,36 +26,31 @@ const Register = () => {
     password: "",
   });
   const [showPassword, setshowPassword] = useState(false);
+  const [error, seterror] = useState("");
+
+  useEffect(() => {
+    seterror("");
+  }, [signUpData]);
 
   const onSignUp = async () => {
+    const result = signUpSchema.safeParse(signUpData);
+    if (!result.success) {
+      console.log(result.error.issues[0].message);
+      seterror(result.error.issues[0].message);
+      return;
+    }
 
-    if (signUpData.username === "") {
-      toast.error("Please enter username!");
-    }
-    
-    if (signUpData.email === "") {
-      toast.error("Please enter email!");
-    }
-    
-    if (signUpData.password === "") {
-      toast.error("Please enter password!");
-    }
-    
+    const formData = new FormData();
+    formData.append("username", signUpData.username);
+    formData.append("email", signUpData.email);
+    formData.append("password", signUpData.password);
 
     try {
-      const dataResponse = await Axios.post("/api/register", signUpData);
-      console.log(dataResponse.message);
-
-      if (dataResponse.data.success){
-        toast.success(dataResponse.data.message);
-      } else {
-        toast.error(dataResponse.data.message);
-      }
-
-      router.push("/login");
-
+      const dataResponse = await Axios.post("/api/register", formData);
+      toast.success(dataResponse.data.message);
+      // router.push("/login");
     } catch (error) {
-      console.log("SignUp failed ", error.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -62,34 +58,33 @@ const Register = () => {
     setshowPassword(!showPassword);
   };
 
-  //Animations
+  //element animations
   useEffect(() => {
-    gsap.fromTo(
-      mainDiv.current,
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 }
-    );
-
-    gsap.fromTo(
-      usernameInput.current,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 }
-    );
-    gsap.fromTo(
-      passwordInput.current,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 }
-    );
-    gsap.fromTo(
-      emailInput.current,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 }
-    );
-    gsap.fromTo(
-      redirectionRef.current,
-      { y: 100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, delay: 0.5 }
-    );
+    // gsap.fromTo(
+    //   mainDiv.current,
+    //   { y: -100, opacity: 0 },
+    //   { y: 0, opacity: 1, duration: 1 }
+    // );
+    // gsap.fromTo(
+    //   usernameInput.current,
+    //   { y: 50, opacity: 0 },
+    //   { y: 0, opacity: 1, duration: 1 }
+    // );
+    // gsap.fromTo(
+    //   passwordInput.current,
+    //   { y: 50, opacity: 0 },
+    //   { y: 0, opacity: 1, duration: 1 }
+    // );
+    // gsap.fromTo(
+    //   emailInput.current,
+    //   { y: 50, opacity: 0 },
+    //   { y: 0, opacity: 1, duration: 1 }
+    // );
+    // gsap.fromTo(
+    //   redirectionRef.current,
+    //   { y: 100, opacity: 0 },
+    //   { y: 0, opacity: 1, duration: 1, delay: 0.5 }
+    // );
   }, []);
 
   return (
@@ -120,6 +115,24 @@ const Register = () => {
               value={signUpData.username}
               onChange={(e) =>
                 setsignUpData({ ...signUpData, username: e.target.value })
+              }
+              className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
+            />
+          </div>
+          {/* Email INPUT */}
+          <div
+            className="flex flex-col w-[17rem] mx-auto mt-5"
+            ref={emailInput}
+          >
+            <label htmlFor="email" className="text-sm">
+              E-Mail
+            </label>
+            <input
+              type="text"
+              placeholder="example@gmail.com"
+              value={signUpData.email}
+              onChange={(e) =>
+                setsignUpData({ ...signUpData, email: e.target.value })
               }
               className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
@@ -157,32 +170,23 @@ const Register = () => {
               )}
             </div>
           </div>
-          {/* Email INPUT */}
-          <div
-            className="flex flex-col w-[17rem] mx-auto mt-5"
-            ref={emailInput}
-          >
-            <label htmlFor="email" className="text-sm">
-              E-Mail
-            </label>
-            <input
-              type="text"
-              placeholder="example@gmail.com"
-              value={signUpData.email}
-              onChange={(e) =>
-                setsignUpData({ ...signUpData, email: e.target.value })
-              }
-              className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
-            />
-          </div>
+
           {/* LOGIN BUTTON */}
-          <button
-            className="mx-auto my-4 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
-            onClick={onSignUp}
-            ref={signInButton}
-          >
-            Sign in
-          </button>
+          <div className="flex flex-col justify-center items-center w-full">
+            {error && (
+              <p className="w-full px-3 mt-2 font-semibold text-red-600 text-balance text-center">
+                {error && error}
+              </p>
+            )}
+            <button
+              type="button"
+              className="my-4 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
+              onClick={onSignUp}
+              ref={signInButton}
+            >
+              Sign in
+            </button>
+          </div>
         </div>
         <div className="flex flex-col items-center gap-2" ref={redirectionRef}>
           <p>Aldready have an account?</p>
