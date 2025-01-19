@@ -1,7 +1,9 @@
 class CustomError extends Error {
-    constructor(message, statusCode){
-        super(message);
+    constructor(customMessage, statusCode, redirectTo = ""){
+        super(customMessage);
         this.statusCode = statusCode;
+        this.redirectTo = redirectTo;
+        this.customMessage = customMessage;
     }
 }
 
