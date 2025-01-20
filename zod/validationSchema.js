@@ -6,7 +6,7 @@ export const signUpSchema = z.object({
     .min(1, "username is required")
     .regex(/^[a-zA-Z]+$/, "Username can only contain letters")
     .min(3, "username must contain minimum 3 letters")
-    .max(8, "username must not have more than 8 letters"),
+    .max(12, "username must not have more than 12 letters"),
   email: z
     .string({ required_error: "email is required" })
     .regex(
