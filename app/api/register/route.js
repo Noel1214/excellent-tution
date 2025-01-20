@@ -4,9 +4,8 @@ import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import CustomError from "@/utils/errors";
 
-connect();
-
 export async function POST(req) {
+  await connect();
   try {
     const formData = await req.formData();
 
@@ -44,9 +43,9 @@ export async function POST(req) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
     const redirectTo = error.redirectTo;
-    
+
     return NextResponse.json(
-      { success: false, message: message, redirectTo:redirectTo },
+      { success: false, message: message, redirectTo: redirectTo },
       { status: statusCode }
     );
   }
