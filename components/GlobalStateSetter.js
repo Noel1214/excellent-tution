@@ -19,12 +19,12 @@ const GlobalStateSetter = ({children}) => {
                 const res = await axios.get('/api/authentication');
                 dispatch(setAdmin(res.data.isAdmin || false));                
                 dispatch(setLoginState(res.data.isLoggedIn || false));                
-                dispatch(setId(res.data.id) || null);
+                dispatch(setId(res.data.id) || "");
                 
             } catch (error) {
                 dispatch(setAdmin(false));
                 dispatch(setLoginState(false));
-                dispatch(setId(null));
+                dispatch(setId(""));
                 console.log("error in globalstatesetter");
                 console.log(error);                
             }
