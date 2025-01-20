@@ -48,8 +48,10 @@ const Register = () => {
     try {
       const dataResponse = await Axios.post("/api/register", formData);
       toast.success(dataResponse.data.message);
-      // router.push("/login");
     } catch (error) {
+      if (error.response.data.redirectTo) {
+        router.push(error.response.data.redirectTo);
+      }
       toast.error(error.response.data.message);
     }
   };
@@ -60,31 +62,31 @@ const Register = () => {
 
   //element animations
   useEffect(() => {
-    // gsap.fromTo(
-    //   mainDiv.current,
-    //   { y: -100, opacity: 0 },
-    //   { y: 0, opacity: 1, duration: 1 }
-    // );
-    // gsap.fromTo(
-    //   usernameInput.current,
-    //   { y: 50, opacity: 0 },
-    //   { y: 0, opacity: 1, duration: 1 }
-    // );
-    // gsap.fromTo(
-    //   passwordInput.current,
-    //   { y: 50, opacity: 0 },
-    //   { y: 0, opacity: 1, duration: 1 }
-    // );
-    // gsap.fromTo(
-    //   emailInput.current,
-    //   { y: 50, opacity: 0 },
-    //   { y: 0, opacity: 1, duration: 1 }
-    // );
-    // gsap.fromTo(
-    //   redirectionRef.current,
-    //   { y: 100, opacity: 0 },
-    //   { y: 0, opacity: 1, duration: 1, delay: 0.5 }
-    // );
+    gsap.fromTo(
+      mainDiv.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1 }
+    );
+    gsap.fromTo(
+      usernameInput.current,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1 }
+    );
+    gsap.fromTo(
+      passwordInput.current,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1 }
+    );
+    gsap.fromTo(
+      emailInput.current,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1 }
+    );
+    gsap.fromTo(
+      redirectionRef.current,
+      { y: 100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, delay: 0.5 }
+    );
   }, []);
 
   return (
