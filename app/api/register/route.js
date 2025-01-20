@@ -9,15 +9,10 @@ connect();
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    console.log(formData);
 
     const username = formData.get("username");
     const email = formData.get("email");
     const password = formData.get("password");
-
-    console.log(username);
-    console.log(email);
-    console.log(password);
 
     // checking for if user aldready exists
     const userChecker = await User.findOne({ email });
@@ -36,8 +31,6 @@ export async function POST(req) {
       password: hashedPassword,
     });
     const savedUser = await newUser.save();
-    console.log("this is user saved");
-    console.log(savedUser);
 
     return NextResponse.json(
       {
@@ -51,10 +44,7 @@ export async function POST(req) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
     const redirectTo = error.redirectTo;
-
-    console.log(redirectTo);
     
-
     return NextResponse.json(
       { success: false, message: message, redirectTo:redirectTo },
       { status: statusCode }
