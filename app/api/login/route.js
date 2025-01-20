@@ -4,36 +4,24 @@ import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import CustomError from "@/utils/errors";
 
 export async function POST(req) {
   await connect();
   try {
-    const reqbody = await req.json();
     const cookieStore = await cookies();
+    const formData = await req.formData();
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-    const { email, password } = reqbody;
     const user = await User.findOne({ email });
     if (!user) {
-      return NextResponse.json(
-        {
-          message: "invalid username or password!",
-          isLoggedIn: false,
-          success: false,
-        },
-        { status: 400 }
-      );
+      throw new CustomError("invalid username or password !", 401);
     }
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return NextResponse.json(
-        {
-          message: "invalid username or password!",
-          isLoggedIn: false,
-          success: false,
-        },
-        { status: 400 }
-      );
+      throw new CustomError("invalid username or password !", 401);
     }
 
     const tokenData = {
@@ -41,7 +29,7 @@ export async function POST(req) {
       isAdmin: user.isAdmin,
     };
 
-    const expiry = (3 * 60 * 60) * 1000;
+    const expiry = 3 * 60 * 60 * 1000;
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: expiry,
     });
@@ -59,14 +47,15 @@ export async function POST(req) {
       },
       { status: 200 }
     );
-
     return response;
+
   } catch (error) {
-    console.log("error from login route");
-    console.log(error);
+    const statusCode = error.statusCode || 500;
+    const message = error.customMessage || "internal error";
+
     return NextResponse.json(
-      { message: "login failed !", success: false },
-      { status: 500 }
+      { message: message, success: false },
+      { status: statusCode }
     );
   }
 }
