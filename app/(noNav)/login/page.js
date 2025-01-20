@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import Axios from "axios";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { loginSchema } from "@/zod/validationSchema";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
-import Axios from "axios";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setAdmin, setId, setLoginState } from "@/lib/features/user/userSlice";
 
@@ -20,38 +21,36 @@ const Login = () => {
   const toastedOrNot = useRef(false);
 
   const dispatch = useDispatch();
-
-  const [userData, setuserData] = useState({ email: "", password: "" });
-  console.log(userData);
-  
-  const [error, seterror] = useState("");
-  //console.log(userData);
-  const [showPassword, setshowPassword] = useState(false);
   const router = useRouter();
 
+  const [userData, setuserData] = useState({ email: "", password: "" });
+  const [showPassword, setshowPassword] = useState(false);
+  const [error, seterror] = useState("");
+
+  useEffect(() => {
+    seterror("");
+  }, [userData]);
+
   const onLogin = async () => {
-    console.log("handleing login");
-    if (userData.email === "" || userData.password === "") {
-      console.log("int the ");
-      
-      seterror("please fill email and password");
+    const result = loginSchema.safeParse(userData);
+    if (!result.success) {
+      seterror(result.error.issues[0].message);
       return;
     }
+
     try {
-      console.log("hitting apui");
-      
-      const res = await Axios.post("/api/login", userData);
-      const isAdmin = res.data.isAdmin;
+      const formData = new FormData();
+      formData.append("email", userData.email);
+      formData.append("password", userData.password);
+
+      const res = await Axios.post("/api/login", formData);
 
       dispatch(setLoginState(res.data.isLoggedIn || false));
+      dispatch(setAdmin(res.data.isAdmin || false));
       dispatch(setId(res.data.id || null));
-      if (isAdmin) {
-        dispatch(setAdmin(res.data.isAdmin || false));
-      }
+
       if (res.data.success) {
         toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
       }
       if (res.data.isLoggedIn) {
         router.push("/home");
@@ -59,9 +58,9 @@ const Login = () => {
     } catch (error) {
       dispatch(setAdmin(false));
       dispatch(setLoginState(false));
-      console.log("error while handling login");
+      dispatch(setId(""));
       toast.error(error.response.data.message);
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -117,7 +116,7 @@ const Login = () => {
     <div>
       <div className="flex flex-col items-center justify-center h-screen gap-1">
         <div
-          className="flex flex-col gap-3 w-[19.3rem] h-[25rem] mt-10 bg-cyan-300 rounded-xl relative -top-14"
+          className="flex flex-col gap-3 w-[19.3rem] min-h-[25rem] mt-10 bg-cyan-300 rounded-xl relative -top-14"
           ref={mainDiv}
         >
           <h1
@@ -178,10 +177,16 @@ const Login = () => {
             </div>
           </div>
           {/* LOGIN BUTTON */}
-          <div>
+          <div className="w-full my-2 flex flex-col items-center">
+            {error && (
+              <p className="text-red-600 font-semibold text-center text-balance">
+                {error && error}
+              </p>
+            )}
+
             <button
               onClick={onLogin}
-              className="mx-auto mt-8 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
+              className="my-2 mb-5 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
               ref={loginButton}
             >
               Login
