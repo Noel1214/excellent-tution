@@ -113,7 +113,7 @@ const Navbar = () => {
               )}
 
               {isAdmin && (
-                <Link href="/admin" className="hover:bg-cyan-600">
+                <Link href="/admin" onClick={displayPopUpNav} className="hover:bg-cyan-600">
                   <button>Dashboard</button>
                 </Link>
               )}
