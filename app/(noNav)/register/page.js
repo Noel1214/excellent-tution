@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
-import { signUpSchema } from "@/zod/signUpSchema";
+import { signUpSchema } from "@/zod/validationSchema";
 
 const Register = () => {
   const router = useRouter();
