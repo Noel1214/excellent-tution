@@ -27,7 +27,6 @@ export async function GET(req) {
     );
     return response;
   } catch (error) {
-    console.log("error in admin-status");
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
     
