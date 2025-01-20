@@ -29,8 +29,8 @@ export async function GET(req) {
   } catch (error) {
     console.log("error in admin-status");
     const statusCode = error.statusCode || 500;
-    // console.log(error);
-    console.log(error.message);
-    return NextResponse.json({ message: "internal server error" }, { status: statusCode });
+    const message = error.customMessage || "internal error";
+    
+    return NextResponse.json({ message: message, success: false }, { status: statusCode });
   }
 }
