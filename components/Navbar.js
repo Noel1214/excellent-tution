@@ -35,11 +35,13 @@ const Navbar = () => {
 
   const displayPopUpNav = () => {
     if (showPopUpNav.current) {
+      document.body.style.overflow = "auto";
       showPopUpNav.current = false;
       gsap.to(popNav.current, { x: -890, opacity: 1, duration: 0.8 });
       return;
     }
     showPopUpNav.current = true;
+    document.body.style.overflow = "hidden";
     gsap.to(popNav.current, { x: 0, opacity: 1, duration: 0.8 });
     return;
   };
