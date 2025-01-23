@@ -14,14 +14,12 @@ const page = () => {
         <div>
           <div className="mb-4">
             <label
-              htmlFor="email"
               className="block text-gray-600 font-medium mb-2"
             >
               Password:
             </label>
             <input
               type="email"
-              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -30,14 +28,12 @@ const page = () => {
           </div>
           <div className="mb-6">
             <label
-              htmlFor="newPassword"
               className="block text-gray-600 font-medium mb-2"
             >
               Confirm Password:
             </label>
             <input
               type="password"
-              name="newPassword"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required

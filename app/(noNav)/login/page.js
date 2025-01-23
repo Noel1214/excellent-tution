@@ -154,7 +154,7 @@ const Login = () => {
             className="flex flex-col w-auto mx-auto mt-4"
             ref={passwordInput}
           >
-            <label htmlFor="password" className="text-sm">
+            <label type="password" className="text-sm">
               Password
             </label>
             <div className="flex mt-1 w-[17rem] h-[2.4rem] bg-white justify-between rounded-md">
