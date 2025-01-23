@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAdmin, setId, setLoginState } from "@/lib/features/user/userSlice";
 import { setEmail } from "@/lib/features/forgot-password/forgotPasswordSlice";
+import { emailSchema } from "@/zod/validationSchema";
 
 const Login = () => {
   const mainDiv = useRef(null);
@@ -65,10 +66,29 @@ const Login = () => {
     }
   };
 
-  const onForgotPassword = () => {
-    dispatch(setEmail(userData.email));
-    router.push("/verify-otp");
-  }
+  const onForgotPassword = async () => {
+    try {
+      const result = emailSchema.safeParse(userData.email);
+      if (!result.success) {
+        seterror(result.error.issues[0].message);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("email", userData.email);
+
+      const res = await Axios.post("api/forgot-password", formData);
+
+      if (res.data.success) {
+        dispatch(setEmail(userData.email));
+        router.push("/verify-otp");
+      }
+      return;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
 
   const toggleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -181,7 +201,12 @@ const Login = () => {
                 />
               )}
             </div>
-            <button className="text-start mt-1 text-xs" onClick={onForgotPassword}><p>Forgot password</p></button>
+            <button
+              className="text-start mt-1 text-xs"
+              onClick={onForgotPassword}
+            >
+              <p>Forgot password</p>
+            </button>
           </div>
           {/* LOGIN BUTTON */}
           <div className="w-full my-2 flex flex-col items-center">
