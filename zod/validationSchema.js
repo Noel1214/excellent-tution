@@ -9,6 +9,7 @@ export const usernameSchema = z
 
 export const emailSchema = z
   .string({ required_error: "email is required" })
+  .min(1, "email is required")
   .regex(
     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     "Invalid email address"
