@@ -10,6 +10,7 @@ import { BsEyeSlashFill } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAdmin, setId, setLoginState } from "@/lib/features/user/userSlice";
+import { setEmail } from "@/lib/features/forgot-password/forgotPasswordSlice";
 
 const Login = () => {
   const mainDiv = useRef(null);
@@ -63,6 +64,11 @@ const Login = () => {
       // console.log(error);
     }
   };
+
+  const onForgotPassword = () => {
+    dispatch(setEmail(userData.email));
+    router.push("/verify-otp");
+  }
 
   const toggleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -175,11 +181,12 @@ const Login = () => {
                 />
               )}
             </div>
+            <button className="text-start mt-1 text-xs" onClick={onForgotPassword}><p>Forgot password</p></button>
           </div>
           {/* LOGIN BUTTON */}
           <div className="w-full my-2 flex flex-col items-center">
             {error && (
-              <p className="text-red-600 font-semibold text-center text-balance">
+              <p className="text-red-600 scale-90 font-semibold text-center text-balance">
                 {error && error}
               </p>
             )}
