@@ -1,5 +1,5 @@
-import { connect } from "@/dbconfig/dbconfig";
 import { NextResponse } from "next/server";
+import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/userModel";
 import { sendMail } from "@/utils/awsClient";
 import CustomError from "@/utils/errors";
@@ -23,12 +23,7 @@ export async function POST(req) {
 
     await sendMail(email, otp);
 
-    const updatedUser = await User.findOneAndUpdate(
-      { email: email },
-      { $set: { otp: otp } },
-      { new: true }
-    );
-    console.log(updatedUser);
+    await User.findOneAndUpdate({ email: email }, { $set: { otp: otp } });
 
     const response = NextResponse.json(
       { success: true, message: "otp sent" },
