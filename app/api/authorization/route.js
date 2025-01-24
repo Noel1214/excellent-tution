@@ -8,13 +8,13 @@ import CustomError from "@/utils/errors";
 export async function GET(req) {
   await connect();
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token");
+    const cookieStore = cookies();
+    const token = cookieStore.get("token")?.value;
     if (!token) {
       throw new CustomError("not logged in", 401);
     }
 
-    const tokenData = jwt.verify(token.value, process.env.JWT_SECRET);
+    const tokenData = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ email: tokenData.email });    
     if (!user) {
