@@ -9,7 +9,7 @@ import CustomError from "@/utils/errors";
 export async function POST(req) {
   await connect();
   try {
-    const cookieStore = await cookies();
+    const cookieStore = cookies();
     const formData = await req.formData();
     const email = formData.get("email");
     const password = formData.get("password");
@@ -30,7 +30,7 @@ export async function POST(req) {
     };
 
     const expiry = 3 * 60 * 60 * 1000;
-    const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
+    const token = jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: expiry,
     });
 
