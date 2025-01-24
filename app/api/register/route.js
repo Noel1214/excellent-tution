@@ -8,7 +8,6 @@ export async function POST(req) {
   await connect();
   try {
     const formData = await req.formData();
-
     const username = formData.get("username");
     const email = formData.get("email");
     const password = formData.get("password");
@@ -35,7 +34,6 @@ export async function POST(req) {
       {
         message: "User created successfully",
         success: true,
-        // savedUser,
       },
       { status: 200 }
     );
