@@ -1,34 +1,53 @@
-import { connect } from "@/dbconfig/dbconfig";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/userModel";
+import jwt from "jsonwebtoken";
+import CustomError from "@/utils/errors";
 
 export async function POST(req) {
   await connect();
   try {
+    const cookieStore = cookies();
     const formData = await req.formData();
     const email = formData.get("email");
     const otp = formData.get("otp");
 
-    const user = await User.findOne({email});
-
-    if(!(otp === user.otp)){
-      console.log("otp dose not match");
-      throw new error;
+    const user = await User.findOne({ email });
+    if (!(user.otp === otp)) {
+      console.log("wrong otp");
+      throw new CustomError("wrong otp entered", 400);
     }
 
     const userUpdated = await User.findOneAndUpdate(
       { email: email },
-      { $set: { otpVerified: true } },
+      { $set: { otp: "" } },
       { new: true }
     );
-    console.log(userUpdated);
 
-    const response = NextResponse.json(
-      { success: true, message: "message otp sent" },
+    const cookieData = {
+      isOtpVerified: true,
+      email: email,
+    };
+    const expiry = 5 * 60 * 1000;
+
+    const otpStatus = jwt.sign(cookieData, process.env.JWT_SECRET, {
+      expiresIn: expiry,
+    });
+    cookieStore.set("otpStatus", otpStatus, { maxAge: expiry, httpOnly: true });
+
+    return NextResponse.json(
+      { message: "message otp sent", success: true },
       { status: 200 }
     );
-    return response;
   } catch (error) {
+    const statusCode = error.statusCode || 500;
+    const message = error.customMessage || "internal error";
     console.log(error);
+
+    return NextResponse.json(
+      { message: message, success: false },
+      { status: statusCode }
+    );
   }
 }
