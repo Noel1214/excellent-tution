@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/userModel";
-import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import CustomError from "@/utils/errors";
 
@@ -17,7 +17,7 @@ export async function POST(req) {
     if (userChecker) {
       throw new CustomError("user already exists!", 400, "/login");
     }
-
+    
     //hashing password
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
@@ -28,7 +28,7 @@ export async function POST(req) {
       email,
       password: hashedPassword,
     });
-    const savedUser = await newUser.save();
+    await newUser.save();
 
     return NextResponse.json(
       {
