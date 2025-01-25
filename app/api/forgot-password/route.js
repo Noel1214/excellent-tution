@@ -21,7 +21,10 @@ export async function POST(req) {
       otp += Math.floor(Math.random() * 10);
     }
 
-    await sendMail(email, otp);
+    const sendMailResponse = await sendMail(email, otp);
+    if(!sendMailResponse.success){
+      throw new CustomError("error try again later", 500);
+    }
 
     await User.findOneAndUpdate({ email: email }, { $set: { otp: otp } });
 
