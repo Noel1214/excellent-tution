@@ -19,11 +19,7 @@ export async function POST(req) {
       throw new CustomError("wrong otp entered", 400);
     }
 
-    const userUpdated = await User.findOneAndUpdate(
-      { email: email },
-      { $set: { otp: "" } },
-      { new: true }
-    );
+    await User.findOneAndUpdate({ email: email }, { $set: { otp: "" } });
 
     const cookieData = {
       isOtpVerified: true,
