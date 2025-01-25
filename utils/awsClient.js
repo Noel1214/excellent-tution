@@ -37,7 +37,7 @@ const sendMail = async (email, otp) => {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
-      from: "Excellent Tution App <no-reply@devnoel.org>",
+      from: "Excellent Tution App <no-reply@email.devnoel.org>",
       to: email,
       subject: "OTP",
       html: `<strong>OTP :  ${otp}</strong>`,
