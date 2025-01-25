@@ -34,22 +34,25 @@ const putObjectUrl = async (filename, contentType) => {
 };
 
 const sendMail = async (email, otp) => {
-  const resend = new Resend(process.env.RESEND_API_KEY);
-
-  (async function () {
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
-      from: "Excellent Tution App <no-reply@devnoel.org>", // Replace with a valid email address
+      from: "Excellent Tution App <no-reply@devnoel.org>",
       to: email,
       subject: "OTP",
       html: `<strong>OTP :  ${otp}</strong>`,
     });
 
     if (error) {
-      return console.error({ error });
+      console.log("send mail error \n", error);
+      throw new Error(`Failed to send email ${error.message}`);
     }
 
-    console.log({ data });
-  })();
+    return { success: true };
+  } catch (error) {
+    console.log(error.message);
+    return { success: false };
+  }
 };
 
 export { getObjectUrl, putObjectUrl, sendMail };
