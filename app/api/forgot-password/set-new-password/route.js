@@ -30,8 +30,7 @@ export async function POST(req) {
 
     await User.findOneAndUpdate(
       { email: email },
-      { $set: { password: hashedPassword, otpVerified: false } },
-      { new: true }
+      { $set: { password: hashedPassword } }
     );
 
     cookieStore.delete("otpStatus");
