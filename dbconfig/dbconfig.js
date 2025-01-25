@@ -3,18 +3,16 @@ import mongoose from "mongoose";
 const connectionStates = {};
 
 export async function connect() {
-    if(connectionStates.isConnected){
-        console.log("DB already connected ", connectionStates.isConnected);
-        return;
-    }
-    try {
-        console.log("connecting to DB");
-        let db = await mongoose.connect(process.env.MONGODB_URI);
-        connectionStates.isConnected = db.connection.readyState;
-        
-    } catch (error) {
-        console.log("Error in database connection:", error);
-        console.log("exiting process in db");
-        process.exit(1);
-    }
-}   
+  if (connectionStates.isConnected) {
+    return;
+  }
+  try {
+    console.log("connecting to DB");
+    let db = await mongoose.connect(process.env.MONGODB_URI);
+    connectionStates.isConnected = db.connection.readyState;
+  } catch (error) {
+    console.log("Error in database connection:", error);
+    console.log("exiting process in db");
+    process.exit(1);
+  }
+}
