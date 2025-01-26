@@ -27,7 +27,7 @@ const page = () => {
       return;
     }
     if (newPassword !== confirmPassword) {
-      seterror("password not match");
+      seterror("password is not matching");
       return;
     }
     const result = passwordSchema.safeParse(newPassword);
