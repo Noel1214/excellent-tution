@@ -23,7 +23,7 @@ const OtpInput = ({ otp, setotp, onVerifyOtp, email }) => {
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
               />
-              <p className="scale-75">Please check spam folder</p>
+              <p className="scale-75 text-center">Please check spam folder</p>
             </div>
             <button
               onClick={onVerifyOtp}
