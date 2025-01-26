@@ -13,17 +13,17 @@ export async function POST(req) {
     const subject = formData.get("subject");
     const education = formData.get("education");
 
+    const key = `teachers/${name}-${Date.now()}.avif`;
+
     const newTeacher = new Teacher({
       teacherName: name,
       subject: subject,
       education: education,
-      key: `teachers/${name}.avif`,
+      key: key,
     });
+    await newTeacher.save();
 
-    const savedTeacher = await newTeacher.save();
-
-    const url = await putObjectUrl(savedTeacher.teacherName, type);
-    console.log(url);
+    const url = await putObjectUrl(key, type);
 
     return NextResponse.json(
       {
