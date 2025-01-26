@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useInsertionEffect, useRef, useState } from "react";
 import Axios from "axios";
 import gsap from "gsap";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import { signUpSchema } from "@/zod/validationSchema";
+import OtpInput from "@/components/OtpInput";
 
 const Register = () => {
   const router = useRouter();
@@ -25,18 +26,25 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [isInputDisabled, setisInputDisabled] = useState(false);
+  const [showOtpInputBox, setshowOtpInputBox] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
+  const [validateOtp, setvalidateOtp] = useState(false);
+  const [otp, setotp] = useState("");
   const [error, seterror] = useState("");
 
   useEffect(() => {
     seterror("");
   }, [signUpData]);
 
+  //validate user
   const onSignUp = async () => {
+    setisInputDisabled(true);
+
     const result = signUpSchema.safeParse(signUpData);
     if (!result.success) {
-      console.log(result.error.issues[0].message);
       seterror(result.error.issues[0].message);
+      setisInputDisabled(false);
       return;
     }
 
@@ -46,15 +54,59 @@ const Register = () => {
     formData.append("password", signUpData.password);
 
     try {
-      const dataResponse = await Axios.post("/api/register", formData);
-      toast.success(dataResponse.data.message);
+      const res = await Axios.post("/api/register/validate-user", formData);
+
+      if (res.data.success) {
+        setshowOtpInputBox(true);
+      }
+      toast.success(res.data.message);
     } catch (error) {
+      setisInputDisabled(false);
       if (error.response.data.redirectTo) {
         router.push(error.response.data.redirectTo);
       }
       toast.error(error.response.data.message);
     }
   };
+
+  // validate otp
+  const onVerifyOtp = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("otp", otp);
+
+      const res = await Axios.post("/api/register/verify-otp", formData);
+      console.log(res.data);
+      if (res.data.success) {
+        setvalidateOtp(true);
+        setshowOtpInputBox(false);
+        // toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  // create user
+  useEffect(() => {
+    if (!validateOtp) return;
+    (async function () {
+      try {
+        const formData = new FormData();
+        formData.append("username", signUpData.username);
+        formData.append("email", signUpData.email);
+        formData.append("password", signUpData.password);
+
+        const res = await Axios.post("/api/register", formData);
+        if (res.data.success) {
+          toast.success(res.data.message);
+          router.push("/login");
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    })();
+  }, [validateOtp]);
 
   const toggleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -90,8 +142,12 @@ const Register = () => {
   }, []);
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center h-screen gap-1 overflow-y-hidden">
+    <div className="relative">
+      <div
+        className={`${
+          showOtpInputBox ? "blur-md" : ""
+        } flex flex-col items-center justify-center h-screen gap-1 overflow-y-hidden`}
+      >
         {/* SIGN UP */}
         <div
           className="flex flex-col gap-2 w-[19.5rem] min-h-[25rem] h-auto mt-10 bg-cyan-300 rounded-xl relative -top-[3.4rem]"
@@ -118,7 +174,8 @@ const Register = () => {
               onChange={(e) =>
                 setsignUpData({ ...signUpData, username: e.target.value })
               }
-              className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
+              disabled={isInputDisabled}
+              className="bg-white h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
           {/* Email INPUT */}
@@ -136,7 +193,8 @@ const Register = () => {
               onChange={(e) =>
                 setsignUpData({ ...signUpData, email: e.target.value })
               }
-              className="h-[2.3rem] mt-1 p-4 outline-none rounded-md"
+              disabled={isInputDisabled}
+              className="bg-white h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
           {/* PASSWORD INPUT */}
@@ -155,7 +213,8 @@ const Register = () => {
                 onChange={(e) =>
                   setsignUpData({ ...signUpData, password: e.target.value })
                 }
-                className="h-[2.2rem] w-[17rem] p-3 outline-none translate-x-1"
+                disabled={isInputDisabled}
+                className="bg-white h-[2.2rem] w-[17rem] p-3 outline-none translate-x-1"
               />
               {showPassword ? (
                 <BsEyeSlashFill
@@ -172,12 +231,11 @@ const Register = () => {
               )}
             </div>
           </div>
-
-          {/* LOGIN BUTTON */}
+          {/* REGISTER BUTTON  */}
           <div className="flex flex-col justify-center items-center w-full">
             {error && (
-              <p className="w-full px-3 mt-2 font-semibold text-red-600 text-balance text-center">
-                {error && error}
+              <p className="w-[14rem] text-center text-balance break-words scale-90 font-semibold text-red-600">
+                {error}
               </p>
             )}
             <button
@@ -195,6 +253,17 @@ const Register = () => {
           <Link href="/login">Login</Link>
         </div>
       </div>
+      {/* OTP INPUT BOX */}
+      {showOtpInputBox && (
+        <div className="absolute top-[50%] -translate-x-[50%] -translate-y-[80%] left-[50%] shadow-2xl shadow-gray-900 rounded-lg">
+          <OtpInput
+            otp={otp}
+            setotp={setotp}
+            onVerifyOtp={onVerifyOtp}
+            email={signUpData.email}
+          />
+        </div>
+      )}
     </div>
   );
 };
