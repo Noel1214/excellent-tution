@@ -5,12 +5,12 @@ import { IoCloseCircle } from "react-icons/io5";
 import { setAdmin } from "@/lib/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const page = () => {
   const [isAddTeacherVisible, setisAddTeacherVisible] = useState(false);
 
   const admin = useSelector((state) => state.user.isAdmin);
-  // console.log(admin);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -24,12 +24,12 @@ const page = () => {
       <div className="overflow-y-hidden">
         {isAddTeacherVisible ? (
           <div>
-            <div className="" onClick={toggleAddTeacher}>
+            <Link href="/home" onClick={toggleAddTeacher}>
               <IoCloseCircle
                 className="absolute right-[89vw] mt-2 ml-1"
                 size={24}
               />
-            </div>
+            </Link>
             <AddTeacherUi />
           </div>
         ) : (
