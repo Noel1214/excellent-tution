@@ -21,13 +21,11 @@ export async function POST(req) {
       throw new CustomError("user already exists!", 400, "/login");
     }
 
-    const otp = generateOtp();
-    console.log(otp);
-    
-    // const sendMailResponse = await sendMail(email, otp);
-    // if (!sendMailResponse.success) {
-    //   throw new CustomError("error try again later", 500);
-    // }
+    const otp = generateOtp();    
+    const sendMailResponse = await sendMail(email, otp);
+    if (!sendMailResponse.success) {
+      throw new CustomError("error try again later", 500);
+    }
 
     const salt = await bcrypt.genSalt(10);
     const hashedOtp = await bcrypt.hash(otp, salt);
