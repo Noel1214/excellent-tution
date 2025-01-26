@@ -1,4 +1,5 @@
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
@@ -23,14 +24,28 @@ const getObjectUrl = async (key) => {
   return url;
 };
 
-const putObjectUrl = async (filename, contentType) => {
+const putObjectUrl = async (key, contentType) => {
   const command = new PutObjectCommand({
     Bucket: process.env.AWS_BUCKET,
-    Key: `teachers/${filename}.avif`,
+    Key: key,
     ContentType: contentType,
   });
   const url = await getSignedUrl(s3Client, command);
   return url;
+};
+
+const deleteObjectInS3 = async (key) => {
+  try {
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.AWS_BUCKET,
+      Key: key,
+    });
+    await s3Client.send(command);
+    return { success: true };
+  } catch (error) {
+    console.log("error in deleteObjectInS3\n", error);
+    return { success: false };
+  }
 };
 
 const sendMail = async (email, otp) => {
@@ -55,4 +70,4 @@ const sendMail = async (email, otp) => {
   }
 };
 
-export { getObjectUrl, putObjectUrl, sendMail };
+export { getObjectUrl, putObjectUrl, sendMail, deleteObjectInS3 };
