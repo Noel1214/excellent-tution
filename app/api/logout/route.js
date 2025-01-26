@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export async function GET() {
   try {
-    const cookieStore = await cookies();
+    const cookieStore = cookies();
     cookieStore.delete("token");
 
     const response = NextResponse.json({
