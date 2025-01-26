@@ -22,7 +22,7 @@ export async function POST(req) {
     }
 
     const sendMailResponse = await sendMail(email, otp);
-    if(!sendMailResponse.success){
+    if (!sendMailResponse.success) {
       throw new CustomError("error try again later", 500);
     }
 
