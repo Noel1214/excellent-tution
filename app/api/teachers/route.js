@@ -15,10 +15,7 @@ export async function GET(req) {
         ...item.toObject(),
         imageUrl: imageUrl
       }
-    }))
-
-    // console.log(dataWithImages);
-    
+    }))    
 
     return NextResponse.json({
       message: "teachers request success",
