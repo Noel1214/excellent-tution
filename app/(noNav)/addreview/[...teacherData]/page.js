@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { IoCloseCircle } from "react-icons/io5";
-import { IoIosStar } from "react-icons/io";
+import { IoClose } from "react-icons/io5";import { IoIosStar } from "react-icons/io";
 import Link from "next/link";
 import Axios from "axios";
 import { useParams } from "next/navigation";
@@ -60,7 +59,7 @@ const ReviewPage = () => {
     <div className="flex flex-col gap-[3rem]">
       <Link href="/home">
         <div className="relative h-3">
-          <IoCloseCircle className="absolute left-[90vw] mt-2 -ml-1" size={24} />
+          <IoClose className="absolute left-[93vw] mt-6 -ml-1" size={32} />
         </div>
       </Link>
       <div className="flex flex-col items-center gap-9">
