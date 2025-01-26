@@ -15,9 +15,9 @@ export async function POST(req) {
     // checking for if user aldready exists
     const userChecker = await User.findOne({ email });
     if (userChecker) {
-      throw new CustomError("user already exists!", 400, "/login");
+      throw new CustomError("user already exists!", 400);
     }
-    
+
     //hashing password
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
@@ -32,7 +32,7 @@ export async function POST(req) {
 
     return NextResponse.json(
       {
-        message: "User created successfully",
+        message: "registered successfully",
         success: true,
       },
       { status: 200 }
@@ -40,10 +40,9 @@ export async function POST(req) {
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
-    const redirectTo = error.redirectTo;
 
     return NextResponse.json(
-      { success: false, message: message, redirectTo: redirectTo },
+      { success: false, message: message },
       { status: statusCode }
     );
   }
