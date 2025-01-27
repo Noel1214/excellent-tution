@@ -4,29 +4,29 @@ export async function middleware(req) {
   const pathName = req.nextUrl.pathname;
 
   if (pathName.startsWith("/addreview")) {
-    let cookie = req.cookies.get("token")?.value;
+    let cookie = await req.cookies.get("token")?.value;
     if (!cookie) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
   if (pathName.startsWith("/reviews")) {
-    let cookie = req.cookies.get("token")?.value;
+    let cookie = await req.cookies.get("token")?.value;
     if (!cookie) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
   if (pathName.startsWith("/login") || pathName.startsWith("/register")) {
-    let cookie = req.cookies.get("token")?.value;
+    let cookie = await req.cookies.get("token")?.value;
     if (cookie) {
       return NextResponse.redirect(new URL("/home", req.url));
     }
   }
 
-  if(pathName.startsWith("/verify-otp")){
+  if (pathName.startsWith("/verify-otp")) {
     const cookie = req.cookies.get("token")?.value;
-    if(cookie){
+    if (cookie) {
       return NextResponse.redirect(new URL("/home", req.url));
     }
   }
