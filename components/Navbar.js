@@ -8,15 +8,15 @@ import { IoMenu } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmin, setId, setLoginState } from "@/lib/features/user/userSlice";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-
   const router = useRouter();
   const dispatch = useDispatch();
-  
+
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  
+
   const showPopUpNav = useRef(false);
 
   const title = useRef([]);
@@ -24,13 +24,21 @@ const Navbar = () => {
   const popNav = useRef(null);
 
   const logoutHandler = async () => {
-    displayPopUpNav();
-    dispatch(setAdmin(false));
-    dispatch(setLoginState(false));
-    dispatch(setId(null));
-    let res = await axios.get("/api/logout");
-    console.log(res.data.message);
-    router.push("/");
+    try {
+      let res = await axios.get("/api/logout");
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+
+      displayPopUpNav();
+      dispatch(setAdmin(false));
+      dispatch(setLoginState(false));
+      dispatch(setId(null));
+      router.push("/");
+      
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   const displayPopUpNav = () => {
@@ -115,7 +123,11 @@ const Navbar = () => {
               )}
 
               {isAdmin && (
-                <Link href="/admin" onClick={displayPopUpNav} className="hover:bg-cyan-600">
+                <Link
+                  href="/admin"
+                  onClick={displayPopUpNav}
+                  className="hover:bg-cyan-600"
+                >
                   <button>Dashboard</button>
                 </Link>
               )}
