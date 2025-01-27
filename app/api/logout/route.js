@@ -1,18 +1,29 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import CustomError from "@/utils/errors";
 
 export async function GET() {
   try {
     const cookieStore = cookies();
-    cookieStore.delete("token");
+    const token = cookieStore.get("token")?.value;
 
-    const response = NextResponse.json({
+    if (token) {
+      throw new CustomError("already no login session found", 401);
+    }
+
+    return NextResponse.json({
       message: "logout successful",
       success: true,
     });
-    return response;
   } catch (error) {
-    console.log("Error in logout route");
-    console.log(error);
+    const statusCode = error.statusCode || 500;
+    const message = error.customMessage || "internal error";
+
+    console.log("error in logout route\n", error);
+
+    return NextResponse.json(
+      { message: message, success: false },
+      { status: statusCode }
+    );
   }
 }
