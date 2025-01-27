@@ -17,7 +17,7 @@ const Navbar = () => {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const showPopUpNav = useRef(false);
+  const [showPopUpNav, setshowPopUpNav] = useState(false);
 
   const title = useRef([]);
   const btn = useRef(null);
@@ -35,22 +35,31 @@ const Navbar = () => {
       dispatch(setLoginState(false));
       dispatch(setId(null));
       router.push("/");
-      
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
 
   const displayPopUpNav = () => {
-    if (showPopUpNav.current) {
+    if (showPopUpNav) {
       document.body.style.overflow = "auto";
-      showPopUpNav.current = false;
-      gsap.to(popNav.current, { x: -890, opacity: 1, duration: 0.8 });
+      gsap.to(popNav.current, {
+        x: -1400,
+        opacity: 1,
+        duration: 0.5,
+        onComplete: () => {
+          setshowPopUpNav(false);
+        },
+      });
       return;
     }
-    showPopUpNav.current = true;
+    setshowPopUpNav(true);
     document.body.style.overflow = "hidden";
-    gsap.to(popNav.current, { x: 0, opacity: 1, duration: 0.8 });
+    gsap.fromTo(
+      popNav.current,
+      { x: -1400 },
+      { x: -1, opacity: 1, duration: 0.5 }
+    );
     return;
   };
 
@@ -78,7 +87,7 @@ const Navbar = () => {
             <Link href="/home">Excellent Tution Center</Link>
           </h1>
           <button
-            onClick={() => displayPopUpNav()}
+            onClick={displayPopUpNav}
             ref={btn}
             className="flex items-center justify-center"
           >
@@ -86,9 +95,11 @@ const Navbar = () => {
               <IoMenu className="menu-icon rounded-2xl" size={35} />
             </div>
           </button>
-
+          {/* popNav */}
           <div
-            className={`popNav sm:-translate-x-[64vw] flex flex-col justify-center absolute top-0 h-screen w-screen sm:w-[60vw] bg-cyan-500 z-40`}
+            className={`popNav ${
+              showPopUpNav ? "" : "hidden"
+            } flex flex-col justify-center absolute top-0 h-screen w-screen sm:w-[60vw] bg-cyan-500 z-40`}
             ref={popNav}
           >
             <ul className="w-[50vw] sm:w-[40vw] flex flex-col p-6 gap-3 font-bold text-cyan-50 translate-x-[4rem] -translate-y-[8rem] text-2xl">
@@ -136,7 +147,7 @@ const Navbar = () => {
             <MdClose
               size={37}
               className="absolute top-[1rem] right-[1rem] text-cyan-50 font-bold"
-              onClick={() => displayPopUpNav()}
+              onClick={displayPopUpNav}
             />
           </div>
         </div>
