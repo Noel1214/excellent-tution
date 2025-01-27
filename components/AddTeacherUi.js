@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 const AddTeacherUi = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
-  const [putImageUrl, setputImageUrl] = useState(null);
   const [name, setname] = useState("");
   const [subject, setsubject] = useState("");
   const [education, seteducation] = useState("");
@@ -25,7 +24,7 @@ const AddTeacherUi = () => {
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
-      console.error("Please select a file to upload.");
+      toast.error("Please select a file to upload");
       return;
     }
     URL.revokeObjectURL(imagePreview);
@@ -41,7 +40,6 @@ const AddTeacherUi = () => {
       console.log(res.data);
       if (res.data.url) {
         const awsRes = await axios.put(res.data.url, selectedFile);
-        console.log(awsRes);
       }
       toast.success("image uploaded");
     } catch (error) {
