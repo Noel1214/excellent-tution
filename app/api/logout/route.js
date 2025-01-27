@@ -7,9 +7,11 @@ export async function GET() {
     const cookieStore = cookies();
     const token = cookieStore.get("token")?.value;
 
-    if (token) {
-      throw new CustomError("already no login session found", 401);
+    if (!token) {
+      throw new CustomError("No login session found", 401);
     }
+
+    cookieStore.delete("token");
 
     return NextResponse.json({
       message: "logout successful",
