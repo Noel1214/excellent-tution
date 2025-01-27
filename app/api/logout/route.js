@@ -18,7 +18,6 @@ export async function GET() {
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
-
     console.log("error in logout route\n", error);
 
     return NextResponse.json(
