@@ -11,7 +11,6 @@ const TeacherCard = (props) => {
   const teacherCardRef = useRef(null);
   const [data, setdata] = useState(props.data);
   const isAdmin = useSelector((state) => state.user.isAdmin);
-  
   const onDelete = async () => {
     try {
       const res = await Axios.delete(`api/delete-teacher/${data._id}`);
@@ -20,7 +19,7 @@ const TeacherCard = (props) => {
     } catch (error) {
       toast.success(error.response.data.message);
     }
-  }
+  };
 
   useEffect(() => {
     gsap.fromTo(
@@ -36,12 +35,13 @@ const TeacherCard = (props) => {
       ref={teacherCardRef}
     >
       <div className="DetailsCard bg-cyan-200 min-h-[20rem] h-auto min-w-[18rem] flex flex-col gap-2 pb-5 items-center rounded-xl shadow-2xl">
-        <div className="TeacherImage flex justify-center mt-4 mb-0 p-2 min-h-[12rem] rounded-xl overflow-hidden">
+        <div className="TeacherImage flex justify-center mt-4 mb-0 p-2 h-[12rem] rounded-xl overflow-hidden">
           <Image
             src={data.imageUrl}
+            alt="Teacher Image"
             width={265}
             height={190}
-            alt="Teacher Image"
+            style={{ objectFit: "cover" }}
             className="min-h-[12rem] min-w-full rounded-xl border-2"
           />
         </div>
@@ -56,11 +56,16 @@ const TeacherCard = (props) => {
             Review
           </button>
         </Link>
-        {isAdmin && <div>
-          <button onClick={onDelete} className="bg-red-400 w-[14rem] h-[2rem] rounded-xl flex justify-center items-center font-semibold p-2 mt-2">
-            Delete
-          </button>
-        </div>}
+        {isAdmin && (
+          <div>
+            <button
+              onClick={onDelete}
+              className="bg-red-400 w-[14rem] h-[2rem] rounded-xl flex justify-center items-center font-semibold p-2 mt-2"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
