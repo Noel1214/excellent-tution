@@ -17,7 +17,7 @@ const ConfirmationBox = ({
   return (
     <div>
       <div className="w-[20rem] mx-auto p-6 rounded-lg shadow-lg bg-white">
-        <h2 className="text-center mb-6 font-semibold text-gray-800 bg-slate-500">
+        <h2 className="text-center mb-6 font-semibold text-gray-800">
           Send OTP to {email}
         </h2>
         <div className="w-full flex justify-center">
