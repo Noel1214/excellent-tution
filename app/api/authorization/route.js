@@ -9,9 +9,18 @@ export async function GET(req) {
   await connect();
   try {
     const cookieStore = cookies();
-    const token = cookieStore.get("token")?.value;
+    const token = await cookieStore.get("token")?.value;
     if (!token) {
-      throw new CustomError("not logged in", 401);
+      // throw new CustomError("not logged in", 401);
+      return NextResponse.json(
+        {
+          message: "success",
+          isAdmin: false,
+          isLoggedIn: false,
+          id: "",
+        },
+        { status: 200 }
+      );
     }
 
     const tokenData = jwt.verify(token, process.env.JWT_SECRET);
@@ -21,7 +30,7 @@ export async function GET(req) {
       throw new CustomError("no user found", 404);
     }
 
-    const response = NextResponse.json(
+    return NextResponse.json(
       {
         message: "success",
         isAdmin: user.isAdmin,
@@ -30,7 +39,6 @@ export async function GET(req) {
       },
       { status: 200 }
     );
-    return response;
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
