@@ -11,9 +11,9 @@ import { sendMail } from "@/utils/awsClient";
 export async function POST(req) {
   await connect();
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const formData = await req.formData();
-    const email = formData.get("email");    
+    const email = formData.get("email");
 
     // checking for if user aldready exists
     const userChecker = await User.findOne({ email });
@@ -21,7 +21,7 @@ export async function POST(req) {
       throw new CustomError("user already exists!", 400, "/login");
     }
 
-    const otp = generateOtp();    
+    const otp = generateOtp();
     const sendMailResponse = await sendMail(email, otp);
     if (!sendMailResponse.success) {
       throw new CustomError("error try again later", 500);
@@ -37,7 +37,10 @@ export async function POST(req) {
       expiresIn: expiry,
     });
 
-    cookieStore.set("registration-token", token, { maxAge: expiry, httpOnly: true });
+    cookieStore.set("registration-token", token, {
+      maxAge: expiry,
+      httpOnly: true,
+    });
 
     return NextResponse.json(
       {
