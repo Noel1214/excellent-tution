@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaStar } from "react-icons/fa";
-import gsap from "gsap";
 import Image from "next/image";
-import { MdDelete } from "react-icons/md";
 import axios from "axios";
+import gsap from "gsap";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
 
 const ReviewCard = (props) => {
   const [data, setdata] = useState(props.data);
