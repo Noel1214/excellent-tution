@@ -1,14 +1,15 @@
 "use client";
 import React, { useEffect, useInsertionEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signUpSchema } from "@/zod/validationSchema";
 import Axios from "axios";
 import gsap from "gsap";
 import toast from "react-hot-toast";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
-import { signUpSchema } from "@/zod/validationSchema";
+import { IoEyeSharp } from "react-icons/io5";
 import OtpInput from "@/components/OtpInput";
+import LoadingCircle from "@/components/LoadingCircle";
 
 const Register = () => {
   const router = useRouter();
@@ -26,9 +27,10 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const [isInputDisabled, setisInputDisabled] = useState(false);
+  const [clicked, setclicked] = useState(false);
   const [showOtpInputBox, setshowOtpInputBox] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
+  const [showLoading, setshowLoading] = useState(false);
   const [validateOtp, setvalidateOtp] = useState(false);
   const [otp, setotp] = useState("");
   const [error, seterror] = useState("");
@@ -39,12 +41,14 @@ const Register = () => {
 
   //validate user
   const onSignUp = async () => {
-    setisInputDisabled(true);
+    setclicked(true);
+    setshowLoading(true);
 
     const result = signUpSchema.safeParse(signUpData);
     if (!result.success) {
       seterror(result.error.issues[0].message);
-      setisInputDisabled(false);
+      setclicked(false);
+      setshowLoading(false);
       return;
     }
 
@@ -56,12 +60,13 @@ const Register = () => {
     try {
       const res = await Axios.post("/api/register/validate-user", formData);
 
-      if (res.data.success) {
-        setshowOtpInputBox(true);
-      }
       toast.success(res.data.message);
+      setshowLoading(false);
+      setshowOtpInputBox(true);
+      setclicked(false);
     } catch (error) {
-      setisInputDisabled(false);
+      setclicked(false);
+      setshowLoading(false);
       if (error.response.data.redirectTo) {
         router.push(error.response.data.redirectTo);
       }
@@ -71,18 +76,18 @@ const Register = () => {
 
   // validate otp
   const onVerifyOtp = async () => {
+    setshowLoading(true);
     try {
       const formData = new FormData();
       formData.append("otp", otp);
 
       const res = await Axios.post("/api/register/verify-otp", formData);
-      console.log(res.data);
-      if (res.data.success) {
-        setvalidateOtp(true);
-        setshowOtpInputBox(false);
-        // toast.success(res.data.message);
-      }
+
+      toast.success(res.data.message);
+      setshowOtpInputBox(false);
+      setvalidateOtp(true);
     } catch (error) {
+      setshowLoading(false);
       toast.error(error.response.data.message);
     }
   };
@@ -90,6 +95,7 @@ const Register = () => {
   // create user
   useEffect(() => {
     if (!validateOtp) return;
+    setshowLoading(true);
     (async function () {
       try {
         const formData = new FormData();
@@ -98,11 +104,12 @@ const Register = () => {
         formData.append("password", signUpData.password);
 
         const res = await Axios.post("/api/register", formData);
-        if (res.data.success) {
-          toast.success(res.data.message);
-          router.push("/login");
-        }
+
+        toast.success(res.data.message);
+        setshowLoading(false);
+        router.push("/login");
       } catch (error) {
+        setshowLoading(false);
         toast.error(error.response.data.message);
       }
     })();
@@ -144,8 +151,8 @@ const Register = () => {
   return (
     <div className="relative">
       <div
-        className={`${
-          showOtpInputBox ? "blur-md" : ""
+        className={`${showOtpInputBox ? "blur-md" : ""} ${
+          showLoading ? "blur-md" : ""
         } flex flex-col items-center justify-center h-screen gap-1 overflow-y-hidden`}
       >
         {/* SIGN UP */}
@@ -169,12 +176,12 @@ const Register = () => {
             </label>
             <input
               type="text"
+              disabled={clicked}
               placeholder="username"
               value={signUpData.username}
               onChange={(e) =>
                 setsignUpData({ ...signUpData, username: e.target.value })
               }
-              disabled={isInputDisabled}
               className="bg-white h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
@@ -188,12 +195,12 @@ const Register = () => {
             </label>
             <input
               type="text"
+              disabled={clicked}
               placeholder="example@gmail.com"
               value={signUpData.email}
               onChange={(e) =>
                 setsignUpData({ ...signUpData, email: e.target.value })
               }
-              disabled={isInputDisabled}
               className="bg-white h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
@@ -208,12 +215,12 @@ const Register = () => {
             <div className="flex mt-1 w-[17rem] h-[2.4rem] bg-white justify-between rounded-md">
               <input
                 type={showPassword ? "text" : "password"}
+                disabled={clicked}
                 placeholder="password"
                 value={signUpData.password}
                 onChange={(e) =>
                   setsignUpData({ ...signUpData, password: e.target.value })
                 }
-                disabled={isInputDisabled}
                 className="bg-white h-[2.2rem] w-[17rem] p-3 outline-none translate-x-1"
               />
               {showPassword ? (
@@ -241,8 +248,8 @@ const Register = () => {
             <button
               type="button"
               className="my-4 w-[6rem] h-[2rem] bg-cyan-200 hover:bg-cyan-500 rounded-lg"
-              onClick={onSignUp}
               ref={signInButton}
+              onClick={onSignUp}
             >
               Sign in
             </button>
@@ -255,13 +262,22 @@ const Register = () => {
       </div>
       {/* OTP INPUT BOX */}
       {showOtpInputBox && (
-        <div className="absolute top-[50%] -translate-x-[50%] -translate-y-[80%] left-[50%] shadow-2xl shadow-gray-900 rounded-lg">
+        <div
+          className={`${
+            showLoading ? "blur-md" : ""
+          } absolute top-[50%] -translate-x-[50%] -translate-y-[80%] left-[50%] shadow-2xl shadow-gray-900 rounded-lg`}
+        >
           <OtpInput
             otp={otp}
             setotp={setotp}
             onVerifyOtp={onVerifyOtp}
             email={signUpData.email}
           />
+        </div>
+      )}
+      {showLoading && (
+        <div className="absolute z-20 top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
+          <LoadingCircle />
         </div>
       )}
     </div>
