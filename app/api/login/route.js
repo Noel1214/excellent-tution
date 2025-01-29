@@ -1,9 +1,9 @@
 import User from "@/models/userModel";
 import { connect } from "@/dbconfig/dbconfig";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 import CustomError from "@/utils/errors";
 
 export async function POST(req) {
@@ -52,6 +52,7 @@ export async function POST(req) {
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
+    console.log("error in login route\n", error);
 
     return NextResponse.json(
       { message: message, success: false },
