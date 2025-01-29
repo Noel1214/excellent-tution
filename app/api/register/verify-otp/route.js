@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get("registration-token")?.value;
     const tokenData = jwt.verify(token, process.env.JWT_SECRET);
     const formData = await req.formData();
