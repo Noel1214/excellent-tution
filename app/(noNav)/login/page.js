@@ -39,13 +39,14 @@ const Login = () => {
   }, [userData]);
 
   const onLogin = async () => {
-    if (clicked) return;
     setclicked(true);
+    setshowLoading(true);
 
     const result = loginSchema.safeParse(userData);
     if (!result.success) {
       seterror(result.error.issues[0].message);
       setclicked(false);
+      setshowLoading(false);
       return;
     }
 
@@ -59,11 +60,9 @@ const Login = () => {
       dispatch(setLoginState(res.data.isLoggedIn || false));
       dispatch(setAdmin(res.data.isAdmin || false));
       dispatch(setId(res.data.id || null));
-
-      if (res.data.success) {
-        toast.success(res.data.message);
-      }
+      toast.success(res.data.message);
       setclicked(false);
+      setshowLoading(false);
       if (res.data.isLoggedIn) {
         router.push("/home");
       }
@@ -73,6 +72,7 @@ const Login = () => {
       dispatch(setId(""));
       toast.error(error.response.data.message);
       setclicked(false);
+      setshowLoading(false);
     }
   };
 
@@ -101,8 +101,8 @@ const Login = () => {
       router.push("/verify-otp");
     } catch (error) {
       setclicked(false);
-      console.log(error);
-      toast.error(error.response.data.message);
+      setshowLoading(false);
+      toast.error(error.response.data.message || "network error");
     }
   };
 
