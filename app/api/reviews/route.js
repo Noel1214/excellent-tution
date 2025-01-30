@@ -13,7 +13,7 @@ export async function GET() {
   let reviews = [];
 
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
 
     if (!token) {
