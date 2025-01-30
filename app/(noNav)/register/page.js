@@ -277,7 +277,7 @@ const Register = () => {
       )}
       {showLoading && (
         <div className="absolute z-20 top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
-          <LoadingCircle />
+          <LoadingCircle text="Processing..." />
         </div>
       )}
     </div>
