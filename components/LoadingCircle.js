@@ -1,7 +1,7 @@
 import React from "react";
 import "../app/globals.css";
 
-const LoadingCircle = () => {
+const LoadingCircle = ({ text }) => {
   return (
     <div className="h-[7rem] w-[7rem] p-5 rounded-lg scale-90 flex flex-col items-center justify-center bg-white shadow-2xl">
       <div className="loader">
@@ -18,7 +18,7 @@ const LoadingCircle = () => {
         <div className="bar11"></div>
         <div className="bar12"></div>
       </div>
-      <h1 className="font-semibold translate-x-1 ">Loading...</h1>
+      <h1 className="font-semibold translate-x-1  text-center">{text}...</h1>
     </div>
   );
 };
