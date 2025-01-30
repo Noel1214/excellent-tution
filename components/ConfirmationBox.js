@@ -9,7 +9,7 @@ const ConfirmationBox = ({
   showConfirmationBox = false,
   text = "",
 }) => {
-  const confirm = async () => {
+  const confirm = () => {
     document.body.style.overflow = "auto";
     setconfirmed(true);
     setclicked(true);
