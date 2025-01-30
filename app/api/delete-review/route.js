@@ -3,21 +3,17 @@ import { connect } from "@/dbconfig/dbconfig";
 import Reviews from "@/models/reviewModel";
 import CustomError from "@/utils/errors";
 
-export async function DELETE(req) {
+export async function DELETE(req, { params }) {
   await connect();
   try {
-    const item = await req.json();
-    console.log(item);
-    
-    // const formData = await req.formData();
-    // const reviewID = formData.get("id");
-    // console.log(reviewID);
+    const reviewID = await params.reviewID;
+    console.log(reviewID);
 
     // if (!reviewID) {
     //   throw new CustomError("review not found", 401);
     // }
 
-    // await Reviews.findOneAndDelete({ _id: reviewID });
+    // await Reviews.findByIdAndDelete(reviewID);
 
     return NextResponse.json(
       {
