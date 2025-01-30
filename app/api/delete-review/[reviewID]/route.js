@@ -6,13 +6,10 @@ import CustomError from "@/utils/errors";
 export async function DELETE(req, { params }) {
   await connect();
   try {
-    const reviewID = params.reviewID;
-
-    if (!reviewID) {
-      throw new CustomError("review not found", 401);
-    }
-
-    await Reviews.findByIdAndDelete(reviewID);
+    const reviewID = await params.reviewID;
+    console.log(reviewID);
+    console.log("this is rotue ");
+    
 
     return NextResponse.json(
       {
