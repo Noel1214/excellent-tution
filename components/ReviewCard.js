@@ -11,6 +11,7 @@ const ReviewCard = (props) => {
   const [data, setdata] = useState(props.data);
   const [stars, setstars] = useState([]);
   const [enableDelete, setenableDelete] = useState(false);
+  const [itemTodelete, setitemTodelete] = useState("");
 
   const LoggedInUsersId = useSelector((state) => state.user.id);
   const isAdmin = useSelector((state) => state.user.isAdmin);
@@ -19,18 +20,20 @@ const ReviewCard = (props) => {
 
   const handleDelete = async () => {
     props.setshowConfirmationBox(true);
+    setitemTodelete(data._id);
   };
 
   useEffect(() => {
     if (!props.confirmed) return;
-    props.setconfirmed(false);
+    if (itemTodelete === "") return;
 
     (async function () {
       try {
-        let res = await axios.delete(`/api/delete-review/${data._id}`);
+        console.log("running delte id ", itemTodelete);
+        let res = await axios.delete(`/api/delete-review/${itemTodelete}`);
         toast.success(res.data.message);
         props.setshowLoading(false);
-        // window.location.reload();
+        window.location.reload();
       } catch (error) {
         toast.error(error.response.data.message);
         props.setshowLoading(false);
