@@ -62,10 +62,10 @@ const Login = () => {
       dispatch(setId(res.data.id || null));
       toast.success(res.data.message);
       setclicked(false);
-      setshowLoading(false);
       if (res.data.isLoggedIn) {
         router.push("/home");
       }
+      setshowLoading(false);
     } catch (error) {
       dispatch(setAdmin(false));
       dispatch(setLoginState(false));
