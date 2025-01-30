@@ -1,0 +1,42 @@
+import { NextResponse } from "next/server";
+import { connect } from "@/dbconfig/dbconfig";
+import Reviews from "@/models/reviewModel";
+import CustomError from "@/utils/errors";
+
+export async function DELETE(req) {
+  await connect();
+  try {
+    const item = await req.json();
+    console.log(item);
+    
+    // const formData = await req.formData();
+    // const reviewID = formData.get("id");
+    // console.log(reviewID);
+
+    // if (!reviewID) {
+    //   throw new CustomError("review not found", 401);
+    // }
+
+    // await Reviews.findOneAndDelete({ _id: reviewID });
+
+    return NextResponse.json(
+      {
+        message: "Review deleted successfully",
+        success: true,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    const message = error.customMessage || "internal error";
+    console.log("error in delete-review\n", error);
+
+    return NextResponse.json(
+      {
+        message: message,
+        success: false,
+      },
+      { status: statusCode }
+    );
+  }
+}
