@@ -8,8 +8,9 @@ import CustomError from "@/utils/errors";
 export async function GET(req) {
   await connect();
   try {
-    const cookieStore = cookies();
-    const token = await cookieStore.get("token")?.value;
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    
     if (!token) {
       // throw new CustomError("not logged in", 401);
       return NextResponse.json(
