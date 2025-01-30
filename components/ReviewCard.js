@@ -29,7 +29,6 @@ const ReviewCard = (props) => {
 
     (async function () {
       try {
-        console.log("running delte id ", itemTodelete);
         let res = await axios.delete(`/api/delete-review/${itemTodelete}`);
         toast.success(res.data.message);
         props.setshowLoading(false);
