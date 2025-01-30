@@ -23,20 +23,19 @@ const ReviewCard = (props) => {
 
   useEffect(() => {
     if (!props.confirmed) return;
+    props.setconfirmed(false);
 
     (async function () {
       try {
         let res = await axios.delete(`/api/delete-review/${data._id}`);
         toast.success(res.data.message);
         props.setshowLoading(false);
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         toast.error(error.response.data.message);
         props.setshowLoading(false);
       }
     })();
-
-    props.setconfirmed(false);
   }, [props.confirmed]);
 
   useEffect(() => {
