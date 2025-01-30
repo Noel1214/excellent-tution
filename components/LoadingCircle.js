@@ -1,7 +1,7 @@
 import React from "react";
 import "../app/globals.css";
 
-const LoadingCircle = ({ text }) => {
+const LoadingCircle = ({ text="Loading" }) => {
   return (
     <div className="h-[7rem] w-[7rem] p-5 rounded-lg scale-90 flex flex-col items-center justify-center bg-white shadow-2xl">
       <div className="loader">
