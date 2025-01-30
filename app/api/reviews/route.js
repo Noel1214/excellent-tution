@@ -16,12 +16,12 @@ export async function GET() {
     const cookieStore = cookies();
     const token = cookieStore.get("token")?.value;
 
-    if(!token){
+    if (!token) {
       throw new CustomError("not logged in", 400);
     }
 
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    if(!email){
+    if (!email) {
       throw new CustomError("invalid credentials", 401);
     }
 
@@ -29,19 +29,20 @@ export async function GET() {
       .sort({ _id: -1 }) // Sort reviews by ID in descending order
       .populate({
         path: "teacherId", // The field in the Reviews schema to populate
-        model: Teacher,   // The model to populate from
+        model: Teacher, // The model to populate from
         select: "teacherName key", // Fields to include from the Teacher model
       });
 
-    const reviewsWithImageData = await Promise.all(reviews.map(async (item) => {
-      const imageUrl = await getObjectUrl(item.teacherId.key);
-      return {
-        ...item.toObject(),
-        imageUrl: imageUrl
-      }
-    }))
+    const reviewsWithImageData = await Promise.all(
+      reviews.map(async (item) => {
+        const imageUrl = await getObjectUrl(item.teacherId.key);
+        return {
+          ...item.toObject(),
+          imageUrl: imageUrl,
+        };
+      })
+    );
     // console.log(reviewsWithImageData);
-    
 
     return NextResponse.json({
       message: "successfully retrieved reviews",
@@ -49,17 +50,16 @@ export async function GET() {
       reviews: reviewsWithImageData,
     });
   } catch (error) {
-    console.log("error in reviwes route");
-
     const statusCode = error.statusCode || 500;
-    const errorMessage = error.message || "internal server error";
+    const errorMessage = error.message || "internal error";
+    console.log("error in reviwes route\n", error);
 
-    console.log(error.message);
-    console.log(error);
-
-    return NextResponse.json({
-      message: errorMessage,
-      success: false,
-    }, { status: statusCode});
+    return NextResponse.json(
+      {
+        message: errorMessage,
+        success: false,
+      },
+      { status: statusCode }
+    );
   }
 }
