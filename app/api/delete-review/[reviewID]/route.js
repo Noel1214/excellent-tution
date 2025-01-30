@@ -7,9 +7,12 @@ export async function DELETE(req, { params }) {
   await connect();
   try {
     const reviewID = await params.reviewID;
-    console.log(reviewID);
-    console.log("this is rotue ");
-    
+
+    if (!reviewID) {
+      throw new CustomError("review not found", 401);
+    }
+
+    await Reviews.findOneAndDelete({ _id: reviewID });
 
     return NextResponse.json(
       {
