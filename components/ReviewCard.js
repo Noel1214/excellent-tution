@@ -29,6 +29,7 @@ const ReviewCard = (props) => {
         let res = await axios.delete(`/api/delete-review/${data._id}`);
         toast.success(res.data.message);
         props.setshowLoading(false);
+        window.location.reload();
       } catch (error) {
         toast.error(error.response.data.message);
         props.setshowLoading(false);
