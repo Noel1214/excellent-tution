@@ -37,7 +37,7 @@ export async function POST(req) {
     // setting cookie
     cookieStore.set("token", token, { maxAge: expiry, httpOnly: true });
 
-    const response = NextResponse.json(
+    return NextResponse.json(
       {
         message: "Login successful",
         success: true,
@@ -47,8 +47,6 @@ export async function POST(req) {
       },
       { status: 200 }
     );
-    return response;
-
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.customMessage || "internal error";
