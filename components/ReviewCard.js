@@ -28,7 +28,7 @@ const ReviewCard = (props) => {
     (state) => state.displayConfirmAndLoading.isConfirmed
   );
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     document.body.style.overflow = "hidden";
     setitemTodelete(data._id);
     dispatch(setShowConfirmationBox(true));
@@ -37,6 +37,8 @@ const ReviewCard = (props) => {
   useEffect(() => {
     if (!isConfirmed) return;
     if (itemTodelete === "") return;
+    setitemTodelete("");
+    dispatch(setConfirmed(false));
 
     (async function () {
       try {
@@ -44,9 +46,7 @@ const ReviewCard = (props) => {
         toast.success(res.data.message);
         window.location.reload();
         dispatch(setShowLoadingScreen(false));
-        dispatch(setConfirmed(false));
       } catch (error) {
-        dispatch(setConfirmed(false));
         toast.error(error.response.data.message);
         props.setshowLoading(false);
       }
