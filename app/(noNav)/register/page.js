@@ -93,7 +93,7 @@ const Register = () => {
       setshowOtpInputBox(false);
       setotpValidated(true);
     } catch (error) {
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
       toast.error(error.response.data.message);
     }
   };
@@ -101,7 +101,7 @@ const Register = () => {
   // Registering user
   useEffect(() => {
     if (!otpValidated) return;
-    otpValidated(false);
+    setotpValidated(false);
 
     (async function () {
       try {
