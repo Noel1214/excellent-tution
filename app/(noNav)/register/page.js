@@ -1,18 +1,21 @@
 "use client";
-import React, { useEffect, useInsertionEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signUpSchema } from "@/zod/validationSchema";
 import Axios from "axios";
 import gsap from "gsap";
 import toast from "react-hot-toast";
+import { signUpSchema } from "@/zod/validationSchema";
 import { BsEyeSlashFill } from "react-icons/bs";
 import { IoEyeSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowLoadingScreen } from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
 import OtpInput from "@/components/OtpInput";
 import LoadingCircle from "@/components/LoadingCircle";
 
 const Register = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const mainDiv = useRef(null);
   const signIn = useRef(null);
@@ -30,10 +33,13 @@ const Register = () => {
   const [clicked, setclicked] = useState(false);
   const [showOtpInputBox, setshowOtpInputBox] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
-  const [showLoading, setshowLoading] = useState(false);
-  const [validateOtp, setvalidateOtp] = useState(false);
+  const [otpValidated, setotpValidated] = useState(false);
   const [otp, setotp] = useState("");
   const [error, seterror] = useState("");
+
+  const showLoading = useSelector(
+    (state) => state.displayConfirmAndLoading.showLoadingScreen
+  );
 
   useEffect(() => {
     seterror("");
@@ -42,13 +48,13 @@ const Register = () => {
   //validate user
   const onSignUp = async () => {
     setclicked(true);
-    setshowLoading(true);
+    dispatch(setShowLoadingScreen(true));
 
     const result = signUpSchema.safeParse(signUpData);
     if (!result.success) {
       seterror(result.error.issues[0].message);
       setclicked(false);
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
       return;
     }
 
@@ -61,12 +67,12 @@ const Register = () => {
       const res = await Axios.post("/api/register/validate-user", formData);
 
       toast.success(res.data.message);
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
       setshowOtpInputBox(true);
-      setclicked(false);
+      // setclicked(false);
     } catch (error) {
       setclicked(false);
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
       if (error.response.data.redirectTo) {
         router.push(error.response.data.redirectTo);
       }
@@ -76,7 +82,7 @@ const Register = () => {
 
   // validate otp
   const onVerifyOtp = async () => {
-    setshowLoading(true);
+    dispatch(setShowLoadingScreen(true));
     try {
       const formData = new FormData();
       formData.append("otp", otp);
@@ -85,17 +91,18 @@ const Register = () => {
 
       toast.success(res.data.message);
       setshowOtpInputBox(false);
-      setvalidateOtp(true);
+      setotpValidated(true);
     } catch (error) {
       setshowLoading(false);
       toast.error(error.response.data.message);
     }
   };
 
-  // create user
+  // Registering user
   useEffect(() => {
-    if (!validateOtp) return;
-    setshowLoading(true);
+    if (!otpValidated) return;
+    otpValidated(false);
+
     (async function () {
       try {
         const formData = new FormData();
@@ -106,14 +113,14 @@ const Register = () => {
         const res = await Axios.post("/api/register", formData);
 
         toast.success(res.data.message);
-        setshowLoading(false);
+        dispatch(setShowLoadingScreen(false));
         router.push("/login");
       } catch (error) {
-        setshowLoading(false);
+        dispatch(setShowLoadingScreen(false));
         toast.error(error.response.data.message);
       }
     })();
-  }, [validateOtp]);
+  }, [otpValidated]);
 
   const toggleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -151,8 +158,8 @@ const Register = () => {
   return (
     <div className="relative">
       <div
-        className={`${showOtpInputBox ? "blur-md" : ""} ${
-          showLoading ? "blur-md" : ""
+        className={`${
+          showOtpInputBox || showLoading ? "blur-md" : ""
         } flex flex-col items-center justify-center h-screen gap-1 overflow-y-hidden`}
       >
         {/* SIGN UP */}
