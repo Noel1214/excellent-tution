@@ -73,10 +73,11 @@ const Login = () => {
       dispatch(setAdmin(res.data.isAdmin || false));
       dispatch(setId(res.data.id || null));
       toast.success(res.data.message);
-      // setclicked(false);
+      setclicked(false);
       if (res.data.isLoggedIn) {
         router.push("/home");
       }
+      window.location.reload();
       dispatch(setShowLoadingScreen(false));
     } catch (error) {
       dispatch(setAdmin(false));
@@ -114,7 +115,7 @@ const Login = () => {
 
         dispatch(setEmail(userData.email));
         dispatch(setShowLoadingScreen(false));
-        // setclicked(false);
+        setclicked(false);
         router.push("/verify-otp");
       } catch (error) {
         setclicked(false);
