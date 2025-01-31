@@ -17,6 +17,7 @@ const ReviewPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const [clicked, setclicked] = useState(false);
   const [review, setreview] = useState("");
   const [stars, setstars] = useState([false, false, false, false, false]);
   const [rating, setrating] = useState(0);
@@ -50,6 +51,8 @@ const ReviewPage = () => {
   };
 
   const submitHandler = async () => {
+    if (clicked) return;
+    setclicked(true);
     dispatch(setShowLoadingScreen(true));
     try {
       if (review === "") {
