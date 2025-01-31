@@ -29,6 +29,7 @@ const ReviewCard = (props) => {
   );
 
   const handleDelete = async () => {
+    document.body.style.overflow = "hidden";
     setitemTodelete(data._id);
     dispatch(setShowConfirmationBox(true));
   };
