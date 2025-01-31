@@ -66,7 +66,7 @@ const Reviews = () => {
         </div>
       </div>
       {showLoading && (
-        <div className="absolute z-20 top-[45%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
+        <div className="fixed z-20 top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
           <LoadingCircle text="deleting" />
         </div>
       )}
