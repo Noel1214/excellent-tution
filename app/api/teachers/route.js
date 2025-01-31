@@ -27,7 +27,7 @@ export async function GET(req) {
     console.log(error);
 
     return NextResponse.json({
-      message: "teachers request failed",
+      message: "internal error",
       success: false,
       error: error,
     }, {status: 500});
