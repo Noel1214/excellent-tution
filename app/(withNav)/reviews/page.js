@@ -71,7 +71,7 @@ const Reviews = () => {
         </div>
       )}
       {showConfirmationBox && (
-        <div className="absolute top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl  rounded-lg">
+        <div className="fixed top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl  rounded-lg">
           <ConfirmationBox text="Are you sure you want to delete this? " />
         </div>
       )}
