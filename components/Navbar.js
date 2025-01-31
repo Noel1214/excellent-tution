@@ -14,6 +14,8 @@ const Navbar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const [clicked, setclicked] = useState(false);
+
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -24,6 +26,8 @@ const Navbar = () => {
   const popNav = useRef(null);
 
   const logoutHandler = async () => {
+    if (clicked) return;
+    setclicked(true);
     try {
       let res = await axios.get("/api/logout");
       if (res.data.success) {
