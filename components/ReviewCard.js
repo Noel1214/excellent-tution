@@ -3,11 +3,20 @@ import Image from "next/image";
 import axios from "axios";
 import gsap from "gsap";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import { MdDelete } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setShowConfirmationBox,
+  setShowLoadingScreen,
+  setConfirmed,
+} from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
 
 const ReviewCard = (props) => {
+  const dispatch = useDispatch();
+
+  const reviewCardRef = useRef(null);
+
   const [data, setdata] = useState(props.data);
   const [stars, setstars] = useState([]);
   const [enableDelete, setenableDelete] = useState(false);
@@ -15,30 +24,33 @@ const ReviewCard = (props) => {
 
   const LoggedInUsersId = useSelector((state) => state.user.id);
   const isAdmin = useSelector((state) => state.user.isAdmin);
-
-  const reviewCardRef = useRef(null);
+  const isConfirmed = useSelector(
+    (state) => state.displayConfirmAndLoading.isConfirmed
+  );
 
   const handleDelete = async () => {
-    props.setshowConfirmationBox(true);
     setitemTodelete(data._id);
+    dispatch(setShowConfirmationBox(true));
   };
 
   useEffect(() => {
-    if (!props.confirmed) return;
+    if (!isConfirmed) return;
     if (itemTodelete === "") return;
 
     (async function () {
       try {
-        let res = await axios.delete(`/api/delete-review/${itemTodelete}`);
+        let res = await axios.delete(`/api/delete-review/${data._id}`);
         toast.success(res.data.message);
-        props.setshowLoading(false);
         window.location.reload();
+        dispatch(setShowLoadingScreen(false));
+        dispatch(setConfirmed(false));
       } catch (error) {
+        dispatch(setConfirmed(false));
         toast.error(error.response.data.message);
         props.setshowLoading(false);
       }
     })();
-  }, [props.confirmed]);
+  }, [isConfirmed]);
 
   useEffect(() => {
     const tempStars = [];
