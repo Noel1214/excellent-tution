@@ -7,13 +7,17 @@ import toast from "react-hot-toast";
 import { loginSchema } from "@/zod/validationSchema";
 import { setEmail } from "@/lib/features/forgot-password/forgotPasswordSlice";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { emailSchema } from "@/zod/validationSchema";
 import { setAdmin, setId, setLoginState } from "@/lib/features/user/userSlice";
 import { BsEyeSlashFill } from "react-icons/bs";
 import { IoEyeSharp } from "react-icons/io5";
 import ConfirmationBox from "@/components/ConfirmationBox";
 import LoadingCircle from "@/components/LoadingCircle";
+import {
+  setShowConfirmationBox,
+  setShowLoadingScreen,
+} from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
 
 const Login = () => {
   const mainDiv = useRef(null);
@@ -28,11 +32,19 @@ const Login = () => {
   const router = useRouter();
 
   const [userData, setuserData] = useState({ email: "", password: "" });
-  const [showConfirmationBox, setshowConfirmationBox] = useState(false);
-  const [showLoading, setshowLoading] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
   const [clicked, setclicked] = useState(false);
   const [error, seterror] = useState("");
+
+  const showConfirmationBox = useSelector(
+    (state) => state.displayConfirmAndLoading.showConfirmationBox
+  );
+  const showLoading = useSelector(
+    (state) => state.displayConfirmAndLoading.showLoadingScreen
+  );
+  const isConfirmed = useSelector(
+    (state) => state.displayConfirmAndLoading.isConfirmed
+  );
 
   useEffect(() => {
     seterror("");
@@ -40,13 +52,13 @@ const Login = () => {
 
   const onLogin = async () => {
     setclicked(true);
-    setshowLoading(true);
+    dispatch(setShowLoadingScreen(true));
 
     const result = loginSchema.safeParse(userData);
     if (!result.success) {
       seterror(result.error.issues[0].message);
       setclicked(false);
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
       return;
     }
 
@@ -61,18 +73,18 @@ const Login = () => {
       dispatch(setAdmin(res.data.isAdmin || false));
       dispatch(setId(res.data.id || null));
       toast.success(res.data.message);
-      setclicked(false);
+      // setclicked(false);
       if (res.data.isLoggedIn) {
         router.push("/home");
       }
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
     } catch (error) {
       dispatch(setAdmin(false));
       dispatch(setLoginState(false));
       dispatch(setId(""));
       toast.error(error.response.data.message);
       setclicked(false);
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
     }
   };
 
@@ -80,31 +92,37 @@ const Login = () => {
     setshowPassword(!showPassword);
   };
 
-  const onForgotPassword = async () => {
-    try {
-      const result = emailSchema.safeParse(userData.email);
-      if (!result.success) {
-        seterror(result.error.issues[0].message);
-        setshowLoading(false);
+  useEffect(() => {
+    if (!isConfirmed) return;
+
+    (async function () {
+      dispatch(setShowLoadingScreen(true));
+
+      try {
+        const result = emailSchema.safeParse(userData.email);
+        if (!result.success) {
+          dispatch(setShowLoadingScreen(false));
+          seterror(result.error.issues[0].message);
+          setclicked(false);
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("email", userData.email);
+
+        await Axios.post("api/forgot-password", formData);
+
+        dispatch(setEmail(userData.email));
+        dispatch(setShowLoadingScreen(false));
+        // setclicked(false);
+        router.push("/verify-otp");
+      } catch (error) {
         setclicked(false);
-        return;
+        dispatch(setShowLoadingScreen(false));
+        toast.error(error.response.data.message || "network error");
       }
-
-      const formData = new FormData();
-      formData.append("email", userData.email);
-
-      await Axios.post("api/forgot-password", formData);
-
-      dispatch(setEmail(userData.email));
-      setshowLoading(false);
-      setclicked(false);
-      router.push("/verify-otp");
-    } catch (error) {
-      setclicked(false);
-      setshowLoading(false);
-      toast.error(error.response.data.message || "network error");
-    }
-  };
+    })();
+  }, [isConfirmed]);
 
   useEffect(() => {
     if (toastedOrNot.current) return;
@@ -153,8 +171,8 @@ const Login = () => {
   return (
     <div className="relative">
       <div
-        className={`${showConfirmationBox ? "blur-md" : ""} ${
-          showLoading ? "blur-md" : ""
+        className={`${
+          showConfirmationBox || showLoading ? "blur-md" : ""
         } flex flex-col items-center justify-center h-screen gap-1`}
       >
         <div
@@ -222,7 +240,7 @@ const Login = () => {
             <button
               className="text-start mt-1 text-xs"
               onClick={() => {
-                setshowConfirmationBox(true);
+                dispatch(setShowConfirmationBox(true));
               }}
             >
               <p className="pl-1">Forgot password</p>
@@ -252,13 +270,7 @@ const Login = () => {
       </div>
       {showConfirmationBox && (
         <div className="absolute top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl  rounded-lg">
-          <ConfirmationBox
-            email={userData.email}
-            setshowConfirmationBox={setshowConfirmationBox}
-            setclicked={setclicked}
-            setshowLoading={setshowLoading}
-            onForgotPassword={onForgotPassword}
-          />
+          <ConfirmationBox text={`send OTP to ${userData.email}`} />
         </div>
       )}
       {showLoading && (
