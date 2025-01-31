@@ -1,28 +1,31 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { setReviewsData } from "@/lib/features/review/reviewSlice";
+import { setShowLoadingScreen } from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
 import { IoClose } from "react-icons/io5";
 import { IoIosStar } from "react-icons/io";
-import Link from "next/link";
 import Axios from "axios";
-import { useParams } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { setReviewsData } from "@/lib/features/review/reviewSlice";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import LoadingCircle from "@/components/LoadingCircle";
 
 const ReviewPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [review, setreview] = useState("");
   const [stars, setstars] = useState([false, false, false, false, false]);
   const [rating, setrating] = useState(0);
   const [data, setdata] = useState({ rating, review });
-  const [showLoading, setshowLoading] = useState(false);
   const [error, seterror] = useState("");
 
-  const router = useRouter();
+  const showLoading = useSelector(
+    (state) => state.displayConfirmAndLoading.showLoadingScreen
+  );
 
   useEffect(() => {
     seterror("");
@@ -47,21 +50,21 @@ const ReviewPage = () => {
   };
 
   const submitHandler = async () => {
-    setshowLoading(true);
+    dispatch(setShowLoadingScreen(true));
     try {
-      if (review === "") {        
+      if (review === "") {
         seterror("please give a review before submiting");
-        setshowLoading(false);
+        dispatch(setShowLoadingScreen(true));
         return;
       }
       const res = await Axios.post("/api/addreview", data);
       dispatch(setReviewsData([]));
       toast.success(res.data.message);
       router.push("/reviews");
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
     } catch (error) {
       toast.error(error.response.data.message);
-      setshowLoading(false);
+      dispatch(setShowLoadingScreen(false));
     }
   };
 
