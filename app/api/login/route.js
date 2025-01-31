@@ -16,12 +16,12 @@ export async function POST(req) {
 
     const user = await User.findOne({ email });
     if (!user) {
-      throw new CustomError("invalid username or password !", 401);
+      throw new CustomError("invalid email or password !", 401);
     }
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
-      throw new CustomError("invalid username or password !", 401);
+      throw new CustomError("invalid email or password !", 401);
     }
 
     const tokenData = {
