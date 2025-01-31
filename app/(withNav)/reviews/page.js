@@ -10,15 +10,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { setReviewsData } from "@/lib/features/review/reviewSlice";
 
 const Reviews = () => {
-  const titlehead = useRef(null);
-
   const dispatch = useDispatch();
 
+  const titlehead = useRef(null);
+
   const reviews = useSelector((state) => state.review.reviewsData);
-  
-  const [confirmed, setconfirmed] = useState(false);
-  const [showLoading, setshowLoading] = useState(false);
-  const [showConfirmationBox, setshowConfirmationBox] = useState(false);
+  const showLoading = useSelector(
+    (state) => state.displayConfirmAndLoading.showLoadingScreen
+  );
+  const showConfirmationBox = useSelector(
+    (state) => state.displayConfirmAndLoading.showConfirmationBox
+  );
 
   useEffect(() => {
     if (reviews.length) return;
@@ -59,32 +61,18 @@ const Reviews = () => {
         {/* Render Reviews */}
         <div>
           {reviews.map((item, index) => (
-            <ReviewCard
-              key={item._id}
-              index={index}
-              data={item}
-              setshowLoading={setshowLoading}
-              setshowConfirmationBox={setshowConfirmationBox}
-              confirmed={confirmed}
-              setconfirmed={setconfirmed}
-            />
+            <ReviewCard key={item._id} index={index} data={item} />
           ))}
         </div>
       </div>
       {showLoading && (
-        <div className="absolute z-20 top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
+        <div className="absolute z-20 top-[45%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
           <LoadingCircle text="deleting" />
         </div>
       )}
       {showConfirmationBox && (
         <div className="absolute top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl  rounded-lg">
-          <ConfirmationBox
-            showConfirmationBox={showConfirmationBox}
-            setshowConfirmationBox={setshowConfirmationBox}
-            setconfirmed={setconfirmed}
-            setshowLoading={setshowLoading}
-            text="Are you sure you want to delete this? "
-          />
+          <ConfirmationBox text="Are you sure you want to delete this? " />
         </div>
       )}
     </div>
