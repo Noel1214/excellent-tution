@@ -11,6 +11,7 @@ import {
   setShowLoadingScreen,
   setConfirmed,
 } from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
+import { setReviewsData } from "@/lib/features/review/reviewSlice";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const ReviewCard = (props) => {
   const [enableDelete, setenableDelete] = useState(false);
   const [itemTodelete, setitemTodelete] = useState("");
 
+  const reviews = useSelector((state) => state.review.reviewsData);
   const LoggedInUsersId = useSelector((state) => state.user.id);
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const isConfirmed = useSelector(
@@ -43,8 +45,11 @@ const ReviewCard = (props) => {
     (async function () {
       try {
         let res = await axios.delete(`/api/delete-review/${data._id}`);
+        const newReviews = reviews.filter((item) => {
+          return String(item._id) !== String(data._id);
+        });
+        dispatch(setReviewsData(newReviews));
         toast.success(res.data.message);
-        window.location.reload();
         dispatch(setShowLoadingScreen(false));
       } catch (error) {
         toast.error(error.response.data.message);
