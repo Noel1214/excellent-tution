@@ -1,32 +1,25 @@
 import React, { useEffect } from "react";
+import {
+  setShowConfirmationBox,
+  setShowLoadingScreen,
+  setConfirmed,
+} from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
+import { useDispatch } from "react-redux";
 
-const ConfirmationBox = ({
-  setshowConfirmationBox = () => {},
-  setclicked = () => {},
-  setshowLoading = () => {},
-  onForgotPassword = () => {},
-  setconfirmed = () => {},
-  showConfirmationBox = false,
-  text = "",
-}) => {
+const ConfirmationBox = ({ text = "" }) => {
+  const dispatch = useDispatch();
+
   const confirm = () => {
     document.body.style.overflow = "auto";
-    setconfirmed(true);
-    setclicked(true);
-    setshowConfirmationBox(false);
-    setshowLoading(true);
-    onForgotPassword();
+    dispatch(setShowConfirmationBox(false));
+    dispatch(setShowLoadingScreen(true));
+    dispatch(setConfirmed(true));
   };
 
   const cancel = () => {
     document.body.style.overflow = "auto";
-    setshowConfirmationBox(false);
+    dispatch(setShowConfirmationBox(false));
   };
-
-  useEffect(() => {
-    if (!showConfirmationBox) return;
-    document.body.style.overflow = "hidden";
-  }, [showConfirmationBox]);
 
   return (
     <div>
