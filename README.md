@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FULL STACK NEXTJS PROJECT
+----------------------------
+## Table of Contents
 
-## Getting Started
+• About
+• Features
+• Tech Stack
+• Learning
 
-First, run the development server:
+## About
+This is a full stack nextjs project. Initially i got this project as a freelance project and at that time i could not complete this due to technical limitations, Now completed this as a personal project as part of my learning.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+Complete CRUD Operations – Perform Create, Read, Update, and Delete actions seamlessly.
+Robust Error Handling – Utilizes an extended error class for better debugging and response management.
+Secure Email OTP Authentication – Implements OTP verification for user security.
+Cloud Storage Integration – Stores and retrieves files efficiently using AWS S3.
+JWT-Based Authentication – Ensures secure user login and session management.
+Global State Management – Manages app-wide state efficiently for a smoother experience.
+Image Upload & Deletion – Upload, manage, and remove images dynamically.
+Enhanced User Experience – Micro-animations improve UI interactivity and responsiveness.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
+-------------
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### FRONTEND
+• Nextjs - UI
+• Redux Toolkit - state mangagement
+• Tailwind Css - styling
+• Gsap - animations
+• React Hot Toast - notifications
+• Axios - api hitting
+• Zod - data validation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Backend
+• Nextjs - SSR and route handler 
+• MongoDB - database.
+• JWT - authentication
+• AWS S3 - file storage
+• Resend - mail services
 
-## Learn More
+## LEARNING
+The initial requirement from my client was a simple showcase website to display details about their tuition center and contact information. However, after understanding their use case, I built an appealing and interactive website using Next.js, GSAP, and Tailwind CSS.
 
-To learn more about Next.js, take a look at the following resources:
+Later, I expanded the project by adding features such as:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Displaying teacher profiles with images and biodata.
+Allowing students to provide feedback and reviews on teachers.
+Showcasing reviews to help parents and others learn more about the faculty.
+Implementing a login feature to manage student data and facilitate further communication.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+With this i have learned how to use Next.js for building full-stack web applications. Through this project, I have gained a strong command of using styling and animation libraries like Tailwind CSS and GSAP to create visually appealing and interactive applications.
 
-## Deploy on Vercel
+I have also gained hands-on learning experience by integrating external services such as Resend and AWS S3. To achieve this, I relied on their official documentation to understand API usage and implementation details. This experience has significantly improved my ability to work with third-party services and APIs.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+I have learned to use AI tools like ChatGPT in my work flow to enhance my productivity and accelerate my learning process. These tools have been invaluable in solving problems, and optimizing my workflow.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Through this project, I have also gained practical knowledge about domain management, including purchasing a domain, setting up DNS records, and hosting a project. I have learned how to identify and debug production errors by analyzing logs, which has been crucial for maintaining a stable and reliable application
+
+By releasing the web application to users, I gathered valuable feedback and identified bugs that were not apparent during development. This user feedback has been instrumental in improving the overall user experience and ensuring the application meets user expectations.
+
+Finally, I have learned the importance of project planning and how crucial it is to have a clear roadmap before starting development. Proper planning has helped me stay organized, manage my time effectively, and deliver a high-quality product.
