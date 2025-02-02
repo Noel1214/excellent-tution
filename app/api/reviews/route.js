@@ -51,12 +51,12 @@ export async function GET() {
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;
-    const errorMessage = error.message || "internal error";
+    const message = error.customMessage || "internal error";
     console.log("error in reviwes route\n", error);
 
     return NextResponse.json(
       {
-        message: errorMessage,
+        message: message,
         success: false,
       },
       { status: statusCode }
