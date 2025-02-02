@@ -25,7 +25,7 @@ const TeacherCard = (props) => {
     gsap.fromTo(
       teacherCardRef.current,
       { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, delay: 1 + props.index * 0.3 }
+      { opacity: 1, y: 0, duration: 1, delay: props.index * 0.8 }
     );
   }, []);
 
