@@ -1,16 +1,19 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-
   username: {
     type: String,
     required: [true, "please provide a usename"],
-    unique: true,
   },
   email: {
     type: String,
     required: [true, "please provide a email"],
     unique: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: [true, "please provide a phone number"],
+    unique: true
   },
   password: {
     type: String,
@@ -23,6 +26,14 @@ const userSchema = new mongoose.Schema({
   otp: {
     type: String,
     default: "",
+  },
+  fee: {
+    type: String,
+    default: "",
+  },
+  isFeePaid: {
+    type: Boolean,
+    default: false,
   },
 });
 
