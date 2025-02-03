@@ -74,7 +74,7 @@ const ReviewCard = (props) => {
     gsap.fromTo(
       reviewCardRef.current,
       { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.8 + props.index * 0.3 }
+      { opacity: 1, y: 0, duration: 1, delay: props.index * 0.8 }
     );
   }, []);
 
