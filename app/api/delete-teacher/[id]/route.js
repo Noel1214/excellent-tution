@@ -17,7 +17,7 @@ export async function DELETE(req, { params }) {
     console.log(reviews, "\nthis is reviews");
 
     // prevent deletion if reviews on teacher exists
-    if (reviews.length) { 
+    if (reviews.length) {
       throw new CustomError("reviews about teacher found!", 400);
     }
 
