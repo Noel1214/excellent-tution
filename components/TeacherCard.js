@@ -17,7 +17,7 @@ const TeacherCard = (props) => {
       toast.success(res.data.message);
       window.location.reload();
     } catch (error) {
-      toast.success(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
