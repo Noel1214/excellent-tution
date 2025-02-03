@@ -266,7 +266,8 @@ const Login = () => {
         </div>
         <div className="flex flex-col items-center gap-2" ref={redirectionRef}>
           <p>Don't have an account?</p>
-          <Link href="/register">Sign Up</Link>
+          <Link href="/register">
+          <button className="bg-blue-400 px-5 py-1 text-center text-white font-semibold rounded-lg">Sign Up</button></Link>
         </div>
       </div>
       {showConfirmationBox && (
