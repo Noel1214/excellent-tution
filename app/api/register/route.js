@@ -11,6 +11,7 @@ export async function POST(req) {
     const username = formData.get("username");
     const email = formData.get("email");
     const password = formData.get("password");
+    const phoneNumber = formData.get("phoneNumber");
 
     // checking for if user aldready exists
     const userChecker = await User.findOne({ email });
@@ -26,6 +27,7 @@ export async function POST(req) {
     const newUser = new User({
       username,
       email,
+      phoneNumber,
       password: hashedPassword,
     });
     await newUser.save();
