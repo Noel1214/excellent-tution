@@ -264,7 +264,9 @@ const Register = () => {
         </div>
         <div className="flex flex-col items-center gap-2" ref={redirectionRef}>
           <p>Aldready have an account?</p>
-          <Link href="/login">Login</Link>
+          <Link href="/login">
+            <button className="bg-blue-400 px-5 py-1 text-center text-white font-semibold rounded-lg">Login</button>
+          </Link>
         </div>
       </div>
       {/* OTP INPUT BOX */}
