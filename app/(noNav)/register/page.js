@@ -23,11 +23,13 @@ const Register = () => {
   const usernameInput = useRef(null);
   const passwordInput = useRef(null);
   const emailInput = useRef(null);
+  const phoneNumberInput = useRef(null);
   const redirectionRef = useRef(null);
 
   const [signUpData, setsignUpData] = useState({
     username: "",
     email: "",
+    phoneNumber: "",
     password: "",
   });
   const [clicked, setclicked] = useState(false);
@@ -57,10 +59,11 @@ const Register = () => {
       dispatch(setShowLoadingScreen(false));
       return;
     }
-
+    
     const formData = new FormData();
     formData.append("username", signUpData.username);
     formData.append("email", signUpData.email);
+    formData.append("phoneNumber", signUpData.phoneNumber);
     formData.append("password", signUpData.password);
 
     try {
@@ -108,6 +111,7 @@ const Register = () => {
         const formData = new FormData();
         formData.append("username", signUpData.username);
         formData.append("email", signUpData.email);
+        formData.append("phoneNumber", signUpData.phoneNumber);
         formData.append("password", signUpData.password);
 
         const res = await Axios.post("/api/register", formData);
@@ -145,6 +149,11 @@ const Register = () => {
     );
     gsap.fromTo(
       emailInput.current,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1 }
+    );
+    gsap.fromTo(
+      phoneNumberInput.current,
       { y: 50, opacity: 0 },
       { y: 0, opacity: 1, duration: 1 }
     );
@@ -211,6 +220,24 @@ const Register = () => {
               className="bg-white h-[2.3rem] mt-1 p-4 outline-none rounded-md"
             />
           </div>
+          <div
+            className="flex flex-col w-[17rem] mx-auto mt-5"
+            ref={phoneNumberInput}
+          >
+            <label htmlFor="email" className="text-sm">
+              Phone No.
+            </label>
+            <input
+              type="text"
+              disabled={clicked}
+              placeholder="9449499494"
+              value={signUpData.phoneNumber}
+              onChange={(e) =>
+                setsignUpData({ ...signUpData, phoneNumber: e.target.value })
+              }
+              className="bg-white h-[2.3rem] mt-1 p-4 outline-none rounded-md"
+            />
+          </div>
           {/* PASSWORD INPUT */}
           <div
             className="flex flex-col w-[17rem] mx-auto mt-4"
@@ -265,7 +292,9 @@ const Register = () => {
         <div className="flex flex-col items-center gap-2" ref={redirectionRef}>
           <p>Aldready have an account?</p>
           <Link href="/login">
-            <button className="bg-blue-400 px-5 py-1 text-center text-white font-semibold rounded-lg">Login</button>
+            <button className="bg-blue-400 px-5 py-1 text-center text-white font-semibold rounded-lg">
+              Login
+            </button>
           </Link>
         </div>
       </div>
