@@ -39,6 +39,7 @@ const Navbar = () => {
       dispatch(setLoginState(false));
       dispatch(setId(null));
       router.push("/");
+      window.location.reload();
     } catch (error) {
       toast.error(error.response.data.message);
     }
