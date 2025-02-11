@@ -4,7 +4,6 @@ import axios from "axios";
 import gsap from "gsap";
 import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
-import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setShowConfirmationBox,
@@ -12,14 +11,15 @@ import {
   setConfirmed,
 } from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
 import { setReviewsData } from "@/lib/features/review/reviewSlice";
+import useStars from "@/hooks/useStars";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
 
   const reviewCardRef = useRef(null);
+  const { renderStars } = useStars(data.rating);
 
   const [data, setdata] = useState(props.data);
-  const [stars, setstars] = useState([]);
   const [enableDelete, setenableDelete] = useState(false);
   const [itemTodelete, setitemTodelete] = useState("");
 
@@ -59,12 +59,6 @@ const ReviewCard = (props) => {
   }, [isConfirmed]);
 
   useEffect(() => {
-    const tempStars = [];
-    for (let i = 0; i < data.rating; i++) {
-      tempStars.push(<FaStar key={`star_${i}`} />);
-    }
-    setstars(tempStars);
-
     if (data.userID === LoggedInUsersId || isAdmin) {
       setenableDelete(true);
     }
@@ -96,7 +90,9 @@ const ReviewCard = (props) => {
                   {data.teacherId.teacherName}
                 </h1>
                 {data.rating ? (
-                  <p className="flex text-yellow-400 mt-1">{stars}</p>
+                  <div className="flex text-yellow-400 mt-1">
+                    {renderStars()}
+                  </div>
                 ) : (
                   <p className="flex text-black text-sm mt-1">
                     no rating given
