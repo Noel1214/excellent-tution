@@ -17,18 +17,19 @@ const ReviewCard = (props) => {
   const dispatch = useDispatch();
 
   const reviewCardRef = useRef(null);
-  const { renderStars } = useStars(data.rating);
-
+  
   const [data, setdata] = useState(props.data);
   const [enableDelete, setenableDelete] = useState(false);
   const [itemTodelete, setitemTodelete] = useState("");
-
+  
   const reviews = useSelector((state) => state.review.reviewsData);
   const LoggedInUsersId = useSelector((state) => state.user.id);
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const isConfirmed = useSelector(
     (state) => state.displayConfirmAndLoading.isConfirmed
   );
+  
+  const { renderStars } = useStars(data.rating);
 
   const handleDelete = () => {
     document.body.style.overflow = "hidden";
