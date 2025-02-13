@@ -8,6 +8,7 @@ import { setTeacherData } from "@/lib/features/teacher/teacherSlice";
 import toast from "react-hot-toast";
 import ConfirmationBox from "@/components/ConfirmationBox";
 import LoadingCircle from "@/components/LoadingCircle";
+import SimpleLoadingCircle from "@/components/SimpleLoadingCircle";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const App = () => {
           {dataFromRedux.map((item, index) => (
             <TeacherCard key={item._id} index={index} data={item} />
           ))}
+          {!dataFromRedux.length && <SimpleLoadingCircle />}
         </div>
       </div>
       {showConfirmationBox && (
