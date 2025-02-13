@@ -22,6 +22,7 @@ const App = () => {
   const showLoading = useSelector(
     (state) => state.displayConfirmAndLoading.showLoadingScreen
   );
+  const [loadingOnDataFetching, setloadingOnDataFetching] = useState(false);
 
   useEffect(() => {
     gsap.fromTo(
@@ -33,13 +34,15 @@ const App = () => {
 
   useEffect(() => {
     if (dataFromRedux.length) return;
-
+    setloadingOnDataFetching(true);
     (async function () {
       try {
         const response = await axios.get("/api/teachers");
         dispatch(setTeacherData(response.data.teachers));
+        setloadingOnDataFetching(false);
       } catch (error) {
         toast.error(error.response.data.message);
+        setloadingOnDataFetching(false);
       }
     })();
   }, []);
@@ -59,7 +62,7 @@ const App = () => {
           {dataFromRedux.map((item, index) => (
             <TeacherCard key={item._id} index={index} data={item} />
           ))}
-          {!dataFromRedux.length && <SimpleLoadingCircle />}
+          {loadingOnDataFetching && <SimpleLoadingCircle />}
         </div>
       </div>
       {showConfirmationBox && (
