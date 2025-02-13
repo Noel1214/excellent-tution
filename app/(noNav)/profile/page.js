@@ -33,7 +33,7 @@ const page = () => {
     if (!userId) return;
     (async function () {
       try {
-        const res = await axios.get(`api/update-user/get-user/${userId}`);
+        const res = await axios.get(`api/data-update/get-user/${userId}`);
         console.log(res);
         setuserData(res.data.userDetails);
       } catch (error) {
@@ -131,12 +131,12 @@ const page = () => {
           {/* Buttons  */}
           <div className="flex justify-around w-[17rem] mt-5 text-white">
             <button
-              className="bg-cyan-400 px-4 py-1 rounded-lg shadow-lg"
+              className="scale-105 hover:scale-110 active:scale-125 active:bg-cyan-500 bg-cyan-400 px-4 py-1 rounded-lg shadow-lg transition-all ease-in-out" 
               onClick={onEdit}
             >
               Edit
             </button>
-            <button className="bg-teal-500 px-4 py-1 rounded-lg shadow-lg">
+            <button className="scale-105 hover:scale-110 active:scale-125 active:bg-teal-600 bg-teal-500 px-4 py-1 rounded-lg shadow-lg transition-all ease-in-out">
               Save
             </button>
           </div>
