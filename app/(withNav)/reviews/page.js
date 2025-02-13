@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { setReviewsData } from "@/lib/features/review/reviewSlice";
+import SimpleLoadingCircle from "@/components/SimpleLoadingCircle";
 
 const Reviews = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,19 @@ const Reviews = () => {
   const showConfirmationBox = useSelector(
     (state) => state.displayConfirmAndLoading.showConfirmationBox
   );
+  const [loadingOnDataFetching, setloadingOnDataFetching] = useState(false);
 
   useEffect(() => {
     if (reviews.length) return;
+    setloadingOnDataFetching(true);
     (async function () {
       try {
         const res = await axios.get("/api/reviews");
         dispatch(setReviewsData(res.data.reviews));
+        setloadingOnDataFetching(false);
       } catch (error) {
         toast.error(error.response.data.message);
+        setloadingOnDataFetching(false);
       }
     })();
   }, []);
@@ -63,6 +68,7 @@ const Reviews = () => {
           {reviews.map((item, index) => (
             <ReviewCard key={item._id} index={index} data={item} />
           ))}
+          {loadingOnDataFetching && <SimpleLoadingCircle />}
         </div>
       </div>
       {showLoading && (
