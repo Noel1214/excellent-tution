@@ -62,7 +62,7 @@ const TeacherCard = (props) => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative hover:scale-105 transition-all ease-in-out duration-300">
       <div
         className="TeacherProfile flex justify-center h-auto mt-[2rem] mb-[2rem]"
         ref={teacherCardRef}
