@@ -15,6 +15,8 @@ export async function POST(req) {
 
     const key = `teachers/${name}-${Date.now()}.avif`;
 
+    const url = await putObjectUrl(key, type);
+
     const newTeacher = new Teacher({
       teacherName: name,
       subject: subject,
@@ -23,11 +25,9 @@ export async function POST(req) {
     });
     await newTeacher.save();
 
-    const url = await putObjectUrl(key, type);
-
     return NextResponse.json(
       {
-        message: "Image uploaded successfully",
+        message: `${newTeacher.teacherName} is added to teachers`,
         url: url,
         success: true,
       },
