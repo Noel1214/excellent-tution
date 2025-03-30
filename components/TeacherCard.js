@@ -11,6 +11,7 @@ import {
   setConfirmed,
   setShowConfirmationBox,
   setShowLoadingScreen,
+  setAdditionalData,
 } from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
 
 const TeacherCard = (props) => {
@@ -28,6 +29,7 @@ const TeacherCard = (props) => {
 
   const onDelete = async () => {
     dispatch(setShowConfirmationBox(true));
+    dispatch(setAdditionalData(data.teacherName));
     setitemToDelete(String(data._id));
   };
 
@@ -36,7 +38,6 @@ const TeacherCard = (props) => {
     if (itemToDelete === "") return;
     setitemToDelete("");
     dispatch(setConfirmed(false));
-
     (async function () {
       try {
         const res = await Axios.delete(`api/delete-teacher/${data._id}`);
@@ -84,7 +85,11 @@ const TeacherCard = (props) => {
             <li>{data.education}</li>
           </ul>
 
-          <Link href={`/addreview/${data.teacherName.replace(/\s+/g, "-")}/${data._id}`}>
+          <Link
+            href={`/addreview/${data.teacherName.replace(/\s+/g, "-")}/${
+              data._id
+            }`}
+          >
             <button className="bg-green-400 w-[14rem] h-[2rem] rounded-xl flex justify-center items-center font-semibold p-2 mt-2">
               Review
             </button>
