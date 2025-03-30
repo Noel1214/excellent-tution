@@ -40,11 +40,10 @@ const AddTeacherUi = () => {
 
     try {
       const res = await axios.post("/api/upload", formData);
-      // console.log(res.data);
       if (res.data.url) {
         const awsRes = await axios.put(res.data.url, selectedFile);
       }
-      toast.success("image uploaded");
+      toast.success(res.data.message);
       setuploading(false);
     } catch (error) {
       toast.error("upload failed");
@@ -54,7 +53,11 @@ const AddTeacherUi = () => {
 
   return (
     <div>
-      <div className={`${uploading ? "blur-md" : ""} flex flex-col h-screen w-screen p-2`}>
+      <div
+        className={`${
+          uploading ? "blur-md" : ""
+        } flex flex-col h-screen w-screen p-2`}
+      >
         <div className="TeacherImage mx-auto mt-8 mb-0 rounded-xl w-auto max-w-full overflow-hidden">
           {imagePreview && (
             <Image
