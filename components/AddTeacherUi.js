@@ -37,14 +37,14 @@ const AddTeacherUi = () => {
 
     try {
       const res = await axios.post("/api/upload", formData);
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.url) {
         const awsRes = await axios.put(res.data.url, selectedFile);
       }
       toast.success("image uploaded");
     } catch (error) {
       toast.error("upload failed");
-      console.error("Error uploading file", error);
+      // console.error("Error uploading file", error);
     }
   };
 
