@@ -4,10 +4,13 @@ import {
   setShowLoadingScreen,
   setConfirmed,
 } from "@/lib/features/confirmation-and-loading/confirmationAndLoadingSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ConfirmationBox = ({ text = "" }) => {
   const dispatch = useDispatch();
+  const additionalData = useSelector(
+    (state) => state.displayConfirmAndLoading.additionalData
+  );
 
   const confirm = () => {
     document.body.style.overflow = "auto";
@@ -25,6 +28,12 @@ const ConfirmationBox = ({ text = "" }) => {
     <div>
       <div className="w-[20rem] mx-auto p-6 rounded-lg shadow-lg bg-white">
         <h2 className="text-center mb-6 font-semibold text-gray-800">{text}</h2>
+        {additionalData && (
+          <h2 className="text-center mb-6 font-semibold text-gray-800">
+            {additionalData}
+          </h2>
+        )}
+        <h2 className="text-center font-semibold text-gray-800"></h2>
         <div className="w-full flex justify-center">
           <div className="w-[13rem] flex flex-col gap-4">
             <button
