@@ -21,7 +21,7 @@ export async function DELETE(req, { params }) {
       throw new CustomError("reviews about teacher found!", 400);
     }
 
-    const teacher = await Teacher.findOneAndDelete(id);
+    const teacher = await Teacher.findOneAndDelete({ _id: id });
     await deleteObjectInS3(teacher.key);
 
     return NextResponse.json(
