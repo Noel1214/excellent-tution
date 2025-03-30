@@ -89,7 +89,9 @@ const ReviewPage = () => {
             <div className="w-[14rem] font-semibold text-center text-xm text-zinc-600">
               we are always looking for ways to improve your experience. Please
               take a moment to evaluate and share what you feel about
-              <p className="text-xl text-black">{params.teacherData[0].replace(/-/g, " ")}</p>
+              <p className="text-xl text-black">
+                {params.teacherData[0].replace(/-/g, " ")}
+              </p>
             </div>
           </div>
           <p className="flex gap-2">
