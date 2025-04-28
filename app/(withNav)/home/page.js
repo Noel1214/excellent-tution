@@ -50,8 +50,8 @@ const App = () => {
   return (
     <div>
       <div
-        className={`${
-          showLoading ? "blur-md" : ""
+        className={`${showLoading ? "blur-md" : ""} ${
+          showConfirmationBox ? "blur-md" : ""
         } flex flex-col items-center mt-[3rem] min-w-screen`}
       >
         <div className="flex flex-col items-center" ref={titlehead}>
@@ -66,7 +66,7 @@ const App = () => {
         </div>
       </div>
       {showConfirmationBox && (
-        <div className="fixed top-[50%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl  rounded-lg">
+        <div className="fixed top-[55%] -translate-y-[80%] -translate-x-[50%] left-[50%] drop-shadow-2xl rounded-lg">
           <ConfirmationBox text="Are you sure you want to delete this? " />
         </div>
       )}
