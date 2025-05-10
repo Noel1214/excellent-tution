@@ -10,10 +10,11 @@ export async function GET(req) {
     
     const dataWithImages = await Promise.all(teachers.map(async (item) => {
       
-      const imageUrl = await getObjectUrl(item.key);
+      const imageUrl1 = process.env.CLOUD_FRONT_DOMAIN_NAME + item.key      
+      // const imageUrl = await getObjectUrl(item.key);
       return {
         ...item.toObject(),
-        imageUrl: imageUrl
+        imageUrl: imageUrl1
       }
     }))    
 
